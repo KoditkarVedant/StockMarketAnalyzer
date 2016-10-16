@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockMarketAnalyzer", "StockMarketAnalyzer\StockMarketAnalyzer.csproj", "{C79ADA43-4081-463A-A96F-CBDC781AFE19}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockMarketAnalyzer.BLL", "StockMarketAnalyzer.BLL\StockMarketAnalyzer.BLL.csproj", "{AFE76AA3-2F17-43FD-9F6F-1E636FBEFD27}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockMarketAnalyzer.DAL", "StockMarketAnalyzer.DAL\StockMarketAnalyzer.DAL.csproj", "{C946BE85-519D-4F9B-88DD-54D4A49914DB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C79ADA43-4081-463A-A96F-CBDC781AFE19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C79ADA43-4081-463A-A96F-CBDC781AFE19}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C79ADA43-4081-463A-A96F-CBDC781AFE19}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C79ADA43-4081-463A-A96F-CBDC781AFE19}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFE76AA3-2F17-43FD-9F6F-1E636FBEFD27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFE76AA3-2F17-43FD-9F6F-1E636FBEFD27}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFE76AA3-2F17-43FD-9F6F-1E636FBEFD27}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFE76AA3-2F17-43FD-9F6F-1E636FBEFD27}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C946BE85-519D-4F9B-88DD-54D4A49914DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C946BE85-519D-4F9B-88DD-54D4A49914DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C946BE85-519D-4F9B-88DD-54D4A49914DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C946BE85-519D-4F9B-88DD-54D4A49914DB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

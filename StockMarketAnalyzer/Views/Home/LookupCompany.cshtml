@@ -1,0 +1,36 @@
+﻿@{
+    ViewBag.Title = "LookupCompany";
+}
+
+<div ng-app="MyApp">
+    <h2>Lookup the Company</h2>
+    <div class="form-group" ng-controller="HomeController">
+        <input type="text" name="query" id="query" class="form-control" style="max-width:100% !important" ng-model="query" ng-keyup="searchCompany()" />
+        <br />
+        <br />
+        <div id="searchResults">
+            <table class="table table-striped table-hover" ng-show="query!=''">
+                <thead>
+                    <tr>
+                        <th>Ticker</th>
+                        <th>Name</th>
+                        <th>Exchange</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in result" ng-click="getCompanyDetails(item.Symbol)" style="cursor:pointer">
+                        <td>{{item.Symbol}}</td>
+                        <td>{{item.Name}}</td>
+                        <td>{{item.ExchDisp}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    <script src="~/Scripts/angular.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/MyApp/app.js"></script>
+}
