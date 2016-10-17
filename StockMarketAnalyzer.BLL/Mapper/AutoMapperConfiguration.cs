@@ -15,7 +15,7 @@ namespace StockMarketAnalyzer.BLL.Mapper
         {
             var config = new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<CompanyDetail, BusinessModel.CompanyDetail>().ReverseMap();
+                cfg.CreateMap<Company, BusinessModel.CompanyDetail>().ReverseMap();
                 
             });
             

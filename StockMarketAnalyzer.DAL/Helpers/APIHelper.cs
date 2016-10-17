@@ -8,19 +8,14 @@ using System.Threading.Tasks;
 
 namespace StockMarketAnalyzer.DAL.Helpers
 {
-    public interface IApiHelper
-    {
-        string GetResponse(string url, string method = "GET", Dictionary<string, string> param = null);
-    }
-
-    public class ApiHelper : IApiHelper
+    public class ApiHelper
     {
         /// <summary>
         /// this is method makes the call and return the reponse
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
-        public string GetResponse(string url, string method = "GET", Dictionary<string, string> param = null)
+        public static string GetResponse(string url, string method = "GET", Dictionary<string, string> param = null)
         {
             if (!string.IsNullOrWhiteSpace(url))
             {

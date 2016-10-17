@@ -17,10 +17,9 @@ namespace StockMarketAnalyzer.DAL
         {
             base.Load(builder);
 
-            builder.RegisterType<DataAccessor>().As<IDataAccessor>().SingleInstance();
-            builder.RegisterType<DataSession>().As<IDataSession>().SingleInstance();
-            builder.RegisterType<StockMarketDbContext>().As<DbContext>();
-            builder.RegisterType<ApiHelper>().As<IApiHelper>();
+            //builder.RegisterType<DataAccessor>().As<IDataAccessor>().SingleInstance();
+            //builder.RegisterType<DataSession>().As<IDataSession>().SingleInstance();
+            //builder.RegisterType<StockMarketDbContext>().As<DbContext>();
         }
     }
 }

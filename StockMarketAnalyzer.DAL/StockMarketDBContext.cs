@@ -10,23 +10,27 @@ namespace StockMarketAnalyzer.DAL
 {
     public class StockMarketDbContext : DbContext
     {
-        public StockMarketDbContext() : base("StockMarketDB3")
+        public StockMarketDbContext()
+            : base("name=StockMarketDB")
         {
             System.Data.Entity.Database.SetInitializer<StockMarketDbContext>(new DropCreateDatabaseAlways<StockMarketDbContext>());
         }
-        
-        public DbSet<CompanyDetail> CompanyDetails { get; set; }
+
+        public DbSet<Company> Companies { get; set; }
         public DbSet<CompanyOfficer> CompanyOfficers { get; set; }
         public DbSet<CompanyProfile> CompanyProfiles { get; set; }
         public DbSet<HistoricalData> HistoricalDatas { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<UserProfile> UserProfiles { get; set; }
+        public DbSet<UserPortfolio> UserPortfolios { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<CompanyDetail>().HasKey(cd => cd.Symbol);
+            modelBuilder.Entity<Company>().HasKey(cd => cd.Symbol);
 
             //one-to-many 
             modelBuilder.Entity<CompanyOfficer>()
-                        .HasRequired<CompanyDetail>(cd => cd.CompanyDetail) // CompanyOfficer entity requires CompanyDetail 
+                        .HasRequired<Company>(cd => cd.Company) // CompanyOfficer entity requires CompanyDetail 
                         .WithMany(co => co.CompanyOfficers)
                         .HasForeignKey(co => co.Symbol); // CompanyDetail entity includes many CompanyOfficers entities
 
@@ -34,15 +38,35 @@ namespace StockMarketAnalyzer.DAL
             modelBuilder.Entity<CompanyProfile>().HasKey(cp => cp.Symbol);
 
             //one-to-one
-            modelBuilder.Entity<CompanyDetail>()
+            modelBuilder.Entity<Company>()
                 .HasOptional(cd => cd.CompanyProfile) //CompanyDetail entity has optional CompanyProfile
-                .WithRequired(cp => cp.CompanyDetail); // companyProfile entity required CompanyDetail entity
+                .WithRequired(cp => cp.Company); // companyProfile entity required CompanyDetail entity
 
             //one-to-many 
             modelBuilder.Entity<HistoricalData>()
-                .HasRequired<CompanyDetail>(cd => cd.CompanyDetail)
+                .HasRequired<Company>(cd => cd.Company)
                 .WithMany(hd => hd.HistoricalDatas)
                 .HasForeignKey(hd => hd.Symbol);
+
+            modelBuilder.Entity<User>().HasKey(u => u.UserId);
+
+            modelBuilder.Entity<User>()
+                .HasRequired(u => u.UserProfile)
+                .WithRequiredDependent(up => up.User);
+
+            modelBuilder.Entity<UserProfile>().HasKey(up => up.UserId);
+
+            modelBuilder.Entity<UserPortfolio>().HasKey(up => up.UserPortfolioId);
+
+            modelBuilder.Entity<UserPortfolio>()
+                .HasRequired<User>(up => up.User)
+                .WithMany(u => u.UserPortfolios)
+                .HasForeignKey(up => up.UserId);
+
+            modelBuilder.Entity<UserPortfolio>()
+                .HasRequired<Company>(up => up.Company)
+                .WithMany(c => c.UserPortfolios)
+                .HasForeignKey(up => up.Symbol);
         }
     }
 }
