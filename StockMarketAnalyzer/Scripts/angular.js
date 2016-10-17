@@ -2649,7 +2649,7 @@ function publishExternalApi(angular) {
         $parse: $ParseProvider,
         $rootScope: $RootScopeProvider,
         $q: $qProvider,
-        $$q: $$qProvider,
+        $$q: $$QProvider,
         $sce: $SceProvider,
         $sceDelegate: $SceDelegateProvider,
         $sniffer: $SnifferProvider,
@@ -2658,7 +2658,7 @@ function publishExternalApi(angular) {
         $$testability: $$TestabilityProvider,
         $timeout: $TimeoutProvider,
         $window: $WindowProvider,
-        $$rAF: $$rafProvider,
+        $$rAF: $$RafProvider,
         $$jqLite: $$JqLiteProvider,
         $$HashMap: $$HashMapProvider,
         $$cookieReader: $$CookieReaderProvider
@@ -5660,13 +5660,13 @@ var $AnimateProvider = ['$provide', function($provide) {
 }];
 
 var $$AnimateAsyncRunFactoryProvider = function() {
-  this.$get = ['$$rAF', function($$rAf) {
+  this.$get = ['$$rAF', function($$RAf) {
     var waitQueue = [];
 
     function waitForTick(fn) {
       waitQueue.push(fn);
       if (waitQueue.length > 1) return;
-      $$rAf(function() {
+      $$RAf(function() {
         for (var i = 0; i < waitQueue.length; i++) {
           waitQueue[i]();
         }
@@ -5855,7 +5855,7 @@ var $$AnimateRunnerFactoryProvider = function() {
  * Click here {@link ngAnimate.$animateCss to read the documentation for $animateCss}.
  */
 var $CoreAnimateCssProvider = function() {
-  this.$get = ['$$rAF', '$q', '$$AnimateRunner', function($$rAf, $q, $$AnimateRunner) {
+  this.$get = ['$$rAF', '$q', '$$AnimateRunner', function($$RAf, $q, $$AnimateRunner) {
 
     return function(element, initialOptions) {
       // all of the animation functions should create
@@ -5887,7 +5887,7 @@ var $CoreAnimateCssProvider = function() {
       };
 
       function run() {
-        $$rAf(function() {
+        $$RAf(function() {
           applyAnimationContents();
           if (!closed) {
             runner.complete();
@@ -12479,7 +12479,7 @@ function $InterpolateProvider() {
 
 function $IntervalProvider() {
   this.$get = ['$rootScope', '$window', '$q', '$$q', '$browser',
-       function($rootScope,   $window,   $q,   $$Q,   $browser) {
+       function($rootScope,   $window,   $q,   $$q,   $browser) {
     var intervals = {};
 
 
@@ -12615,7 +12615,7 @@ function $IntervalProvider() {
           clearInterval = $window.clearInterval,
           iteration = 0,
           skipApply = (isDefined(invokeApply) && !invokeApply),
-          deferred = (skipApply ? $$Q : $q).defer(),
+          deferred = (skipApply ? $$q : $q).defer(),
           promise = deferred.promise;
 
       count = isDefined(count) ? count : 0;
@@ -16293,7 +16293,7 @@ function $qProvider() {
   }];
 }
 
-function $$qProvider() {
+function $$QProvider() {
   this.$get = ['$browser', '$exceptionHandler', function($browser, $exceptionHandler) {
     return qFactory(function(callback) {
       $browser.defer(callback);
@@ -16687,7 +16687,7 @@ function qFactory(nextTick, exceptionHandler) {
   return $q;
 }
 
-function $$rafProvider() { //rAF
+function $$RafProvider() { //rAF
   this.$get = ['$window', '$timeout', function($window, $timeout) {
     var requestAnimationFrame = $window.requestAnimationFrame ||
                                 $window.webkitRequestAnimationFrame;
@@ -19560,7 +19560,7 @@ function $$TestabilityProvider() {
 
 function $TimeoutProvider() {
   this.$get = ['$rootScope', '$browser', '$q', '$$q', '$exceptionHandler',
-       function($rootScope,   $browser,   $q,   $$Q,   $exceptionHandler) {
+       function($rootScope,   $browser,   $q,   $$q,   $exceptionHandler) {
 
     var deferreds = {};
 
@@ -19603,7 +19603,7 @@ function $TimeoutProvider() {
 
       var args = sliceArgs(arguments, 3),
           skipApply = (isDefined(invokeApply) && !invokeApply),
-          deferred = (skipApply ? $$Q : $q).defer(),
+          deferred = (skipApply ? $$q : $q).defer(),
           promise = deferred.promise,
           timeoutId;
 

@@ -72,9 +72,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\StockMarketAnalyzer.DAL\StockMarketAnalyzer.DAL.csproj">
       <Project>{c946be85-519d-4f9b-88dd-54d4a49914db}</Project>
       <Name>StockMarketAnalyzer.DAL</Name>

@@ -13,7 +13,7 @@ namespace StockMarketAnalyzer.DAL
         public StockMarketDbContext()
             : base("name=StockMarketDB")
         {
-            System.Data.Entity.Database.SetInitializer<StockMarketDbContext>(new DropCreateDatabaseAlways<StockMarketDbContext>());
+            Database.SetInitializer(new DropCreateDatabaseIfModelChanges<StockMarketDbContext>());
         }
 
         public DbSet<Company> Companies { get; set; }

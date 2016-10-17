@@ -6,7 +6,54 @@ using System.Threading.Tasks;
 
 namespace StockMarketAnalyzer.BLL.BusinessModel
 {
-    public class CompanyDetail
+    public enum UserType
+    {
+        Admin,
+        User
+    }
+
+    public class User
+    {
+        public int UserId { get; set; }
+        public UserType UserType { get; set; }
+        public string Username { get; set; }
+        public string EmailAddress { get; set; }
+        public string PhoneNumber { get; set; }
+
+        public virtual UserProfile UserProfile { get; set; }
+        public virtual ICollection<UserPortfolio> UserPortfolios { get; set; }
+    }
+
+    public class UserProfile
+    {
+        public int UserId { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Address { get; set; }
+        public string PhoneNumber { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
+        public string Country { get; set; }
+        public string Zip { get; set; }
+
+        public virtual User User { get; set; }
+    }
+
+    public class UserPortfolio
+    {
+        public int UserPortfolioId { get; set; }
+        public int UserId { get; set; }
+        public string Symbol { get; set; }
+
+        public Decimal BuyRate { get; set; }
+        public Decimal SaleRate { get; set; }
+
+
+        public virtual User User { get; set; }
+        public virtual Company Company { get; set; }
+    }
+
+    public class Company : CompanyAnalysis
     {
         public string Symbol { get; set; }
         public string Name { get; set; }
@@ -14,10 +61,23 @@ namespace StockMarketAnalyzer.BLL.BusinessModel
         public string ExchDisp { get; set; }
         public string Type { get; set; }
         public string TypeDisp { get; set; }
-
         public virtual ICollection<CompanyOfficer> CompanyOfficers { get; set; }
         public virtual ICollection<HistoricalData> HistoricalDatas { get; set; }
         public virtual CompanyProfile CompanyProfile { get; set; }
+        public virtual ICollection<UserPortfolio> UserPortfolios { get; set; }
+    }
+
+    public class CompanyAnalysis
+    {
+        public Decimal IncreaseNextDayIncreasePercentages { get; set; }
+        public Decimal IncreaseNextDayDecreasePercentages { get; set; }
+        public Decimal IncreaseNextDayNoChangePercentages { get; set; }
+        public Decimal DecreaseNextDayIncreasePercentages { get; set; }
+        public Decimal DecreaseNextDayDecreasePercentages { get; set; }
+        public Decimal DecreaseNextDayNoChangePercentages { get; set; }
+        public Decimal NoChangeNextDayIncreasePercentages { get; set; }
+        public Decimal NoChangeNextDayDecreasePercentages { get; set; }
+        public Decimal NoChangeNextDayNoChangePercentages { get; set; }
     }
 
     public partial class CompanyOfficer
@@ -34,7 +94,7 @@ namespace StockMarketAnalyzer.BLL.BusinessModel
 
         public string Symbol { get; set; }
 
-        public virtual CompanyDetail CompanyDetail { get; set; }
+        public virtual Company Company { get; set; }
     }
 
     public partial class CompanyProfile
@@ -52,7 +112,7 @@ namespace StockMarketAnalyzer.BLL.BusinessModel
         public string LongBusinessSummary { get; set; }
         public long? FullTimeEmployees { get; set; }
 
-        public virtual CompanyDetail CompanyDetail { get; set; }
+        public virtual Company Company { get; set; }
     }
 
     public partial class HistoricalData
@@ -69,15 +129,15 @@ namespace StockMarketAnalyzer.BLL.BusinessModel
         public decimal? AdjClose { get; set; }
 
         public string Symbol { get; set; }
-        public virtual CompanyDetail CompanyDetail { get; set; }
+        public virtual Company Company { get; set; }
     }
 
     public class CompanyFeeds
     {
-        string Title;
-        string Link;
-        string Description;
-        string Guid;
-        DateTime PubDate;
+        string _title;
+        string _link;
+        string _description;
+        string _guid;
+        DateTime _pubDate;
     }
 }

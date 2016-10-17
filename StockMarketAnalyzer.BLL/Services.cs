@@ -58,37 +58,37 @@ namespace StockMarketAnalyzer.BLL
             return AutoMapperConfiguration.Mapper.Map<CompanyDetail>(company);
         }
 
-        private CompanyAnalysis CompanyAnalysis(List<DAL.DataModels.HistoricalData> HistoricalDatas)
+        private static CompanyAnalysis CompanyAnalysis(List<DAL.DataModels.HistoricalData> historicalDatas)
         {
-            int total = HistoricalDatas.Count;
+            var total = historicalDatas.Count;
 
-            int increaseNextDayIncrease = 0; // Today Increase Next day Increase
-            int increaseNextDayDecrease = 0; // Today Increase Next day Decrease
-            int increaseNextDayNoChange = 0; // Today Increase Next day NoChange
-            int decreaseNextDayIncrease = 0; // Today Decrease Next day Increase
-            int decreaseNextDayDecrease = 0; // Today Decrease Next day Decrease
-            int decreaseNextDayNoChange = 0; // Today Decrease Next day NoChange
-            int noChangeNextDayIncrease = 0;
-            int noChangeNextDayDecrease = 0;
-            int noChangeNextDayNoChange = 0;
+            var increaseNextDayIncrease = 0; // Today Increase Next day Increase
+            var increaseNextDayDecrease = 0; // Today Increase Next day Decrease
+            var increaseNextDayNoChange = 0; // Today Increase Next day NoChange
+            var decreaseNextDayIncrease = 0; // Today Decrease Next day Increase
+            var decreaseNextDayDecrease = 0; // Today Decrease Next day Decrease
+            var decreaseNextDayNoChange = 0; // Today Decrease Next day NoChange
+            var noChangeNextDayIncrease = 0;
+            var noChangeNextDayDecrease = 0;
+            var noChangeNextDayNoChange = 0;
 
             for (var i = 0; i < total; i++)
             {
-                var TodayHistoricalData = HistoricalDatas[i];
+                var todayHistoricalData = historicalDatas[i];
 
-                TodayHistoricalData.Change = TodayHistoricalData.Open - TodayHistoricalData.AdjClose;
-                TodayHistoricalData.PercentageChange = TodayHistoricalData.Change * 100.00M / TodayHistoricalData.Open;
+                todayHistoricalData.Change = todayHistoricalData.Open - todayHistoricalData.AdjClose;
+                todayHistoricalData.PercentageChange = todayHistoricalData.Change * 100.00M / todayHistoricalData.Open;
 
                 if (i + 1 >= total) break;
 
-                var NextDayHistoricalData = HistoricalDatas[i + 1];
-                if (TodayHistoricalData.Change > 0) // increased today
+                var nextDayHistoricalData = historicalDatas[i + 1];
+                if (todayHistoricalData.Change > 0) // increased today
                 {
-                    if (NextDayHistoricalData.Open > NextDayHistoricalData.Close)
+                    if (nextDayHistoricalData.Open > nextDayHistoricalData.Close)
                     {
                         increaseNextDayIncrease++;
                     }
-                    else if (NextDayHistoricalData.Open < NextDayHistoricalData.Close)
+                    else if (nextDayHistoricalData.Open < nextDayHistoricalData.Close)
                     {
                         increaseNextDayDecrease++;
                     }
@@ -97,13 +97,13 @@ namespace StockMarketAnalyzer.BLL
                         increaseNextDayNoChange++;
                     }
                 }
-                else if (TodayHistoricalData.Change < 0) // decreased today
+                else if (todayHistoricalData.Change < 0) // decreased today
                 {
-                    if (NextDayHistoricalData.Open > NextDayHistoricalData.Close)
+                    if (nextDayHistoricalData.Open > nextDayHistoricalData.Close)
                     {
                         decreaseNextDayIncrease++;
                     }
-                    else if (NextDayHistoricalData.Open < NextDayHistoricalData.Close)
+                    else if (nextDayHistoricalData.Open < nextDayHistoricalData.Close)
                     {
                         decreaseNextDayDecrease++;
                     }
@@ -114,11 +114,11 @@ namespace StockMarketAnalyzer.BLL
                 }
                 else
                 {
-                    if (NextDayHistoricalData.Open > NextDayHistoricalData.Close)
+                    if (nextDayHistoricalData.Open > nextDayHistoricalData.Close)
                     {
                         noChangeNextDayIncrease++;
                     }
-                    else if (NextDayHistoricalData.Open < NextDayHistoricalData.Close)
+                    else if (nextDayHistoricalData.Open < nextDayHistoricalData.Close)
                     {
                         noChangeNextDayDecrease++;
                     }
@@ -129,31 +129,33 @@ namespace StockMarketAnalyzer.BLL
                 }
             }
 
-            decimal increaseNextDayIncreasePercentage = increaseNextDayIncrease * 100.00M / (increaseNextDayIncrease + increaseNextDayDecrease + increaseNextDayNoChange);
-            decimal increaseNextDayDecreasePercentage = increaseNextDayDecrease * 100.00M / (increaseNextDayIncrease + increaseNextDayDecrease + increaseNextDayNoChange);
-            decimal increaseNextDayNoChangePercentage = increaseNextDayNoChange * 100.00M / (increaseNextDayIncrease + increaseNextDayDecrease + increaseNextDayNoChange);
+            var increaseNextDayIncreasePercentage = increaseNextDayIncrease * 100.00M / (increaseNextDayIncrease + increaseNextDayDecrease + increaseNextDayNoChange);
+            var increaseNextDayDecreasePercentage = increaseNextDayDecrease * 100.00M / (increaseNextDayIncrease + increaseNextDayDecrease + increaseNextDayNoChange);
+            var increaseNextDayNoChangePercentage = increaseNextDayNoChange * 100.00M / (increaseNextDayIncrease + increaseNextDayDecrease + increaseNextDayNoChange);
 
-            decimal decreaseNextDayIncreasePercentage = decreaseNextDayIncrease * 100.00M / (decreaseNextDayIncrease + decreaseNextDayDecrease + decreaseNextDayNoChange);
-            decimal decreaseNextDayDecreasePercentage = decreaseNextDayDecrease * 100.00M / (decreaseNextDayIncrease + decreaseNextDayDecrease + decreaseNextDayNoChange);
-            decimal decreaseNextDayNoChangePercentage = decreaseNextDayNoChange * 100.00M / (decreaseNextDayIncrease + decreaseNextDayDecrease + decreaseNextDayNoChange);
+            var decreaseNextDayIncreasePercentage = decreaseNextDayIncrease * 100.00M / (decreaseNextDayIncrease + decreaseNextDayDecrease + decreaseNextDayNoChange);
+            var decreaseNextDayDecreasePercentage = decreaseNextDayDecrease * 100.00M / (decreaseNextDayIncrease + decreaseNextDayDecrease + decreaseNextDayNoChange);
+            var decreaseNextDayNoChangePercentage = decreaseNextDayNoChange * 100.00M / (decreaseNextDayIncrease + decreaseNextDayDecrease + decreaseNextDayNoChange);
 
-            decimal noChangeNextDayIncreasePercentage = noChangeNextDayIncrease * 100.00M / (noChangeNextDayIncrease + noChangeNextDayDecrease + noChangeNextDayNoChange);
-            decimal noChangeNextDayDecreasePercentage = noChangeNextDayDecrease * 100.00M / (noChangeNextDayIncrease + noChangeNextDayDecrease + noChangeNextDayNoChange);
-            decimal noChangeNextDayNoChangePercentage = noChangeNextDayNoChange * 100.00M / (noChangeNextDayIncrease + noChangeNextDayDecrease + noChangeNextDayNoChange);
+            var noChangeNextDayIncreasePercentage = noChangeNextDayIncrease * 100.00M / (noChangeNextDayIncrease + noChangeNextDayDecrease + noChangeNextDayNoChange);
+            var noChangeNextDayDecreasePercentage = noChangeNextDayDecrease * 100.00M / (noChangeNextDayIncrease + noChangeNextDayDecrease + noChangeNextDayNoChange);
+            var noChangeNextDayNoChangePercentage = noChangeNextDayNoChange * 100.00M / (noChangeNextDayIncrease + noChangeNextDayDecrease + noChangeNextDayNoChange);
 
 
-            var companyAnalysis = new CompanyAnalysis();
-            companyAnalysis.IncreaseNextDayIncreasePercentages = increaseNextDayIncreasePercentage;
-            companyAnalysis.IncreaseNextDayDecreasePercentages = increaseNextDayDecreasePercentage;
-            companyAnalysis.IncreaseNextDayNoChangePercentages = increaseNextDayNoChangePercentage;
+            var companyAnalysis = new CompanyAnalysis
+            {
+                IncreaseNextDayIncreasePercentages = increaseNextDayIncreasePercentage,
+                IncreaseNextDayDecreasePercentages = increaseNextDayDecreasePercentage,
+                IncreaseNextDayNoChangePercentages = increaseNextDayNoChangePercentage,
+                DecreaseNextDayIncreasePercentages = decreaseNextDayIncreasePercentage,
+                DecreaseNextDayDecreasePercentages = decreaseNextDayDecreasePercentage,
+                DecreaseNextDayNoChangePercentages = decreaseNextDayNoChangePercentage,
+                NoChangeNextDayIncreasePercentages = noChangeNextDayIncreasePercentage,
+                NoChangeNextDayDecreasePercentages = noChangeNextDayDecreasePercentage,
+                NoChangeNextDayNoChangePercentages = noChangeNextDayNoChangePercentage
+            };
 
-            companyAnalysis.DecreaseNextDayIncreasePercentages = decreaseNextDayIncreasePercentage;
-            companyAnalysis.DecreaseNextDayDecreasePercentages = decreaseNextDayDecreasePercentage;
-            companyAnalysis.DecreaseNextDayNoChangePercentages = decreaseNextDayNoChangePercentage;
 
-            companyAnalysis.NoChangeNextDayIncreasePercentages = noChangeNextDayIncreasePercentage;
-            companyAnalysis.NoChangeNextDayDecreasePercentages = noChangeNextDayDecreasePercentage;
-            companyAnalysis.NoChangeNextDayNoChangePercentages = noChangeNextDayNoChangePercentage;
 
             //            StringBuilder json = new StringBuilder("{");
             //            json.AppendFormat(@"IncreaseNextDayIncreasePercentages = {0}, 
@@ -184,7 +186,7 @@ namespace StockMarketAnalyzer.BLL
             throw new NotImplementedException();
         }
 
-        public StockMarketAnalyzer.BLL.BusinessModel.HistoricalData GetHistoricalData(string ticker)
+        public BLL.BusinessModel.HistoricalData GetHistoricalData(string ticker)
         {
             throw new NotImplementedException();
         }

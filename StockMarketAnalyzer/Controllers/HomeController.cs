@@ -19,7 +19,6 @@ namespace StockMarketAnalyzer.Controllers
 
         public ActionResult Index()
         {
-            var data = _services.SearchCompany("GOOG");
             return View();
         }
 
@@ -52,11 +51,7 @@ namespace StockMarketAnalyzer.Controllers
 
         public JsonResult SearchCompany(string query = null)
         {
-            if (!string.IsNullOrWhiteSpace(query))
-            {
-                return Json(_services.SearchCompany(query), JsonRequestBehavior.AllowGet);
-            }
-            return Json("", JsonRequestBehavior.AllowGet);
+            return string.IsNullOrWhiteSpace(query) ? Json("", JsonRequestBehavior.AllowGet) : Json(_services.SearchCompany(query), JsonRequestBehavior.AllowGet);
         }
     }
 }
