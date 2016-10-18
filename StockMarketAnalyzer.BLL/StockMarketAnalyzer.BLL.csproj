@@ -60,9 +60,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BusinessModel\CompanyModel.cs" />
+    <Compile Include="Interfaces\ILogin.cs" />
     <Compile Include="Interfaces\IServices.cs" />
-    <Compile Include="Mapper\AutoMapperConfiguration.cs" />
     <Compile Include="Services.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServicesModule.cs" />
@@ -72,6 +71,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\StockMarketAnalyzer.BO\StockMarketAnalyzer.BO.csproj">
+      <Project>{651e255b-b5d1-4018-84f2-07407a843ff2}</Project>
+      <Name>StockMarketAnalyzer.BO</Name>
+    </ProjectReference>
     <ProjectReference Include="..\StockMarketAnalyzer.DAL\StockMarketAnalyzer.DAL.csproj">
       <Project>{c946be85-519d-4f9b-88dd-54d4a49914db}</Project>
       <Name>StockMarketAnalyzer.DAL</Name>

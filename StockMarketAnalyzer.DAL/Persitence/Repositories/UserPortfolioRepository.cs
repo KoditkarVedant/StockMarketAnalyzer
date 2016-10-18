@@ -1,4 +1,5 @@
-﻿using StockMarketAnalyzer.DAL.Core.IRepositories;
+﻿using StockMarketAnalyzer.BO;
+using StockMarketAnalyzer.DAL.Core.IRepositories;
 using StockMarketAnalyzer.DAL.DataModels;
 using System;
 using System.Collections.Generic;

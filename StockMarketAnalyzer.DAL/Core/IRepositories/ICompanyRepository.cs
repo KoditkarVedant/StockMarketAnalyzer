@@ -1,4 +1,5 @@
-﻿using StockMarketAnalyzer.DAL.DataModels;
+﻿using StockMarketAnalyzer.BO;
+using StockMarketAnalyzer.DAL.DataModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;

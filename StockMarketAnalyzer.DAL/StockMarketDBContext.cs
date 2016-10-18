@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using StockMarketAnalyzer.DAL.DataModels;
+using StockMarketAnalyzer.BO;
 
 namespace StockMarketAnalyzer.DAL
 {

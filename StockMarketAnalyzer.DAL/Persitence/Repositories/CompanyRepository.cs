@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using StockMarketAnalyzer.BO;
 using StockMarketAnalyzer.DAL.Core.IRepositories;
 using StockMarketAnalyzer.DAL.DataModels;
 using StockMarketAnalyzer.DAL.DataModels.ApiModels;
@@ -46,7 +47,7 @@ namespace StockMarketAnalyzer.DAL.Persitence.Repositories
 
             var rootObject = JsonConvert.DeserializeObject<RootObject>(companyDetailsJson);
             company.CompanyProfile = AutoMapperConfiguration.Mapper.Map<CompanyProfile>(rootObject.QuoteSummary.Result.FirstOrDefault().AssetProfile);
-            company.CompanyOfficers = AutoMapperConfiguration.Mapper.Map<List<DataModels.CompanyOfficer>>(rootObject.QuoteSummary.Result.FirstOrDefault().AssetProfile.CompanyOfficers.ToList());
+            company.CompanyOfficers = AutoMapperConfiguration.Mapper.Map<List<CompanyOfficer>>(rootObject.QuoteSummary.Result.FirstOrDefault().AssetProfile.CompanyOfficers.ToList());
 
             return company;
         }

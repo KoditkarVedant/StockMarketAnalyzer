@@ -1,4 +1,5 @@
-﻿using StockMarketAnalyzer.DAL.DataModels;
+﻿using StockMarketAnalyzer.BO;
+using StockMarketAnalyzer.DAL.DataModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,5 +10,8 @@ namespace StockMarketAnalyzer.DAL.Core.IRepositories
 {
     public interface IUserRepository : IRepository<User>
     {
+        void UpdateProfile(UserProfile profile);
+        bool Authenticate(User user);
+        bool Register(Register user);
     }
 }

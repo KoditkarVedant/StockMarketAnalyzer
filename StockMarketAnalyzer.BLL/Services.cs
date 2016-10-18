@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using StockMarketAnalyzer.BLL.BusinessModel;
 using StockMarketAnalyzer.BLL.Interfaces;
 using StockMarketAnalyzer.DAL.Interfaces;
 using System;
@@ -8,10 +7,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using StockMarketAnalyzer.BLL.Mapper;
 using StockMarketAnalyzer.DAL.Persitence;
 using StockMarketAnalyzer.DAL.Core;
 using StockMarketAnalyzer.DAL.DataModels;
+using StockMarketAnalyzer.BO;
 
 namespace StockMarketAnalyzer.BLL
 {
@@ -19,20 +18,16 @@ namespace StockMarketAnalyzer.BLL
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        static Services()
-        {
-            AutoMapperConfiguration.Configure();
-        }
         public Services()
         {
             _unitOfWork = new UnitOfWork(new DAL.StockMarketDbContext());
         }
 
-        public CompanyDetail GetCompanyDetails(string ticker)
+        public Company GetCompanyDetails(string ticker)
         {
             var data = _unitOfWork.Companies.GetCompanyWithTicker(ticker);
 
-            if (data != null) return AutoMapperConfiguration.Mapper.Map<CompanyDetail>(data);
+            if (data != null) return data;
 
 
             var company = _unitOfWork.Companies.GetCompanyFromYahoo(ticker);
@@ -55,10 +50,11 @@ namespace StockMarketAnalyzer.BLL
 
             _unitOfWork.Companies.Add(company);
             _unitOfWork.Complete();
-            return AutoMapperConfiguration.Mapper.Map<CompanyDetail>(company);
+
+            return company;
         }
 
-        private static CompanyAnalysis CompanyAnalysis(List<DAL.DataModels.HistoricalData> historicalDatas)
+        private static CompanyAnalysis CompanyAnalysis(List<HistoricalData> historicalDatas)
         {
             var total = historicalDatas.Count;
 
@@ -186,17 +182,17 @@ namespace StockMarketAnalyzer.BLL
             throw new NotImplementedException();
         }
 
-        public BLL.BusinessModel.HistoricalData GetHistoricalData(string ticker)
+        public HistoricalData GetHistoricalData(string ticker)
         {
             throw new NotImplementedException();
         }
 
-        public List<CompanyDetail> GetStockGainer()
+        public List<Company> GetStockGainer()
         {
             throw new NotImplementedException();
         }
 
-        public List<CompanyDetail> GetStockLooser()
+        public List<Company> GetStockLooser()
         {
             throw new NotImplementedException();
         }
@@ -206,15 +202,64 @@ namespace StockMarketAnalyzer.BLL
             throw new NotImplementedException();
         }
 
-        public List<CompanyDetail> SearchCompany(string query)
+        public List<Company> SearchCompany(string query)
         {
             var data = _unitOfWork.Companies.SearchCompany(query);
 
             var json = JObject.Parse(data);
 
-            var companies = JsonConvert.DeserializeObject<List<CompanyDetail>>(json.GetValue("items").ToString(Formatting.None));
+            var companies = JsonConvert.DeserializeObject<List<Company>>(json.GetValue("items").ToString(Formatting.None));
 
             return companies;
+        }
+
+
+        public bool UpdateUserProfile(UserProfile profile)
+        {
+            var profileDM = profile;
+
+            _unitOfWork.Users.UpdateProfile(profileDM);
+
+            return true;
+        }
+
+
+        public UserProfile GetUserProfile(int UserId)
+        {
+            //var user = new User()
+            //{
+            //    Username = "Vedant",
+            //    EmailAddress = "vedkoditkar@gmail.com",
+            //    PhoneNumber = "8412013051",
+            //    UserProfile = new UserProfile()
+            //    {
+            //        FirstName = "Vedant",
+            //        LastName = "Koditkar",
+            //        Address = "Pune"
+            //    }
+            //};
+
+            //_unitOfWork.Users.Add(user);
+            //_unitOfWork.Complete();
+
+            var profile = _unitOfWork.Users.Get(UserId).UserProfile;
+
+            return profile;
+        }
+
+        public bool Authenticate(User user)
+        {
+            return _unitOfWork.Users.Authenticate(user);
+        }
+
+        public bool CheckUserAvailability(User user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool RegisterNewUser(Register user)
+        {
+            return _unitOfWork.Users.Register(user);
         }
     }
 }

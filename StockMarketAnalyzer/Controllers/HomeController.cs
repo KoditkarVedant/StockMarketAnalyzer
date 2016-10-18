@@ -1,5 +1,4 @@
-﻿using StockMarketAnalyzer.BLL.BusinessModel;
-using StockMarketAnalyzer.BLL.Interfaces;
+﻿using StockMarketAnalyzer.BLL.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;

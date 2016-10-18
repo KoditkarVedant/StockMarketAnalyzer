@@ -86,7 +86,6 @@
     <Compile Include="Core\IUnitOfWork.cs" />
     <Compile Include="DataAccessor.cs" />
     <Compile Include="DataAccessorModule.cs" />
-    <Compile Include="DataModels\DatabaseModels.cs" />
     <Compile Include="DataModels\ApiModels\Models.cs" />
     <Compile Include="Helpers\APIHelper.cs" />
     <Compile Include="Interfaces\DataSession.cs" />
@@ -100,6 +99,10 @@
     <Compile Include="Migrations\201610171205583_Analysis.cs" />
     <Compile Include="Migrations\201610171205583_Analysis.Designer.cs">
       <DependentUpon>201610171205583_Analysis.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610181152076_AddedRegistertable.cs" />
+    <Compile Include="Migrations\201610181152076_AddedRegistertable.Designer.cs">
+      <DependentUpon>201610181152076_AddedRegistertable.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Persitence\Repositories\CompanyRepository.cs" />
@@ -141,6 +144,15 @@
     <EmbeddedResource Include="Migrations\201610171205583_Analysis.resx">
       <DependentUpon>201610171205583_Analysis.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610181152076_AddedRegistertable.resx">
+      <DependentUpon>201610181152076_AddedRegistertable.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\StockMarketAnalyzer.BO\StockMarketAnalyzer.BO.csproj">
+      <Project>{651e255b-b5d1-4018-84f2-07407a843ff2}</Project>
+      <Name>StockMarketAnalyzer.BO</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

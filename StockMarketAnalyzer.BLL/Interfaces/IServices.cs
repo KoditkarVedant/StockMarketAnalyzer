@@ -1,4 +1,5 @@
-﻿using StockMarketAnalyzer.BLL.BusinessModel;
+﻿
+using StockMarketAnalyzer.BO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,16 +8,18 @@ using System.Threading.Tasks;
 
 namespace StockMarketAnalyzer.BLL.Interfaces
 {
-    public interface IServices
+    public interface IServices : ILogin
     {
 
-        CompanyDetail GetCompanyDetails(string ticker);
+        Company GetCompanyDetails(string ticker);
         CompanyFeeds GetCompanyFeeds(string ticker);
         HistoricalData GetHistoricalData(string ticker);
-        List<CompanyDetail> GetStockGainer();
-        List<CompanyDetail> GetStockLooser();
+        List<Company> GetStockGainer();
+        List<Company> GetStockLooser();
         void GetCurrencyRates();
-        List<CompanyDetail> SearchCompany(string query);
+        List<Company> SearchCompany(string query);
 
+        bool UpdateUserProfile(UserProfile profile);
+        UserProfile GetUserProfile(int UserId);
     }
 }

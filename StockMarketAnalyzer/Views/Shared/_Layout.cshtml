@@ -24,6 +24,17 @@
                     <li>@Html.ActionLink("About", "About", "Home")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                     <li>@Html.ActionLink("Lookup", "LookupCompany", "Home")</li>
+
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li>@Html.ActionLink("Logout", "Logout", "Auth", null, new { @class = "pull-right" })</li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink("SignIn", "Login", "Auth", null, new { @class = "pull-right" })</li>
+                        <li>@Html.ActionLink("SignUp", "Register", "Auth", null, new { @class = "pull-right" })</li>
+                    }
+
                 </ul>
             </div>
         </div>

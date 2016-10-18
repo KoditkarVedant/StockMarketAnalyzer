@@ -4,8 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StockMarketAnalyzer.BLL.BusinessModel
+namespace StockMarketAnalyzer.BO
 {
+    public class Register
+    {
+        public string EmailAddress { get; set; }
+        public string Password { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string PhoneNumber { get; set; }
+    }
+
     public enum UserType
     {
         Admin,
@@ -16,9 +25,8 @@ namespace StockMarketAnalyzer.BLL.BusinessModel
     {
         public int UserId { get; set; }
         public UserType UserType { get; set; }
-        public string Username { get; set; }
+        public string Password { get; set; }
         public string EmailAddress { get; set; }
-        public string PhoneNumber { get; set; }
 
         public virtual UserProfile UserProfile { get; set; }
         public virtual ICollection<UserPortfolio> UserPortfolios { get; set; }
@@ -132,12 +140,8 @@ namespace StockMarketAnalyzer.BLL.BusinessModel
         public virtual Company Company { get; set; }
     }
 
-    public class CompanyFeeds
+    public partial class CompanyFeeds
     {
-        string _title;
-        string _link;
-        string _description;
-        string _guid;
-        DateTime _pubDate;
+
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using StockMarketAnalyzer.BO;
 using StockMarketAnalyzer.DAL.Core.IRepositories;
 using StockMarketAnalyzer.DAL.DataModels;
 using StockMarketAnalyzer.DAL.Helpers;
