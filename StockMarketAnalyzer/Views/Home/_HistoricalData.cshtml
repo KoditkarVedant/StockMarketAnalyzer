@@ -1,0 +1,43 @@
+﻿@model IEnumerable<StockMarketAnalyzer.BO.HistoricalData>
+
+<div class="col-md-12" id="historicalDataDiv" style="display:none">
+    <table class="table table-striped" id="historicalData">
+        <thead>
+            <tr>
+                <th>@Html.LabelFor(model => model.FirstOrDefault().Date)</th>
+                <th>@Html.LabelFor(model => model.FirstOrDefault().Open)</th>
+                <th>@Html.LabelFor(model => model.FirstOrDefault().High)</th>
+                <th>@Html.LabelFor(model => model.FirstOrDefault().Low)</th>
+                <th>@Html.LabelFor(model => model.FirstOrDefault().Close)</th>
+                @*<th>@Html.LabelFor(model => model.HistoricalDatas.FirstOrDefault().AdjClose)</th>*@
+                <th>@Html.LabelFor(model => model.FirstOrDefault().Change)</th>
+                <th>@Html.LabelFor(model => model.FirstOrDefault().PercentageChange)</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Date.ToString("MM/dd/yyyy")</td>
+                    <td>@item.Open.ToString("0.00")</td>
+                    <td>@item.High.ToString("0.00")</td>
+                    <td>@item.Low.ToString("0.00")</td>
+                    <td>@item.Close.ToString("0.00")</td>
+                    @*<td>@item.AdjClose.ToString("0.00")</td>*@
+                    @if (item.Change >= 0)
+                    {
+                        <td class="up_g text-right"><span class="pull-left up_g glyphicon glyphicon-circle-arrow-up"></span>  @item.Change.ToString("0.00")</td>
+                        <td class="up_g text-right">@item.PercentageChange.ToString("0.00")</td>
+                    }
+                    else
+                    {
+                        <td class="up_r text-right"><span class="pull-left up_r glyphicon glyphicon-circle-arrow-up"></span>  @item.Change.ToString("0.00")</td>
+                        <td class="up_r text-right">@item.PercentageChange.ToString("0.00")</td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+

@@ -12,7 +12,7 @@ namespace StockMarketAnalyzer.BLL.Interfaces
     {
 
         Company GetCompanyDetails(string ticker);
-        CompanyFeeds GetCompanyFeeds(string ticker);
+        List<CompanyFeeds> GetCompanyFeeds(string ticker);
         HistoricalData GetHistoricalData(string ticker);
         List<Company> GetStockGainer();
         List<Company> GetStockLooser();

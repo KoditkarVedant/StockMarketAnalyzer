@@ -14,5 +14,6 @@ namespace StockMarketAnalyzer.DAL.Core.IRepositories
         Company GetCompanyFromYahoo(string ticker);
         string SearchCompany(string ticker);
         IEnumerable<Company> GetPopularCompanyInPortfolio(int count);
+        string GetCompanyFeeds(string ticker);
     }
 }

@@ -62,5 +62,15 @@ namespace StockMarketAnalyzer.DAL.Persitence.Repositories
 
             return data;
         }
+
+
+        public string GetCompanyFeeds(string ticker)
+        {
+            string url = "http://finance.yahoo.com/rss/industry?s=" + ticker;
+
+            var data = ApiHelper.GetResponse(url);
+
+            return data;
+        }
     }
 }

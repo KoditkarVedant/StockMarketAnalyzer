@@ -1,0 +1,83 @@
+﻿@model StockMarketAnalyzer.BO.Company
+
+<div class="col-md-12" id="companySummaryDiv">
+    <br>
+    <h4>Summary</h4>
+    <hr>
+    <div class="col-md-6">
+        <table class="table table-condensed table-striped">
+            <tbody>
+                <tr>
+                    <th>Date</th>
+                    <td style="text-align:right">@Model.HistoricalDatas.OrderByDescending(x => x.Date).Take(2).Skip(1).FirstOrDefault().Date.ToString("MM/dd/yyyy")</td>
+                </tr>
+                <tr>
+                    <th>Open</th>
+                    <td style="text-align:right">@Model.HistoricalDatas.OrderByDescending(x => x.Date).Take(2).Skip(1).FirstOrDefault().Open.ToString("0.00")</td>
+                </tr>
+                <tr>
+                    <th>Close</th>
+                    <td style="text-align:right">@Model.HistoricalDatas.OrderByDescending(x => x.Date).Take(2).Skip(1).FirstOrDefault().Close.ToString("0.00")</td>
+                </tr>
+                <tr>
+                    <th>Volume</th>
+                    <td style="text-align:right">@Model.HistoricalDatas.OrderByDescending(x => x.Date).Take(2).Skip(1).FirstOrDefault().Volume.ToString("0.00")</td>
+                </tr>
+
+            </tbody>
+
+        </table>
+    </div>
+    <div class="col-md-6">
+        <table class="table table-condensed table-striped">
+
+            <tbody>
+                <tr>
+                    <th>High</th>
+                    <td style="text-align:right">@Model.HistoricalDatas.OrderByDescending(x => x.Date).Take(2).Skip(1).FirstOrDefault().High.ToString("0.00")</td>
+                </tr>
+                <tr>
+                    <th>Low</th>
+                    <td style="text-align:right">@Model.HistoricalDatas.OrderByDescending(x => x.Date).Take(2).Skip(1).FirstOrDefault().Low.ToString("0.00")</td>
+                </tr>
+                <tr>
+                    <th>Amount Change</th>
+                    <td style="text-align:right">
+
+                        @if (Model.HistoricalDatas.OrderByDescending(x => x.Date).Take(2).Skip(1).FirstOrDefault().Change > 0)
+                        {
+
+                            <span class="glyphicon glyphicon-circle-arrow-up up_g"></span>
+
+                        }
+                        else
+                        {
+
+                            <span class="glyphicon glyphicon-circle-arrow-down up_r"></span>
+                        }
+                        @Model.HistoricalDatas.OrderByDescending(x => x.Date).Take(2).Skip(1).FirstOrDefault().Change.ToString("0.00")
+                    </td>
+                </tr>
+                <tr>
+                    <th>Percentage Change</th>
+                    <td style="text-align:right">
+
+                        @if (Model.HistoricalDatas.OrderByDescending(x => x.Date).Take(2).Skip(1).FirstOrDefault().PercentageChange > 0)
+                        {
+
+                            <span class="glyphicon glyphicon-circle-arrow-up up_g"></span>
+                        }
+                        else
+                        {
+                            <span class="glyphicon glyphicon-circle-arrow-down up_r"></span>
+                        }
+                        @Model.HistoricalDatas.OrderByDescending(x => x.Date).Take(2).Skip(1).FirstOrDefault().PercentageChange.ToString("0.00")
+                    </td>
+                </tr>
+
+            </tbody>
+
+        </table>
+    </div>
+
+</div>

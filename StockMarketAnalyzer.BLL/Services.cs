@@ -11,6 +11,7 @@ using StockMarketAnalyzer.DAL.Persitence;
 using StockMarketAnalyzer.DAL.Core;
 using StockMarketAnalyzer.DAL.DataModels;
 using StockMarketAnalyzer.BO;
+using System.Xml;
 
 namespace StockMarketAnalyzer.BLL
 {
@@ -27,12 +28,18 @@ namespace StockMarketAnalyzer.BLL
         {
             var data = _unitOfWork.Companies.GetCompanyWithTicker(ticker);
 
-            if (data != null) return data;
-
+            if (data != null){
+                data.CompanyFeeds = GetCompanyFeeds(ticker);
+                return data;
+            }
 
             var company = _unitOfWork.Companies.GetCompanyFromYahoo(ticker);
             company.HistoricalDatas = _unitOfWork.HistoricalDatas.GetHistoricalDataFromYahoo(ticker);
             company.Symbol = ticker;
+
+            // check this deserialization
+            var companyData = JsonConvert.DeserializeObject<List<Company>>(_unitOfWork.Companies.SearchCompany("ticker")).FirstOrDefault();
+            company.Name = companyData.Name;
 
             var companyAnalysis = CompanyAnalysis(company.HistoricalDatas.ToList());
 
@@ -47,6 +54,8 @@ namespace StockMarketAnalyzer.BLL
             company.NoChangeNextDayIncreasePercentages = companyAnalysis.NoChangeNextDayIncreasePercentages;
             company.NoChangeNextDayDecreasePercentages = companyAnalysis.NoChangeNextDayDecreasePercentages;
             company.NoChangeNextDayNoChangePercentages = companyAnalysis.NoChangeNextDayNoChangePercentages;
+
+            company.CompanyFeeds = GetCompanyFeeds(ticker);
 
             _unitOfWork.Companies.Add(company);
             _unitOfWork.Complete();
@@ -72,7 +81,7 @@ namespace StockMarketAnalyzer.BLL
             {
                 var todayHistoricalData = historicalDatas[i];
 
-                todayHistoricalData.Change = todayHistoricalData.Open - todayHistoricalData.AdjClose;
+                todayHistoricalData.Change = todayHistoricalData.Open - todayHistoricalData.Close;
                 todayHistoricalData.PercentageChange = todayHistoricalData.Change * 100.00M / todayHistoricalData.Open;
 
                 if (i + 1 >= total) break;
@@ -125,17 +134,25 @@ namespace StockMarketAnalyzer.BLL
                 }
             }
 
-            var increaseNextDayIncreasePercentage = increaseNextDayIncrease * 100.00M / (increaseNextDayIncrease + increaseNextDayDecrease + increaseNextDayNoChange);
-            var increaseNextDayDecreasePercentage = increaseNextDayDecrease * 100.00M / (increaseNextDayIncrease + increaseNextDayDecrease + increaseNextDayNoChange);
-            var increaseNextDayNoChangePercentage = increaseNextDayNoChange * 100.00M / (increaseNextDayIncrease + increaseNextDayDecrease + increaseNextDayNoChange);
+            var totalIncrease = (increaseNextDayIncrease + increaseNextDayDecrease + increaseNextDayNoChange);
+            if (totalIncrease <= 0) totalIncrease = 1;
+            var increaseNextDayIncreasePercentage = increaseNextDayIncrease * 100.00M / totalIncrease;
+            var increaseNextDayDecreasePercentage = increaseNextDayDecrease * 100.00M / totalIncrease;
+            var increaseNextDayNoChangePercentage = increaseNextDayNoChange * 100.00M / totalIncrease;
 
-            var decreaseNextDayIncreasePercentage = decreaseNextDayIncrease * 100.00M / (decreaseNextDayIncrease + decreaseNextDayDecrease + decreaseNextDayNoChange);
-            var decreaseNextDayDecreasePercentage = decreaseNextDayDecrease * 100.00M / (decreaseNextDayIncrease + decreaseNextDayDecrease + decreaseNextDayNoChange);
-            var decreaseNextDayNoChangePercentage = decreaseNextDayNoChange * 100.00M / (decreaseNextDayIncrease + decreaseNextDayDecrease + decreaseNextDayNoChange);
+            var totalDecrease = (decreaseNextDayIncrease + decreaseNextDayDecrease + decreaseNextDayNoChange);
+            if (totalDecrease <= 0) totalDecrease = 1;
+            var decreaseNextDayIncreasePercentage = decreaseNextDayIncrease * 100.00M / totalDecrease;
+            var decreaseNextDayDecreasePercentage = decreaseNextDayDecrease * 100.00M / totalDecrease;
+            var decreaseNextDayNoChangePercentage = decreaseNextDayNoChange * 100.00M / totalDecrease;
 
-            var noChangeNextDayIncreasePercentage = noChangeNextDayIncrease * 100.00M / (noChangeNextDayIncrease + noChangeNextDayDecrease + noChangeNextDayNoChange);
-            var noChangeNextDayDecreasePercentage = noChangeNextDayDecrease * 100.00M / (noChangeNextDayIncrease + noChangeNextDayDecrease + noChangeNextDayNoChange);
-            var noChangeNextDayNoChangePercentage = noChangeNextDayNoChange * 100.00M / (noChangeNextDayIncrease + noChangeNextDayDecrease + noChangeNextDayNoChange);
+            var totalNoChange = (noChangeNextDayIncrease + noChangeNextDayDecrease + noChangeNextDayNoChange);
+            if (totalNoChange <= 0) totalNoChange = 1;
+
+            var noChangeNextDayIncreasePercentage = noChangeNextDayIncrease * 100.00M / totalNoChange;
+            var noChangeNextDayDecreasePercentage = noChangeNextDayDecrease * 100.00M / totalNoChange;
+            var noChangeNextDayNoChangePercentage = noChangeNextDayNoChange * 100.00M / totalNoChange;
+
 
 
             var companyAnalysis = new CompanyAnalysis
@@ -177,9 +194,26 @@ namespace StockMarketAnalyzer.BLL
             return companyAnalysis;
         }
 
-        public CompanyFeeds GetCompanyFeeds(string ticker)
+        public List<CompanyFeeds> GetCompanyFeeds(string ticker)
         {
-            throw new NotImplementedException();
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml(_unitOfWork.Companies.GetCompanyFeeds(ticker));
+            // doc.LoadXml(doc.InnerXml);
+            var d = doc.SelectNodes("//item");
+            List<CompanyFeeds> companyFeeds = new List<CompanyFeeds>(d.Count);
+            foreach (XmlNode item in d)
+            {
+                companyFeeds.Add(new CompanyFeeds()
+                {
+                    title = item.SelectSingleNode("title").InnerText,
+                    link = item.SelectSingleNode("link").InnerText,
+                    description = item.SelectSingleNode("description").InnerText,
+                    guid = item.SelectSingleNode("guid").InnerText,
+                    pubDate = DateTime.Parse(item.SelectSingleNode("pubDate").InnerText)
+                });
+            }
+
+            return companyFeeds;
         }
 
         public HistoricalData GetHistoricalData(string ticker)
@@ -208,7 +242,7 @@ namespace StockMarketAnalyzer.BLL
 
             var json = JObject.Parse(data);
 
-            var companies = JsonConvert.DeserializeObject<List<Company>>(json.GetValue("items").ToString(Formatting.None));
+            var companies = JsonConvert.DeserializeObject<List<Company>>(json.GetValue("items").ToString(Newtonsoft.Json.Formatting.None));
 
             return companies;
         }

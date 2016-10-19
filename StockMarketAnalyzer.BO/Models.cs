@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,10 +10,22 @@ namespace StockMarketAnalyzer.BO
 {
     public class Register
     {
+        [Required(ErrorMessage = "Email is required")]
+        [RegularExpression(@"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", ErrorMessage = "Please enter valid email address")]
         public string EmailAddress { get; set; }
+
+        [Required(ErrorMessage = "Password is required")]
+        [MinLength(8, ErrorMessage = "password should be greater than 8 characters")]
+        [MaxLength(30, ErrorMessage = "password should be less than 30 characters")]    
         public string Password { get; set; }
+
+        [Required(ErrorMessage = "First Name is required")]
         public string FirstName { get; set; }
+
+        [Required(ErrorMessage = "Last Name is required")]
         public string LastName { get; set; }
+
+        [Required(ErrorMessage = "Phone number is required")]
         public string PhoneNumber { get; set; }
     }
 
@@ -25,7 +39,14 @@ namespace StockMarketAnalyzer.BO
     {
         public int UserId { get; set; }
         public UserType UserType { get; set; }
+
+        [Required(ErrorMessage = "Password is required")]
+        [MinLength(8,ErrorMessage="password should be greater than 8 characters")]
+        [MaxLength(30, ErrorMessage = "password should be less than 30 characters")]    
         public string Password { get; set; }
+
+        [Required(ErrorMessage = "Email is required")]
+        [RegularExpression(@"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?",ErrorMessage="Please enter valid email address")]
         public string EmailAddress { get; set; }
 
         public virtual UserProfile UserProfile { get; set; }
@@ -35,9 +56,15 @@ namespace StockMarketAnalyzer.BO
     public class UserProfile
     {
         public int UserId { get; set; }
+
+        [Required(ErrorMessage = "First Name is required")]
         public string FirstName { get; set; }
+
+        [Required(ErrorMessage = "Last Name is required")]
         public string LastName { get; set; }
         public string Address { get; set; }
+
+        [Required(ErrorMessage = "Phone number is required")]
         public string PhoneNumber { get; set; }
         public string City { get; set; }
         public string State { get; set; }
@@ -53,7 +80,12 @@ namespace StockMarketAnalyzer.BO
         public int UserId { get; set; }
         public string Symbol { get; set; }
 
+        [Required(ErrorMessage = "Bought price is required")]
         public Decimal BuyRate { get; set; }
+
+        [Required(ErrorMessage = "Quantity is required")]
+        public int Quantity { get; set; }
+
         public Decimal SaleRate { get; set; }
 
 
@@ -73,6 +105,9 @@ namespace StockMarketAnalyzer.BO
         public virtual ICollection<HistoricalData> HistoricalDatas { get; set; }
         public virtual CompanyProfile CompanyProfile { get; set; }
         public virtual ICollection<UserPortfolio> UserPortfolios { get; set; }
+
+        [NotMapped]
+        public ICollection<CompanyFeeds> CompanyFeeds { get; set; }
     }
 
     public class CompanyAnalysis
@@ -127,14 +162,14 @@ namespace StockMarketAnalyzer.BO
     {
         public int HistoricalDataId { get; set; }
         public System.DateTime Date { get; set; }
-        public decimal? Open { get; set; }
-        public decimal? High { get; set; }
-        public decimal? Low { get; set; }
-        public decimal? Close { get; set; }
-        public decimal? Change { get; set; }
-        public decimal? PercentageChange { get; set; }
-        public decimal? Volume { get; set; }
-        public decimal? AdjClose { get; set; }
+        public decimal Open { get; set; }
+        public decimal High { get; set; }
+        public decimal Low { get; set; }
+        public decimal Close { get; set; }
+        public decimal Change { get; set; }
+        public decimal PercentageChange { get; set; }
+        public decimal Volume { get; set; }
+        public decimal AdjClose { get; set; }
 
         public string Symbol { get; set; }
         public virtual Company Company { get; set; }
@@ -142,6 +177,10 @@ namespace StockMarketAnalyzer.BO
 
     public partial class CompanyFeeds
     {
-
+        public string guid { get; set; }
+        public string title { get; set; }
+        public string link { get; set; }
+        public string description { get; set; }
+        public DateTime pubDate { get; set; }
     }
 }

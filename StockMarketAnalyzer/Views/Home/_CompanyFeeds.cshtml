@@ -1,0 +1,20 @@
+﻿@model IEnumerable<StockMarketAnalyzer.BO.CompanyFeeds>
+
+<div class="menu-heading" id="companyFeedsDiv" style="display:none">
+    
+    <div class="col-md-12">
+        @foreach (var item in Model)
+        {
+
+            <div class="bs-callout bs-callout-warning" id="callout-btn-group-tooltips">
+                <a href="@item.link">
+                    <h4>@item.title</h4>
+                </a>
+                <p>@item.description</p>
+                <p>@item.pubDate</p>
+            </div>
+
+        }
+
+    </div>
+</div>

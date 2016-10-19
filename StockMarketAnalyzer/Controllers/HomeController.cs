@@ -17,7 +17,7 @@ namespace StockMarketAnalyzer.Controllers
         }
 
         public ActionResult Index()
-        {
+        {   
             return View();
         }
 
@@ -35,7 +35,8 @@ namespace StockMarketAnalyzer.Controllers
             return View();
         }
 
-        public ActionResult LookupCompany(string query=null)
+        [AllowAnonymous]
+        public ActionResult LookupCompany(string query = null)
         {
             if (string.IsNullOrWhiteSpace(query))
             {
@@ -44,10 +45,11 @@ namespace StockMarketAnalyzer.Controllers
             else
             {
                 var companyDetails = _services.GetCompanyDetails(query);
-                return View("CompanyDetail");
+                return View("CompanyDetail", companyDetails);
             }
         }
 
+        [AllowAnonymous]
         public JsonResult SearchCompany(string query = null)
         {
             return string.IsNullOrWhiteSpace(query) ? Json("", JsonRequestBehavior.AllowGet) : Json(_services.SearchCompany(query), JsonRequestBehavior.AllowGet);

@@ -25,7 +25,7 @@ namespace StockMarketAnalyzer.DAL.Persitence.Repositories
 
         public List<HistoricalData> GetHistoricalDataFromYahoo(string ticker)
         {
-            var data = ApiHelper.GetResponse(GetHistoricalDataUrl(ticker));
+            var data = ApiHelper.GetResponse(GetHistoricalDataUrl(ticker, new DateTime(2015, 1, 1), DateTime.Now));
 
             return JsonConvert.DeserializeObject<List<HistoricalData>>(CsvToJsonConverter(data));
         }

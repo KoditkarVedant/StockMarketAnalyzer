@@ -104,6 +104,14 @@
     <Compile Include="Migrations\201610181152076_AddedRegistertable.Designer.cs">
       <DependentUpon>201610181152076_AddedRegistertable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610190454445_DataValidations.cs" />
+    <Compile Include="Migrations\201610190454445_DataValidations.Designer.cs">
+      <DependentUpon>201610190454445_DataValidations.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610190811410_RemovedNullableInHistoricalData.cs" />
+    <Compile Include="Migrations\201610190811410_RemovedNullableInHistoricalData.Designer.cs">
+      <DependentUpon>201610190811410_RemovedNullableInHistoricalData.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Persitence\Repositories\CompanyRepository.cs" />
     <Compile Include="Persitence\Repositories\HistoricalDataRepository.cs" />
@@ -146,6 +154,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610181152076_AddedRegistertable.resx">
       <DependentUpon>201610181152076_AddedRegistertable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610190454445_DataValidations.resx">
+      <DependentUpon>201610190454445_DataValidations.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610190811410_RemovedNullableInHistoricalData.resx">
+      <DependentUpon>201610190811410_RemovedNullableInHistoricalData.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

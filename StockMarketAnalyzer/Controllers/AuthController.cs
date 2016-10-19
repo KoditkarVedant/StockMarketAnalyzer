@@ -1,5 +1,6 @@
 ﻿using StockMarketAnalyzer.BLL.Interfaces;
 using StockMarketAnalyzer.BO;
+using StockMarketAnalyzer.Filters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,11 +26,13 @@ namespace StockMarketAnalyzer.Controllers
             return View();
         }
 
+        [AutherizationFilter]
         public ActionResult Login()
         {
             return View();
         }
 
+        [AutherizationFilter]
         [ValidateAntiForgeryToken]
         [HttpPost]
         public ActionResult Login(User user, string ReturnUrl)
@@ -68,7 +71,7 @@ namespace StockMarketAnalyzer.Controllers
         }
 
         public ActionResult Logout()
-        {
+       {
             var ctx = Request.GetOwinContext();
             var authManager = ctx.Authentication;
 
@@ -77,12 +80,14 @@ namespace StockMarketAnalyzer.Controllers
             return RedirectToAction("index", "home");
         }
 
+        [AutherizationFilter]
         [HttpGet]
         public ActionResult Register()
         {
             return View();
         }
 
+        [AutherizationFilter]
         [ValidateAntiForgeryToken]
         [HttpPost]
         public ActionResult Register(Register user)
