@@ -28,7 +28,8 @@ namespace StockMarketAnalyzer.BLL
         {
             var data = _unitOfWork.Companies.GetCompanyWithTicker(ticker);
 
-            if (data != null){
+            if (data != null)
+            {
                 data.CompanyFeeds = GetCompanyFeeds(ticker);
                 return data;
             }
@@ -38,8 +39,15 @@ namespace StockMarketAnalyzer.BLL
             company.Symbol = ticker;
 
             // check this deserialization
-            var companyData = JsonConvert.DeserializeObject<List<Company>>(_unitOfWork.Companies.SearchCompany("ticker")).FirstOrDefault();
+            var companyData = SearchCompany(ticker).FirstOrDefault(x => x.Symbol.Equals(ticker));
+
             company.Name = companyData.Name;
+            company.Type = companyData.Type;
+            company.TypeDisp = companyData.TypeDisp;
+            company.Exch = companyData.Exch;
+            company.ExchDisp = companyData.ExchDisp;
+
+
 
             var companyAnalysis = CompanyAnalysis(company.HistoricalDatas.ToList());
 

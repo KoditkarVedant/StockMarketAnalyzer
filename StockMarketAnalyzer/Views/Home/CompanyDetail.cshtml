@@ -34,29 +34,22 @@
         border-left-width: 5px;
         border-radius: 3px;
     }
-
 </style>
-<div>
-    <div class="col-md-3">
-        <br />
-        <div class="list-group">
-            <a href="#" class="list-group-item active menu-select" data-value="companySummaryDiv">Summary</a>
-            <a href="#" class="list-group-item menu-select" data-value="historicalDataDiv">Historical Prices</a>
-            <a href="#" class="list-group-item menu-select" data-value="companyFeedsDiv">Feeds</a>
-            @if (User.Identity.IsAuthenticated)
-            {
-                <a href="#" class="list-group-item menu-select">Charts</a>
-            }
-        </div>
-    </div>
-    <div class="col-md-9">
-        <h2>Name (@Model.Symbol)</h2>
-        <span>@Model.CompanyProfile.Address1 , @Model.CompanyProfile.City, @Model.CompanyProfile.State, @Model.CompanyProfile.Country , @Model.CompanyProfile.Zip </span>
+<div ng-app="MyApp" ng-controller="HomeController" id="YourElementId">
+    <div>
+        <h2>
+            @Model.Name
+            <span style="font-size:20px">(@Model.Symbol)</span>
+            <a href="#" <span style="font-size:15px"><span class="glyphicon glyphicon-star-empty"></span> Add to Watchlist</span></a>
+        </h2>
+        <span><strong>@Model.ExchDisp </strong>(@Model.Exch), - <strong>@Model.TypeDisp</strong> </span>
+
+        @*        <span>@Model.CompanyProfile.Address1 , @Model.CompanyProfile.City, @Model.CompanyProfile.State, @Model.CompanyProfile.Country , @Model.CompanyProfile.Zip </span>*@
 
         <br />
         <br />
         <span class="time_rtq_ticker">
-            <span id="yfs_l84_f">@Model.HistoricalDatas.OrderByDescending(x => x.Date).FirstOrDefault().Close.ToString("0.00")</span>
+            <span id="yfs_l84_f">{{getCurrency('@Model.Exch')}} @Model.HistoricalDatas.OrderByDescending(x => x.Date).FirstOrDefault().Close.ToString("0.00")</span>
         </span>
 
 
@@ -65,10 +58,10 @@
             <span class="up_g time_rtq_content">
                 <span id="yfs_c63_f">
                     <span class="glyphicon glyphicon-circle-arrow-up"></span>
-                    <span class="yfi-price-change-red">@Model.HistoricalDatas.OrderByDescending(x => x.Date).FirstOrDefault().Change.ToString("0.00")</span>
+                    <span class="yfi-price-change-red">{{getCurrency('@Model.Exch')}} - @Model.HistoricalDatas.OrderByDescending(x => x.Date).FirstOrDefault().Change.ToString("0.00")</span>
                 </span>
                 <span id="yfs_p43_f">
-                    <span class="yfi-price-change-red">(@Model.HistoricalDatas.OrderByDescending(x => x.Date).FirstOrDefault().PercentageChange.ToString("0.00"))</span>
+                    <span class="yfi-price-change-red">( - @Model.HistoricalDatas.OrderByDescending(x => x.Date).FirstOrDefault().PercentageChange.ToString("0.00") %)</span>
                 </span>
             </span>
 
@@ -78,45 +71,103 @@
             <span class="up_r time_rtq_content">
                 <span id="yfs_c63_f">
                     <span class="glyphicon glyphicon-circle-arrow-down"></span>
-                    <span class="yfi-price-change-red">@Model.HistoricalDatas.OrderByDescending(x => x.Date).FirstOrDefault().Change.ToString("0.00")</span>
+                    <span class="yfi-price-change-red">{{getCurrency('@Model.Exch')}} - @Model.HistoricalDatas.OrderByDescending(x => x.Date).FirstOrDefault().Change.ToString("0.00")</span>
                 </span>
                 <span id="yfs_p43_f">
-                    <span class="yfi-price-change-red">(@Model.HistoricalDatas.OrderByDescending(x => x.Date).FirstOrDefault().PercentageChange.ToString("0.00"))</span>
+                    <span class="yfi-price-change-red">( - @Model.HistoricalDatas.OrderByDescending(x => x.Date).FirstOrDefault().PercentageChange.ToString("0.00") %)</span>
                 </span>
             </span>
         }
         <br />
         <br />
-        <hr />
-        @Html.Partial("_CompanySummary",Model)
+        <br />
+        <ul class="nav nav-tabs">
+            <li role="presentation" class="menu-select active" data-value="companySummaryDiv"><a href="#">Summary</a></li>
+            <li role="presentation" class="menu-select" data-value="companyProfile"><a href="#">Profile</a></li>
+            <li role="presentation" class="menu-select" data-value="historicalDataDiv"><a href="#">Historical Prices</a></li>
+            <li role="presentation" class="menu-select" data-value="companyFeedsDiv"><a href="#">Feeds</a></li>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <li role="presentation" class="menu-select"><a href="#">Charts</a></li>
+            }
+        </ul>
+        <br />
+        @Html.Partial("_CompanySummary", Model)
 
-        @Html.Partial("_HistoricalData",Model.HistoricalDatas)
+        @Html.Partial("_CompanyProfile", Model)
+
+        @Html.Partial("_HistoricalData", Model.HistoricalDatas)
 
         @Html.Partial("_CompanyFeeds", Model.CompanyFeeds)
     </div>
 </div>
 
+
+
 @section scripts{
+
+    <script src="~/Scripts/angular.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/MyApp/app.js"></script>
+    <script src="~/Scripts/canvasJs/canvasjs.min.js"></script>
+    <script src="~/Scripts/canvasJs/jquery.canvasjs.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             $("#historicalData").DataTable();
-            
+
             $(".menu-select").click(submenu_navigator);
 
             function submenu_navigator() {
-                
+
                 $(".menu-select").each(function () {
                     $(this).removeClass("active");
-                    
+
                     if ($(this).attr("data-value")) {
                         $("#" + $(this).attr("data-value")).hide();
                     }
                 });
-                
+
                 $(this).addClass("active");
                 $("#" + $(this).attr("data-value")).show();
             }
         });
+
+    </script>
+    <script type="text/javascript">
+        window.onload = function () {
+            var chart = new CanvasJS.Chart("chartContainer",
+            {
+                title: {
+                    text: "@Model.Name Stock Prices",
+                },
+                exportEnabled: true,
+                axisY: {
+                    includeZero: false,
+                    prefix: angular.element(document.getElementById('YourElementId')).scope().getCurrency('@Model.Exch'),
+                title: "Prices",
+            },
+                axisX: {
+                interval: 1,
+                valueFormatString: "MMM-DD",
+                },
+        data: [
+        {
+            type: "ohlc",
+            color: "#DD7E86",
+            showInLegend: true,
+            yValueFormatString: "$##0.##",
+            name: "@Model.Name's Everyday Stock Prices",
+            dataPoints: [   // Y: [Open, High ,Low, Close]
+                @foreach (var item in Model.HistoricalDatas.OrderByDescending(x=>x.Date).Take(35))
+	                    {
+                            <text>{ x: new Date(@item.Date.Year,@item.Date.Month,@item.Date.Day), y: [@item.Open,@item.High,@item.Low,@item.Close]},</text>
+
+	                    }
+            ]
+        }
+        ]
+        });
+        chart.render();
+        }
 
     </script>
 }

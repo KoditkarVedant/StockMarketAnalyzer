@@ -335,6 +335,8 @@
     <Content Include="Content\DataTables\css\mixins.scss" />
     <Content Include="Content\DataTables\css\common.scss" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\canvasJs\canvasjs.min.js" />
+    <Content Include="Scripts\canvasJs\jquery.canvasjs.min.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap.min.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap4.js" />
@@ -447,6 +449,7 @@
     <Content Include="Views\Home\_CompanySummary.cshtml" />
     <Content Include="Views\Home\_HistoricalData.cshtml" />
     <Content Include="Views\Home\_CompanyFeeds.cshtml" />
+    <Content Include="Views\Home\_CompanyProfile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,6 +1,7 @@
 ﻿var app = angular.module("MyApp", []);
 
-app.controller("HomeController", function ($scope,$http) {
+app.controller("HomeController", function ($scope, $http) {
+    $scope.currency = "";
     $scope.query = "";
     $scope.result = [];
     $scope.searchCompany = function () {
@@ -17,7 +18,18 @@ app.controller("HomeController", function ($scope,$http) {
     }
 
     $scope.getCompanyDetails = function (ticker) {
-        
+
         window.location.assign("/home/LookupCompany?query=" + ticker);
+    }
+
+    $scope.getCurrency = function (exch) {
+        switch (exch) {
+            case "NYQ":
+                return "$ ";
+            case "BSE":
+                return "₹ ";
+            default:
+                return " ";
+        }
     }
 });

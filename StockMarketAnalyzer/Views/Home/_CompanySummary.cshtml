@@ -1,9 +1,7 @@
 ﻿@model StockMarketAnalyzer.BO.Company
 
 <div class="col-md-12" id="companySummaryDiv">
-    <br>
-    <h4>Summary</h4>
-    <hr>
+    
     <div class="col-md-6">
         <table class="table table-condensed table-striped">
             <tbody>
@@ -13,15 +11,15 @@
                 </tr>
                 <tr>
                     <th>Open</th>
-                    <td style="text-align:right">@Model.HistoricalDatas.OrderByDescending(x => x.Date).Take(2).Skip(1).FirstOrDefault().Open.ToString("0.00")</td>
+                    <td style="text-align:right">{{getCurrency('@Model.Exch')}} @Model.HistoricalDatas.OrderByDescending(x => x.Date).Take(2).Skip(1).FirstOrDefault().Open.ToString("0.00")</td>
                 </tr>
                 <tr>
                     <th>Close</th>
-                    <td style="text-align:right">@Model.HistoricalDatas.OrderByDescending(x => x.Date).Take(2).Skip(1).FirstOrDefault().Close.ToString("0.00")</td>
+                    <td style="text-align:right">{{getCurrency('@Model.Exch')}} @Model.HistoricalDatas.OrderByDescending(x => x.Date).Take(2).Skip(1).FirstOrDefault().Close.ToString("0.00")</td>
                 </tr>
                 <tr>
                     <th>Volume</th>
-                    <td style="text-align:right">@Model.HistoricalDatas.OrderByDescending(x => x.Date).Take(2).Skip(1).FirstOrDefault().Volume.ToString("0.00")</td>
+                    <td style="text-align:right">{{getCurrency('@Model.Exch')}} @Model.HistoricalDatas.OrderByDescending(x => x.Date).Take(2).Skip(1).FirstOrDefault().Volume.ToString("0.00")</td>
                 </tr>
 
             </tbody>
@@ -34,11 +32,11 @@
             <tbody>
                 <tr>
                     <th>High</th>
-                    <td style="text-align:right">@Model.HistoricalDatas.OrderByDescending(x => x.Date).Take(2).Skip(1).FirstOrDefault().High.ToString("0.00")</td>
+                    <td style="text-align:right">{{getCurrency('@Model.Exch')}} @Model.HistoricalDatas.OrderByDescending(x => x.Date).Take(2).Skip(1).FirstOrDefault().High.ToString("0.00")</td>
                 </tr>
                 <tr>
                     <th>Low</th>
-                    <td style="text-align:right">@Model.HistoricalDatas.OrderByDescending(x => x.Date).Take(2).Skip(1).FirstOrDefault().Low.ToString("0.00")</td>
+                    <td style="text-align:right">{{getCurrency('@Model.Exch')}} @Model.HistoricalDatas.OrderByDescending(x => x.Date).Take(2).Skip(1).FirstOrDefault().Low.ToString("0.00")</td>
                 </tr>
                 <tr>
                     <th>Amount Change</th>
@@ -55,7 +53,7 @@
 
                             <span class="glyphicon glyphicon-circle-arrow-down up_r"></span>
                         }
-                        @Model.HistoricalDatas.OrderByDescending(x => x.Date).Take(2).Skip(1).FirstOrDefault().Change.ToString("0.00")
+                        {{getCurrency('@Model.Exch')}} @Model.HistoricalDatas.OrderByDescending(x => x.Date).Take(2).Skip(1).FirstOrDefault().Change.ToString("0.00")
                     </td>
                 </tr>
                 <tr>
@@ -71,7 +69,7 @@
                         {
                             <span class="glyphicon glyphicon-circle-arrow-down up_r"></span>
                         }
-                        @Model.HistoricalDatas.OrderByDescending(x => x.Date).Take(2).Skip(1).FirstOrDefault().PercentageChange.ToString("0.00")
+                        {{getCurrency('@Model.Exch')}} @Model.HistoricalDatas.OrderByDescending(x => x.Date).Take(2).Skip(1).FirstOrDefault().PercentageChange.ToString("0.00")
                     </td>
                 </tr>
 
@@ -80,4 +78,7 @@
         </table>
     </div>
 
+    <div class="col-md-12">
+        <div id="chartContainer" style="height:300px"></div>
+    </div>
 </div>

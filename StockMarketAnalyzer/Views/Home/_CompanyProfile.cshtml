@@ -1,0 +1,70 @@
+﻿@model StockMarketAnalyzer.BO.Company
+
+<div class="col-md-12" id="companyProfile" style="display:none">
+    <p><h4>@Model.Name</h4></p>
+    <div class="col-md-6">
+
+        <p>@Model.CompanyProfile.Address1</p>
+        <p>@Model.CompanyProfile.City, @Model.CompanyProfile.State - @Model.CompanyProfile.Zip</p>
+        <p>@Model.CompanyProfile.Country</p>
+        <p>@Model.CompanyProfile.Phone</p>
+        <p><a href="@Model.CompanyProfile.Website">@Model.CompanyProfile.Website</a></p>
+    </div>
+    <div class="col-md-6">
+        <p>Sector - <strong>@Model.CompanyProfile.Sector</strong></p>
+        <p>Industry - <strong>@Model.CompanyProfile.Industry</strong></p>
+        <p>Full Time Employees - <strong>@Model.CompanyProfile.FullTimeEmployees</strong></p>
+    </div>
+    <div class="col-md-12">
+        <br />
+        <br />
+        <strong>Key Executives</strong>
+        <br />
+        <br />
+        <table class="table table-responsive">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Title</th>
+                    <th class="text-right">Pay</th>
+                    <th class="text-right">Exercised</th>
+                    <th class="text-right">Age</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.CompanyOfficers)
+                {
+                    <tr>
+                        <td>@item.Name</td>
+                        <td>@item.Title</td>
+                        <td class="text-right">
+                            @if (item.TotalPay <= 1)
+                            {
+                                <content>N/A</content>
+                            }
+                            else
+                            { @item.TotalPay.Value.ToString("0.00")}
+                        </td>
+                        <td class="text-right">
+                            @if (item.ExercisedValue <= 1)
+                            {
+                                <content>N/A</content>
+                            }
+                            else
+                            { @item.ExercisedValue.Value.ToString("0.00")}
+                        </td>
+                        <td class="text-right">@item.Age</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-12">
+        <br />
+        <br />
+        <strong>Description</strong>
+        <br />
+        <br />
+        <p>@Model.CompanyProfile.LongBusinessSummary</p>
+    </div>
+</div>
