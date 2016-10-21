@@ -27,6 +27,8 @@ namespace StockMarketAnalyzer.BO
 
         [Required(ErrorMessage = "Phone number is required")]
         public string PhoneNumber { get; set; }
+
+        public UserType UserType { get; set; }
     }
 
     public enum UserType

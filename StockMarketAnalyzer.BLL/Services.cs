@@ -303,5 +303,38 @@ namespace StockMarketAnalyzer.BLL
         {
             return _unitOfWork.Users.Register(user);
         }
+
+
+        public int getUserID(string p)
+        {
+            return _unitOfWork.Users.getUserId(p);
+        }
+
+
+        public void AddToProfile(UserPortfolio userPortfolio)
+        {
+             var user = _unitOfWork.Users.Get(userPortfolio.UserId);
+             user.UserPortfolios.Add(userPortfolio);
+            _unitOfWork.Complete();
+        }
+
+
+        public List<UserPortfolio> getPortfolio(int id)
+        {
+            return _unitOfWork.UserPortfolios.GetAll(id);
+        }
+
+
+        public void RemoveFromPortfolio(int id)
+        {
+            _unitOfWork.UserPortfolios.Remove(_unitOfWork.UserPortfolios.GetAll().Where(x=>x.UserPortfolioId==id).FirstOrDefault());
+            _unitOfWork.Complete();
+        }
+
+
+        public string getUserRole(string p)
+        {
+            return _unitOfWork.Users.getUserRole(p).ToString();
+        }
     }
 }

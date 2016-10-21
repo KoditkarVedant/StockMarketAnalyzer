@@ -1,4 +1,5 @@
 ﻿using StockMarketAnalyzer.BLL.Interfaces;
+using StockMarketAnalyzer.BO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,10 +18,11 @@ namespace StockMarketAnalyzer.Controllers
         }
 
         public ActionResult Index()
-        {   
+        {
             return View();
         }
 
+        [Authorize(Roles="User")]
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
@@ -33,6 +35,12 @@ namespace StockMarketAnalyzer.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
+        }
+
+        public ActionResult Portfolio()
+        {
+            var list = _services.getPortfolio(Convert.ToInt32(User.Identity.Name));
+            return View(list);
         }
 
         [AllowAnonymous]
@@ -53,6 +61,20 @@ namespace StockMarketAnalyzer.Controllers
         public JsonResult SearchCompany(string query = null)
         {
             return string.IsNullOrWhiteSpace(query) ? Json("", JsonRequestBehavior.AllowGet) : Json(_services.SearchCompany(query), JsonRequestBehavior.AllowGet);
+        }
+
+        public void _AddToPortfolio(UserPortfolio userPortfolio)
+        {
+            if (ModelState.IsValid)
+            {
+                userPortfolio.UserId = Convert.ToInt32(Session["UserId"]);
+                _services.AddToProfile(userPortfolio);
+            }
+        }
+
+        public void RemoveFromPortfolio(int id)
+        {
+            _services.RemoveFromPortfolio(id);
         }
     }
 }

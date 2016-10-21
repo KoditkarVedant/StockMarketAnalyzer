@@ -44,14 +44,17 @@ namespace StockMarketAnalyzer.Controllers
             {
                 var identity = new ClaimsIdentity(
                     new[]{
-                        new Claim(ClaimTypes.Email,user.EmailAddress)
+                        new Claim(ClaimTypes.Email,user.EmailAddress),
+                        new Claim(ClaimTypes.Name,_services.getUserID(user.EmailAddress).ToString())
                 }, "ApplicationCookie");
 
                 var ctx = Request.GetOwinContext();
                 var authManager = ctx.Authentication;
 
-                authManager.SignIn(identity);
+                identity.AddClaim(new Claim(ClaimTypes.Role, _services.getUserRole(user.EmailAddress)));
 
+                authManager.SignIn(identity);
+                
                 return Redirect(GetRedirectUrl(ReturnUrl));
             }
 
@@ -71,7 +74,7 @@ namespace StockMarketAnalyzer.Controllers
         }
 
         public ActionResult Logout()
-       {
+        {
             var ctx = Request.GetOwinContext();
             var authManager = ctx.Authentication;
 
@@ -93,7 +96,8 @@ namespace StockMarketAnalyzer.Controllers
         public ActionResult Register(Register user)
         {
             if (!ModelState.IsValid) return View(user);
-
+            
+            user.UserType = UserType.User;
             if (_services.RegisterNewUser(user))
             {
                 return RedirectToAction("Login", "Auth");

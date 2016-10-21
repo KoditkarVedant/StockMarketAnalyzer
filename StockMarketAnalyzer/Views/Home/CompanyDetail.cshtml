@@ -3,38 +3,6 @@
 @{
     ViewBag.Title = "CompanyDetail";
 }
-<style>
-    .time_rtq_ticker {
-        font: bold 30px arial;
-        padding-right: 6px;
-    }
-
-    .up_g, .up_g span {
-        color: #080;
-        font-weight: bold;
-    }
-
-    .up_r, .up_r span {
-        color: red;
-        font-weight: bold;
-    }
-
-    .time_rtq_content {
-        font: bold 20px arial;
-    }
-
-    .bs-callout-warning {
-        border-left-color: #aa6708 !important;
-    }
-
-    .bs-callout {
-        padding: 5px 0 5px 20px;
-        margin: 10px 0;
-        border: 1px solid #eee;
-        border-left-width: 5px;
-        border-radius: 3px;
-    }
-</style>
 <div ng-app="MyApp" ng-controller="HomeController" id="YourElementId">
     <div>
         <h2>
@@ -58,10 +26,10 @@
             <span class="up_g time_rtq_content">
                 <span id="yfs_c63_f">
                     <span class="glyphicon glyphicon-circle-arrow-up"></span>
-                    <span class="yfi-price-change-red">{{getCurrency('@Model.Exch')}} - @Model.HistoricalDatas.OrderByDescending(x => x.Date).FirstOrDefault().Change.ToString("0.00")</span>
+                    <span class="yfi-price-change-red">{{getCurrency('@Model.Exch')}} @Model.HistoricalDatas.OrderByDescending(x => x.Date).FirstOrDefault().Change.ToString("0.00")</span>
                 </span>
                 <span id="yfs_p43_f">
-                    <span class="yfi-price-change-red">( - @Model.HistoricalDatas.OrderByDescending(x => x.Date).FirstOrDefault().PercentageChange.ToString("0.00") %)</span>
+                    <span class="yfi-price-change-red">( @Model.HistoricalDatas.OrderByDescending(x => x.Date).FirstOrDefault().PercentageChange.ToString("0.00") %)</span>
                 </span>
             </span>
 
@@ -71,13 +39,16 @@
             <span class="up_r time_rtq_content">
                 <span id="yfs_c63_f">
                     <span class="glyphicon glyphicon-circle-arrow-down"></span>
-                    <span class="yfi-price-change-red">{{getCurrency('@Model.Exch')}} - @Model.HistoricalDatas.OrderByDescending(x => x.Date).FirstOrDefault().Change.ToString("0.00")</span>
+                    <span class="yfi-price-change-red">{{getCurrency('@Model.Exch')}} @Model.HistoricalDatas.OrderByDescending(x => x.Date).FirstOrDefault().Change.ToString("0.00")</span>
                 </span>
                 <span id="yfs_p43_f">
-                    <span class="yfi-price-change-red">( - @Model.HistoricalDatas.OrderByDescending(x => x.Date).FirstOrDefault().PercentageChange.ToString("0.00") %)</span>
+                    <span class="yfi-price-change-red">( @Model.HistoricalDatas.OrderByDescending(x => x.Date).FirstOrDefault().PercentageChange.ToString("0.00") %)</span>
                 </span>
             </span>
         }
+
+        @Html.Partial("_AddToPortfolio", new StockMarketAnalyzer.BO.UserPortfolio() { Company = new StockMarketAnalyzer.BO.Company() { Name = @Model.Name } })
+
         <br />
         <br />
         <br />
@@ -88,7 +59,7 @@
             <li role="presentation" class="menu-select" data-value="companyFeedsDiv"><a href="#">Feeds</a></li>
             @if (User.Identity.IsAuthenticated)
             {
-                <li role="presentation" class="menu-select"><a href="#">Charts</a></li>
+                <li role="presentation" class="menu-select" data-value="chartsDiv"><a href="#">Charts</a></li>
             }
         </ul>
         <br />
@@ -99,6 +70,8 @@
         @Html.Partial("_HistoricalData", Model.HistoricalDatas)
 
         @Html.Partial("_CompanyFeeds", Model.CompanyFeeds)
+
+        @Html.Partial("_Charts", Model)
     </div>
 </div>
 
@@ -137,37 +110,144 @@
             var chart = new CanvasJS.Chart("chartContainer",
             {
                 title: {
-                    text: "@Model.Name Stock Prices",
+                    text: "@Model.Name's Stock Prices",
                 },
                 exportEnabled: true,
                 axisY: {
                     includeZero: false,
                     prefix: angular.element(document.getElementById('YourElementId')).scope().getCurrency('@Model.Exch'),
-                title: "Prices",
-            },
-                axisX: {
-                interval: 1,
-                valueFormatString: "MMM-DD",
+                    title: "Prices",
                 },
-        data: [
-        {
-            type: "ohlc",
-            color: "#DD7E86",
-            showInLegend: true,
-            yValueFormatString: "$##0.##",
-            name: "@Model.Name's Everyday Stock Prices",
-            dataPoints: [   // Y: [Open, High ,Low, Close]
-                @foreach (var item in Model.HistoricalDatas.OrderByDescending(x=>x.Date).Take(35))
+                axisX: {
+                    interval: 1,
+                    valueFormatString: "MMM-DD",
+                },
+                data: [
+                {
+                    type: "ohlc",
+                    color: "#DD7E86",
+                    showInLegend: true,
+                    yValueFormatString: "$##0.##",
+                    name: "@Model.Name's Everyday Stock Prices",
+                    dataPoints: [   // Y: [Open, High ,Low, Close]
+                        @foreach (var item in Model.HistoricalDatas.OrderByDescending(x=>x.Date).Take(35))
 	                    {
                             <text>{ x: new Date(@item.Date.Year,@item.Date.Month,@item.Date.Day), y: [@item.Open,@item.High,@item.Low,@item.Close]},</text>
 
 	                    }
-            ]
-        }
-        ]
-        });
-        chart.render();
+                    ]
+                }
+                ]
+            });
+            chart.render();
+
+            var todayDecreaseChart = new CanvasJS.Chart("todayDecreaseChartContainer",{
+                title:{
+                    text: "Today Decrease"
+                },
+                animationEnabled: true,
+                axisY: {
+                    title: "Next day prediction"
+                },
+                legend: {
+                    verticalAlign: "bottom",
+                    horizontalAlign: "center"
+                },
+                theme: "theme2",
+                data: [
+
+                {
+                    type: "column",
+                    showInLegend: true,
+                    toolTipContent: "{y}%",
+                    legendMarkerColor: "grey",
+                    legendText: "",
+                    dataPoints: [
+                        {  y: @Model.DecreaseNextDayIncreasePercentages, label: "Increase"},
+                        {  y: @Model.DecreaseNextDayDecreasePercentages, label: "Descrease"},
+                        {  y: @Model.DecreaseNextDayNoChangePercentages, label: "No Change"}
+                    ]
+                }
+                ]
+            });
+
+            todayDecreaseChart.render();
+
+            var todayNoChangeChart = new CanvasJS.Chart("todayNoChangeChartContainer",{
+                title:{
+                    text: "Today No Change"
+                },
+                animationEnabled: true,
+                axisY: {
+                    title: "Next day prediction"
+                },
+                legend: {
+                    verticalAlign: "bottom",
+                    horizontalAlign: "center"
+                },
+                theme: "theme2",
+                data: [
+
+                {
+                    type: "column",
+                    showInLegend: true,
+                    toolTipContent: "{y}%",
+                    legendMarkerColor: "grey",
+                    legendText: "",
+                    dataPoints: [
+                            {  y: @Model.NoChangeNextDayIncreasePercentages, label: "Increase"},
+                            {  y: @Model.NoChangeNextDayDecreasePercentages, label: "Descrease"},
+                            {  y: @Model.NoChangeNextDayNoChangePercentages, label: "No Change"}
+                    ]
+                }
+                ]
+            });
+            todayNoChangeChart.render();
+
+            var todayIncreaseChart = new CanvasJS.Chart("todayIncreaseChartContainer",{
+                title:{
+                    text: "Today Increase"
+                },
+                animationEnabled: true,
+                axisY: {
+                    title: "Next day prediction"
+                },
+                legend: {
+                    verticalAlign: "bottom",
+                    horizontalAlign: "center"
+                },
+                theme: "theme2",
+                data: [
+
+                {
+                    type: "column",
+                    showInLegend: true,
+                    toolTipContent: "{y}%",
+                    legendMarkerColor: "grey",
+                    legendText: "",
+                    dataPoints: [
+                            {  y: @Model.IncreaseNextDayIncreasePercentages, label: "Increase"},
+                    {  y: @Model.IncreaseNextDayDecreasePercentages, label: "Descrease"},
+                            {  y: @Model.IncreaseNextDayNoChangePercentages, label: "No Change"}
+                    ]
+                }
+                ]
+            });
+            todayIncreaseChart.render();
+
+            $("#chartsDiv").hide();
         }
 
+    </script>
+    <script>
+        $("#AddToPortfolio").click(function(){
+            $.ajax({
+                url:"/Home/_AddToPortfolio",
+                method:"POST",
+                data:{Quantity:$("#Quantity").val(),BuyRate:$("#BuyRate").val(),Symbol:"@Model.Symbol"}
+            }).success(function(response){
+                $("#myModal").modal('hide');
+            });
+        });
     </script>
 }

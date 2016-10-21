@@ -450,6 +450,9 @@
     <Content Include="Views\Home\_HistoricalData.cshtml" />
     <Content Include="Views\Home\_CompanyFeeds.cshtml" />
     <Content Include="Views\Home\_CompanyProfile.cshtml" />
+    <Content Include="Views\Home\_Charts.cshtml" />
+    <Content Include="Views\Home\Portfolio.cshtml" />
+    <Content Include="Views\Home\_AddToPortfolio.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

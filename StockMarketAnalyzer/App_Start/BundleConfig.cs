@@ -28,7 +28,8 @@ namespace StockMarketAnalyzer
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.bootswatch.css",
                       "~/Content/site.css",
-                      "~/Content/DataTables/css/dataTables.bootstrap.css"));
+                      "~/Content/DataTables/css/dataTables.bootstrap.css",
+                      "~/Content/Styles.css"));
         }
     }
 }

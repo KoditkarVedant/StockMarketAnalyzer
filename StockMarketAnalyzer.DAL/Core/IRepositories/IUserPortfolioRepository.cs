@@ -10,5 +10,6 @@ namespace StockMarketAnalyzer.DAL.Core.IRepositories
 {
     public interface IUserPortfolioRepository : IRepository<UserPortfolio>
     {
+        List<UserPortfolio> GetAll(int id);
     }
 }

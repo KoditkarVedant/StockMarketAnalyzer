@@ -15,5 +15,14 @@ namespace StockMarketAnalyzer.DAL.Persitence.Repositories
             : base(context)
         {
         }
+        public StockMarketDbContext StockMarketDbContext
+        {
+            get { return Context as StockMarketDbContext; }
+        }
+
+        public List<UserPortfolio> GetAll(int id)
+        {
+            return StockMarketDbContext.UserPortfolios.Where(x => x.UserId == id).ToList();
+        }
     }
 }

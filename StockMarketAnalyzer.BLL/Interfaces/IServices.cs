@@ -21,5 +21,14 @@ namespace StockMarketAnalyzer.BLL.Interfaces
 
         bool UpdateUserProfile(UserProfile profile);
         UserProfile GetUserProfile(int UserId);
+
+        int getUserID(string p);
+
+        void AddToProfile(UserPortfolio userPortfolio);
+        List<UserPortfolio> getPortfolio(int id);
+
+        void RemoveFromPortfolio(int id);
+
+        string getUserRole(string p);
     }
 }

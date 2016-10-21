@@ -1,0 +1,73 @@
+﻿@model IEnumerable<StockMarketAnalyzer.BO.UserPortfolio>
+
+<table class="table table-condensed table-striped">
+    <thead>
+        <tr>
+            <th>Ticker</th>
+            <th style="text-align:right">Quantity</th>
+            <th style="text-align:right">Rate</th>
+            <th style="text-align:right">Date</th>
+            <th></th>
+            <th style="text-align:right">Closing</th>
+            <th style="text-align:right">Earlier<br>(Rs.)</th>
+            <th style="text-align:right">Current<br>(Rs.)</th>
+            <th style="text-align:right">Profit/Loss<br>(Rs.)</th>
+            <th style="text-align:right"></th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr style="text-align:right">
+
+                <td style="text-align:left"><a href="stock.php?ticker=F&amp;datetime=2016-10-21 11:31:35">@item.Company.Name</a></td>
+                <td>@item.Quantity</td>
+                <td>@item.BuyRate</td>
+                <td></td>
+                @if (item.BuyRate < item.Company.HistoricalDatas.First().Close)
+                {
+                    <td class="glyphicon glyphicon-circle-arrow-up up_g"></td>
+                    <td class="up_g">@item.Company.HistoricalDatas.First().Close</td>
+                }
+                else
+                {
+                    <td class="glyphicon glyphicon-circle-arrow-down up_r"></td>
+                    <td class="up_r">@item.Company.HistoricalDatas.First().Close</td>
+                }
+                @{
+                var earlierValue = item.BuyRate * item.Quantity;
+                var currentValue = item.Company.HistoricalDatas.First().Close * item.Quantity;
+                var difference = currentValue - earlierValue;
+                <td>@earlierValue</td>
+                    <td>@currentValue</td>
+
+            if (difference < 0)
+            {
+                <td class="up_r">@difference</td>
+            }
+            else
+            {
+                <td class="up_g">@Math.Abs(difference)</td>
+            }
+                }
+                <td><input type="button" class="btn btn-danger btn-sm remove" data-value="@item.UserPortfolioId" id="10" value="remove"></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts{
+    <script>
+        $(".remove").click(function () {
+            var x = this;
+            $.ajax({
+                url: "/Home/RemoveFromPortfolio",
+                data: { id: $(this).attr("data-value") }
+            }).success(function () {
+                $(x).parent().parent().remove();
+            });
+
+        });
+    </script>
+}

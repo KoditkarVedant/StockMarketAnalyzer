@@ -27,6 +27,14 @@
 
                     @if (User.Identity.IsAuthenticated)
                     {
+                        if (User.IsInRole("User"))
+                        {
+                            <li>@Html.ActionLink("Portfolio", "Logout", "Auth", null, new { @class = "pull-right" })</li>
+                        }
+                        if (User.IsInRole("Admin"))
+                        {
+                            <li>@Html.ActionLink("Update Handle", "", "", null, new { @class = "pull-right" })</li>
+                        }
                         <li>@Html.ActionLink("Logout", "Logout", "Auth", null, new { @class = "pull-right" })</li>
                     }
                     else

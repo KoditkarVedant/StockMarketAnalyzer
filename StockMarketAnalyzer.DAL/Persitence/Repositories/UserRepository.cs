@@ -52,7 +52,8 @@ namespace StockMarketAnalyzer.DAL.Persitence.Repositories
             {
                 EmailAddress = user.EmailAddress,
                 Password = user.Password,
-                UserProfile = newUserProfile
+                UserProfile = newUserProfile,
+                UserType = user.UserType
             };
 
             try
@@ -68,6 +69,18 @@ namespace StockMarketAnalyzer.DAL.Persitence.Repositories
                 //throw;
             }
 
+        }
+
+
+        public int getUserId(string p)
+        {
+            return StockMarketDbContext.Users.Where(x => x.EmailAddress.Equals(p)).Select(x => x.UserId).FirstOrDefault();
+        }
+
+
+        public UserType getUserRole(string p)
+        {
+            return StockMarketDbContext.Users.Where(x => x.EmailAddress.Equals(p)).FirstOrDefault().UserType;
         }
     }
 }
