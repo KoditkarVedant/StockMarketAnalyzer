@@ -11,15 +11,15 @@
                 </tr>
                 <tr>
                     <th>Open</th>
-                    <td style="text-align:right">{{getCurrency('@Model.Exch')}} @Model.HistoricalDatas.OrderByDescending(x => x.Date).Take(2).Skip(1).FirstOrDefault().Open.ToString("0.00")</td>
+                    <td style="text-align:right"><span ng-bind="currency"></span> @Model.HistoricalDatas.OrderByDescending(x => x.Date).Take(2).Skip(1).FirstOrDefault().Open.ToString("0.00")</td>
                 </tr>
                 <tr>
                     <th>Close</th>
-                    <td style="text-align:right">{{getCurrency('@Model.Exch')}} @Model.HistoricalDatas.OrderByDescending(x => x.Date).Take(2).Skip(1).FirstOrDefault().Close.ToString("0.00")</td>
+                    <td style="text-align:right"><span ng-bind="currency"></span> @Model.HistoricalDatas.OrderByDescending(x => x.Date).Take(2).Skip(1).FirstOrDefault().Close.ToString("0.00")</td>
                 </tr>
                 <tr>
                     <th>Volume</th>
-                    <td style="text-align:right">{{getCurrency('@Model.Exch')}} @Model.HistoricalDatas.OrderByDescending(x => x.Date).Take(2).Skip(1).FirstOrDefault().Volume.ToString("0.00")</td>
+                    <td style="text-align:right"><span ng-bind="currency"></span> @Model.HistoricalDatas.OrderByDescending(x => x.Date).Take(2).Skip(1).FirstOrDefault().Volume.ToString("0.00")</td>
                 </tr>
 
             </tbody>
@@ -32,11 +32,11 @@
             <tbody>
                 <tr>
                     <th>High</th>
-                    <td style="text-align:right">{{getCurrency('@Model.Exch')}} @Model.HistoricalDatas.OrderByDescending(x => x.Date).Take(2).Skip(1).FirstOrDefault().High.ToString("0.00")</td>
+                    <td style="text-align:right"><span ng-bind="currency"></span> @Model.HistoricalDatas.OrderByDescending(x => x.Date).Take(2).Skip(1).FirstOrDefault().High.ToString("0.00")</td>
                 </tr>
                 <tr>
                     <th>Low</th>
-                    <td style="text-align:right">{{getCurrency('@Model.Exch')}} @Model.HistoricalDatas.OrderByDescending(x => x.Date).Take(2).Skip(1).FirstOrDefault().Low.ToString("0.00")</td>
+                    <td style="text-align:right"><span ng-bind="currency"></span> @Model.HistoricalDatas.OrderByDescending(x => x.Date).Take(2).Skip(1).FirstOrDefault().Low.ToString("0.00")</td>
                 </tr>
                 <tr>
                     <th>Amount Change</th>
@@ -53,7 +53,7 @@
 
                             <span class="glyphicon glyphicon-circle-arrow-down up_r"></span>
                         }
-                        {{getCurrency('@Model.Exch')}} @Model.HistoricalDatas.OrderByDescending(x => x.Date).Take(2).Skip(1).FirstOrDefault().Change.ToString("0.00")
+                        <span ng-bind="currency"></span> @Model.HistoricalDatas.OrderByDescending(x => x.Date).Take(2).Skip(1).FirstOrDefault().Change.ToString("0.00")
                     </td>
                 </tr>
                 <tr>
@@ -69,7 +69,7 @@
                         {
                             <span class="glyphicon glyphicon-circle-arrow-down up_r"></span>
                         }
-                        {{getCurrency('@Model.Exch')}} @Model.HistoricalDatas.OrderByDescending(x => x.Date).Take(2).Skip(1).FirstOrDefault().PercentageChange.ToString("0.00")
+                        <span ng-bind="currency"></span> @Model.HistoricalDatas.OrderByDescending(x => x.Date).Take(2).Skip(1).FirstOrDefault().PercentageChange.ToString("0.00")
                     </td>
                 </tr>
 

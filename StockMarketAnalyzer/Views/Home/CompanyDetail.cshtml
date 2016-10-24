@@ -3,12 +3,12 @@
 @{
     ViewBag.Title = "CompanyDetail";
 }
-<div ng-app="MyApp" ng-controller="HomeController" id="YourElementId">
+<div ng-app="MyApp" ng-controller="HomeController" id="YourElementId" ng-init="getCurrency('@Model.Exch')">
     <div>
         <h2>
             @Model.Name
             <span style="font-size:20px">(@Model.Symbol)</span>
-            <a href="#" <span style="font-size:15px"><span class="glyphicon glyphicon-star-empty"></span> Add to Watchlist</span></a>
+            <a href="#"> <span style="font-size:15px"><span class="glyphicon glyphicon-star-empty"></span> Add to Watchlist</span></a>
         </h2>
         <span><strong>@Model.ExchDisp </strong>(@Model.Exch), - <strong>@Model.TypeDisp</strong> </span>
 
@@ -17,7 +17,7 @@
         <br />
         <br />
         <span class="time_rtq_ticker">
-            <span id="yfs_l84_f">{{getCurrency('@Model.Exch')}} @Model.HistoricalDatas.OrderByDescending(x => x.Date).FirstOrDefault().Close.ToString("0.00")</span>
+            <span id="yfs_l84_f"><span ng-bind="currency"></span>@Model.HistoricalDatas.OrderByDescending(x => x.Date).FirstOrDefault().Close.ToString("0.00")</span>
         </span>
 
 
@@ -26,7 +26,7 @@
             <span class="up_g time_rtq_content">
                 <span id="yfs_c63_f">
                     <span class="glyphicon glyphicon-circle-arrow-up"></span>
-                    <span class="yfi-price-change-red">{{getCurrency('@Model.Exch')}} @Model.HistoricalDatas.OrderByDescending(x => x.Date).FirstOrDefault().Change.ToString("0.00")</span>
+                    <span class="yfi-price-change-red"><span ng-bind="currency"></span>@Model.HistoricalDatas.OrderByDescending(x => x.Date).FirstOrDefault().Change.ToString("0.00")</span>
                 </span>
                 <span id="yfs_p43_f">
                     <span class="yfi-price-change-red">( @Model.HistoricalDatas.OrderByDescending(x => x.Date).FirstOrDefault().PercentageChange.ToString("0.00") %)</span>
@@ -39,7 +39,7 @@
             <span class="up_r time_rtq_content">
                 <span id="yfs_c63_f">
                     <span class="glyphicon glyphicon-circle-arrow-down"></span>
-                    <span class="yfi-price-change-red">{{getCurrency('@Model.Exch')}} @Model.HistoricalDatas.OrderByDescending(x => x.Date).FirstOrDefault().Change.ToString("0.00")</span>
+                    <span class="yfi-price-change-red"><span ng-bind="currency"></span>@Model.HistoricalDatas.OrderByDescending(x => x.Date).FirstOrDefault().Change.ToString("0.00")</span>
                 </span>
                 <span id="yfs_p43_f">
                     <span class="yfi-price-change-red">( @Model.HistoricalDatas.OrderByDescending(x => x.Date).FirstOrDefault().PercentageChange.ToString("0.00") %)</span>
@@ -47,7 +47,13 @@
             </span>
         }
 
-        @Html.Partial("_AddToPortfolio", new StockMarketAnalyzer.BO.UserPortfolio() { Company = new StockMarketAnalyzer.BO.Company() { Name = @Model.Name } })
+        @if (User.Identity.IsAuthenticated)
+        {
+            if (User.IsInRole("User"))
+            {
+                @Html.Partial("_AddToPortfolio", new StockMarketAnalyzer.BO.UserPortfolio() { Company = new StockMarketAnalyzer.BO.Company() { Name = @Model.Name } })
+            }
+        }
 
         <br />
         <br />
@@ -85,12 +91,13 @@
     <script src="~/Scripts/canvasJs/jquery.canvasjs.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
+
             $("#historicalData").DataTable();
 
             $(".menu-select").click(submenu_navigator);
 
-            function submenu_navigator() {
-
+            function submenu_navigator(event) {
+                event.preventDefault();
                 $(".menu-select").each(function () {
                     $(this).removeClass("active");
 
@@ -100,7 +107,7 @@
                 });
 
                 $(this).addClass("active");
-                $("#" + $(this).attr("data-value")).show();
+                $("#" + $(this).attr("data-value")).show().removeClass("hidden");
             }
         });
 
@@ -115,7 +122,7 @@
                 exportEnabled: true,
                 axisY: {
                     includeZero: false,
-                    prefix: angular.element(document.getElementById('YourElementId')).scope().getCurrency('@Model.Exch'),
+                    prefix: $('[ng-controller="HomeController"]').scope().currency,
                     title: "Prices",
                 },
                 axisX: {
@@ -187,19 +194,18 @@
                 },
                 theme: "theme2",
                 data: [
-
-                {
-                    type: "column",
-                    showInLegend: true,
-                    toolTipContent: "{y}%",
-                    legendMarkerColor: "grey",
-                    legendText: "",
-                    dataPoints: [
-                            {  y: @Model.NoChangeNextDayIncreasePercentages, label: "Increase"},
-                            {  y: @Model.NoChangeNextDayDecreasePercentages, label: "Descrease"},
-                            {  y: @Model.NoChangeNextDayNoChangePercentages, label: "No Change"}
-                    ]
-                }
+                    {
+                        type: "column",
+                        showInLegend: true,
+                        toolTipContent: "{y}%",
+                        legendMarkerColor: "grey",
+                        legendText: "",
+                        dataPoints: [
+                                {  y: @Model.NoChangeNextDayIncreasePercentages, label: "Increase"},
+                                {  y: @Model.NoChangeNextDayDecreasePercentages, label: "Descrease"},
+                                {  y: @Model.NoChangeNextDayNoChangePercentages, label: "No Change"}
+                        ]
+                    }
                 ]
             });
             todayNoChangeChart.render();
@@ -218,19 +224,18 @@
                 },
                 theme: "theme2",
                 data: [
-
-                {
-                    type: "column",
-                    showInLegend: true,
-                    toolTipContent: "{y}%",
-                    legendMarkerColor: "grey",
-                    legendText: "",
-                    dataPoints: [
+                    {
+                        type: "column",
+                        showInLegend: true,
+                        toolTipContent: "{y}%",
+                        legendMarkerColor: "grey",
+                        legendText: "",
+                        dataPoints: [
                             {  y: @Model.IncreaseNextDayIncreasePercentages, label: "Increase"},
-                    {  y: @Model.IncreaseNextDayDecreasePercentages, label: "Descrease"},
+                            {  y: @Model.IncreaseNextDayDecreasePercentages, label: "Descrease"},
                             {  y: @Model.IncreaseNextDayNoChangePercentages, label: "No Change"}
-                    ]
-                }
+                        ]
+                    }
                 ]
             });
             todayIncreaseChart.render();

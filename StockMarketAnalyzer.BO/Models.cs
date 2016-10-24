@@ -16,8 +16,14 @@ namespace StockMarketAnalyzer.BO
 
         [Required(ErrorMessage = "Password is required")]
         [MinLength(8, ErrorMessage = "password should be greater than 8 characters")]
-        [MaxLength(30, ErrorMessage = "password should be less than 30 characters")]    
+        [MaxLength(30, ErrorMessage = "password should be less than 30 characters")]
         public string Password { get; set; }
+
+        [Required(ErrorMessage = "Confirm Password is required")]
+        [MinLength(8, ErrorMessage = "password should be greater than 8 characters")]
+        [MaxLength(30, ErrorMessage = "password should be less than 30 characters")]
+        [Compare("Password", ErrorMessage = "Password do not match")]
+        public string ConfirmPassword { get; set; }
 
         [Required(ErrorMessage = "First Name is required")]
         public string FirstName { get; set; }
@@ -43,12 +49,12 @@ namespace StockMarketAnalyzer.BO
         public UserType UserType { get; set; }
 
         [Required(ErrorMessage = "Password is required")]
-        [MinLength(8,ErrorMessage="password should be greater than 8 characters")]
-        [MaxLength(30, ErrorMessage = "password should be less than 30 characters")]    
+        [MinLength(8, ErrorMessage = "password should be greater than 8 characters")]
+        [MaxLength(30, ErrorMessage = "password should be less than 30 characters")]
         public string Password { get; set; }
 
         [Required(ErrorMessage = "Email is required")]
-        [RegularExpression(@"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?",ErrorMessage="Please enter valid email address")]
+        [RegularExpression(@"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", ErrorMessage = "Please enter valid email address")]
         public string EmailAddress { get; set; }
 
         public virtual UserProfile UserProfile { get; set; }
@@ -66,13 +72,17 @@ namespace StockMarketAnalyzer.BO
         public string LastName { get; set; }
         public string Address { get; set; }
 
+        [RegularExpression(@"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", ErrorMessage = "Please enter valid email address")]
+        public string EmailAddress { get; set; }
+
         [Required(ErrorMessage = "Phone number is required")]
         public string PhoneNumber { get; set; }
         public string City { get; set; }
         public string State { get; set; }
         public string Country { get; set; }
         public string Zip { get; set; }
-
+        public string Gender { get; set; }
+        public string ProfileUrl { get; set; }
         public virtual User User { get; set; }
     }
 
@@ -184,5 +194,18 @@ namespace StockMarketAnalyzer.BO
         public string link { get; set; }
         public string description { get; set; }
         public DateTime pubDate { get; set; }
+    }
+
+    public class Gender
+    {
+        public string Name { get; set; }
+    }
+
+    public enum UploadFileEnum
+    {
+        OK,
+        FileExtensionNotSupported,
+        FileNotSelected,
+        FileSizeExceeded
     }
 }

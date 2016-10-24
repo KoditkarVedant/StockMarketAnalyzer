@@ -23,7 +23,17 @@ namespace StockMarketAnalyzer.DAL.Persitence.Repositories
         public void UpdateProfile(UserProfile profile)
         {
             var users = StockMarketDbContext.Users.FirstOrDefault(u => u.UserId == profile.UserId);
-            users.UserProfile = profile;
+            users.UserProfile.FirstName = profile.FirstName;
+            users.UserProfile.LastName = profile.LastName;
+            users.UserProfile.PhoneNumber = profile.PhoneNumber;
+            users.UserProfile.State = profile.State;
+            users.UserProfile.City = profile.City;
+            users.UserProfile.Country = profile.Country;
+            users.UserProfile.Zip = profile.Zip;
+            users.UserProfile.Address = profile.Address;
+            users.UserProfile.EmailAddress = profile.EmailAddress;
+            users.UserProfile.Gender = profile.Gender;
+            users.UserProfile.ProfileUrl = profile.ProfileUrl;
 
             StockMarketDbContext.Entry<User>(users).State = System.Data.Entity.EntityState.Modified;
 
@@ -45,7 +55,8 @@ namespace StockMarketAnalyzer.DAL.Persitence.Repositories
             {
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                PhoneNumber = user.PhoneNumber
+                PhoneNumber = user.PhoneNumber,
+                EmailAddress = user.EmailAddress
             };
 
             var newUser = new User()

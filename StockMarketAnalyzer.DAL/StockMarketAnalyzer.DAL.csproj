@@ -116,6 +116,18 @@
     <Compile Include="Migrations\201610210707493_NoIdea.Designer.cs">
       <DependentUpon>201610210707493_NoIdea.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610240744076_AddedEmailAddressField.cs" />
+    <Compile Include="Migrations\201610240744076_AddedEmailAddressField.Designer.cs">
+      <DependentUpon>201610240744076_AddedEmailAddressField.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610240821150_AddedGenderField.cs" />
+    <Compile Include="Migrations\201610240821150_AddedGenderField.Designer.cs">
+      <DependentUpon>201610240821150_AddedGenderField.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610241030498_AddedProfilePicField.cs" />
+    <Compile Include="Migrations\201610241030498_AddedProfilePicField.Designer.cs">
+      <DependentUpon>201610241030498_AddedProfilePicField.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Persitence\Repositories\CompanyRepository.cs" />
     <Compile Include="Persitence\Repositories\HistoricalDataRepository.cs" />
@@ -167,6 +179,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610210707493_NoIdea.resx">
       <DependentUpon>201610210707493_NoIdea.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610240744076_AddedEmailAddressField.resx">
+      <DependentUpon>201610240744076_AddedEmailAddressField.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610240821150_AddedGenderField.resx">
+      <DependentUpon>201610240821150_AddedGenderField.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610241030498_AddedProfilePicField.resx">
+      <DependentUpon>201610241030498_AddedProfilePicField.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -453,9 +453,11 @@
     <Content Include="Views\Home\_Charts.cshtml" />
     <Content Include="Views\Home\Portfolio.cshtml" />
     <Content Include="Views\Home\_AddToPortfolio.cshtml" />
+    <Content Include="Views\Home\Profile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Uploads\ProfilePic\" />
     <Folder Include="ViewModels\" />
     <Folder Include="Views\Login\" />
     <Folder Include="Views\User\" />
