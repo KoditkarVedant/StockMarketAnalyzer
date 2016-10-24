@@ -154,10 +154,12 @@
     <Compile Include="App_Start\DependencyConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\AuthController.cs" />
+    <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Security\Controllers\AuthController.cs" />
+    <Compile Include="Areas\Security\SecurityAreaRegistration.cs" />
+    <Compile Include="Areas\Users\Controllers\UsersController.cs" />
+    <Compile Include="Areas\Users\UsersAreaRegistration.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\LoginController.cs" />
-    <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Filters\AutherizationFilter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -334,6 +336,13 @@
     <Content Include="Content\DataTables\css\semanticui.scss" />
     <Content Include="Content\DataTables\css\mixins.scss" />
     <Content Include="Content\DataTables\css\common.scss" />
+    <Content Include="Areas\Security\Views\web.config" />
+    <Content Include="Areas\Security\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Security\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Security\Views\Auth\Login.cshtml" />
+    <Content Include="Areas\Security\Views\Auth\Register.cshtml" />
+    <Content Include="Areas\Admin\Views\web.config" />
+    <Content Include="Areas\Users\Views\web.config" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\canvasJs\canvasjs.min.js" />
     <Content Include="Scripts\canvasJs\jquery.canvasjs.min.js" />
@@ -444,8 +453,6 @@
     <Content Include="Views\Home\LookupCompany.cshtml" />
     <Content Include="Views\Home\CompanyDetail.cshtml" />
     <Content Include="Views\Users\Profile.cshtml" />
-    <Content Include="Views\Auth\Login.cshtml" />
-    <Content Include="Views\Auth\Register.cshtml" />
     <Content Include="Views\Home\_CompanySummary.cshtml" />
     <Content Include="Views\Home\_HistoricalData.cshtml" />
     <Content Include="Views\Home\_CompanyFeeds.cshtml" />
@@ -457,6 +464,13 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\Admin\Controllers\" />
+    <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="Areas\Admin\Views\Shared\" />
+    <Folder Include="Areas\Security\Models\" />
+    <Folder Include="Areas\Users\Models\" />
+    <Folder Include="Areas\Users\Views\Shared\" />
+    <Folder Include="Areas\Users\Views\Users\" />
     <Folder Include="Uploads\ProfilePic\" />
     <Folder Include="ViewModels\" />
     <Folder Include="Views\Login\" />

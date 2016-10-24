@@ -47,7 +47,7 @@
 	}
 }(function( $, window, document, undefined ) {
 'use strict';
-var DataTable = $.fn.dataTable;
+var dataTable = $.fn.dataTable;
 
 
 /**
@@ -95,14 +95,14 @@ var DataTable = $.fn.dataTable;
  *      } );
  *    } );
  */
-var Responsive = function ( settings, opts ) {
+var responsive = function ( settings, opts ) {
 	// Sanity check that we are using DataTables 1.10 or newer
-	if ( ! DataTable.versionCheck || ! DataTable.versionCheck( '1.10.3' ) ) {
+	if ( ! dataTable.versionCheck || ! dataTable.versionCheck( '1.10.3' ) ) {
 		throw 'DataTables Responsive requires DataTables 1.10.3 or newer';
 	}
 
 	this.s = {
-		dt: new DataTable.Api( settings ),
+		dt: new dataTable.Api( settings ),
 		columns: [],
 		current: []
 	};
@@ -124,12 +124,12 @@ var Responsive = function ( settings, opts ) {
 		opts.details = { type: 'inline' };
 	}
 
-	this.c = $.extend( true, {}, Responsive.defaults, DataTable.defaults.responsive, opts );
+	this.c = $.extend( true, {}, responsive.defaults, dataTable.defaults.responsive, opts );
 	settings.responsive = this;
 	this._constructor();
 };
 
-$.extend( Responsive.prototype, {
+$.extend( responsive.prototype, {
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	 * Constructor
 	 */
@@ -150,7 +150,7 @@ $.extend( Responsive.prototype, {
 
 		// Use DataTables' throttle function to avoid processor thrashing on
 		// resize
-		$(window).on( 'resize.dtr orientationchange.dtr', DataTable.util.throttle( function () {
+		$(window).on( 'resize.dtr orientationchange.dtr', dataTable.util.throttle( function () {
 			// iOS has a bug whereby resize can fire when only scrolling
 			// See: http://stackoverflow.com/questions/8898412
 			var width = $(window).width();
@@ -924,7 +924,7 @@ $.extend( Responsive.prototype, {
  * @name Responsive.breakpoints
  * @static
  */
-Responsive.breakpoints = [
+responsive.breakpoints = [
 	{ name: 'desktop',  width: Infinity },
 	{ name: 'tablet-l', width: 1024 },
 	{ name: 'tablet-p', width: 768 },
@@ -941,7 +941,7 @@ Responsive.breakpoints = [
  * @name Responsive.defaults
  * @static
  */
-Responsive.display = {
+responsive.display = {
 	childRow: function ( row, update, render ) {
 		if ( update ) {
 			if ( $(row.node()).hasClass('parent') ) {
@@ -1045,7 +1045,7 @@ Responsive.display = {
  * @name Responsive.defaults
  * @static
  */
-Responsive.renderer = {
+responsive.renderer = {
 	listHidden: function () {
 		return function ( api, rowIdx, columns ) {
 			var data = $.map( columns, function ( col ) {
@@ -1092,7 +1092,7 @@ Responsive.renderer = {
  * @name Responsive.defaults
  * @static
  */
-Responsive.defaults = {
+responsive.defaults = {
 	/**
 	 * List of breakpoints for the instance. Note that this means that each
 	 * instance can have its own breakpoints. Additionally, the breakpoints
@@ -1101,7 +1101,7 @@ Responsive.defaults = {
 	 * @type {Array}
 	 * @default Takes the value of `Responsive.breakpoints`
 	 */
-	breakpoints: Responsive.breakpoints,
+	breakpoints: responsive.breakpoints,
 
 	/**
 	 * Enable / disable auto hiding calculations. It can help to increase
@@ -1131,9 +1131,9 @@ Responsive.defaults = {
 	 * @type {Object|string}
 	 */
 	details: {
-		display: Responsive.display.childRow,
+		display: responsive.display.childRow,
 
-		renderer: Responsive.renderer.listHidden(),
+		renderer: responsive.renderer.listHidden(),
 
 		target: 0,
 
@@ -1201,11 +1201,11 @@ Api.register( 'responsive.hasHidden()', function () {
  * @name Responsive.version
  * @static
  */
-Responsive.version = '2.1.0';
+responsive.version = '2.1.0';
 
 
-$.fn.dataTable.Responsive = Responsive;
-$.fn.DataTable.Responsive = Responsive;
+$.fn.dataTable.Responsive = responsive;
+$.fn.DataTable.Responsive = responsive;
 
 // Attach a listener to the document which listens for DataTables initialisation
 // events so we can automatically initialise
@@ -1217,16 +1217,16 @@ $(document).on( 'preInit.dt.dtr', function (e, settings, json) {
 	if ( $(settings.nTable).hasClass( 'responsive' ) ||
 		 $(settings.nTable).hasClass( 'dt-responsive' ) ||
 		 settings.oInit.responsive ||
-		 DataTable.defaults.responsive
+		 dataTable.defaults.responsive
 	) {
 		var init = settings.oInit.responsive;
 
 		if ( init !== false ) {
-			new Responsive( settings, $.isPlainObject( init ) ? init : {}  );
+			new responsive( settings, $.isPlainObject( init ) ? init : {}  );
 		}
 	}
 } );
 
 
-return Responsive;
+return responsive;
 }));

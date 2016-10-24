@@ -48,18 +48,18 @@
 	}
 }(function( $, window, document, undefined ) {
 'use strict';
-var DataTable = $.fn.dataTable;
+var dataTable = $.fn.dataTable;
 
 
 // Version information for debugger
-DataTable.select = {};
+dataTable.select = {};
 
-DataTable.select.version = '1.2.0';
+dataTable.select.version = '1.2.0';
 
-DataTable.select.init = function ( dt ) {
+dataTable.select.init = function ( dt ) {
 	var ctx = dt.settings()[0];
 	var init = ctx.oInit.select;
-	var defaults = DataTable.defaults.select;
+	var defaults = dataTable.defaults.select;
 	var opts = init === undefined ?
 		defaults :
 		init;
@@ -484,7 +484,7 @@ function info ( api )
  * @private
  */
 function init ( ctx ) {
-	var api = new DataTable.Api( ctx );
+	var api = new dataTable.Api( ctx );
 
 	// Row callback so that classes can be added to rows and cells if the item
 	// was selected before the element was created. This will happen with the
@@ -613,7 +613,7 @@ function rowColumnRange( dt, type, idx, last )
 function clear( ctx, force )
 {
 	if ( force || ctx._select.style === 'single' ) {
-		var api = new DataTable.Api( ctx );
+		var api = new dataTable.Api( ctx );
 		
 		api.rows( { selected: true } ).deselect();
 		api.columns( { selected: true } ).deselect();
@@ -699,7 +699,7 @@ $.each( [
 	{ type: 'row', prop: 'aoData' },
 	{ type: 'column', prop: 'aoColumns' }
 ], function ( i, o ) {
-	DataTable.ext.selector[ o.type ].push( function ( settings, opts, indexes ) {
+	dataTable.ext.selector[ o.type ].push( function ( settings, opts, indexes ) {
 		var selected = opts.selected;
 		var data;
 		var out = [];
@@ -722,7 +722,7 @@ $.each( [
 	} );
 } );
 
-DataTable.ext.selector.cell.push( function ( settings, opts, cells ) {
+dataTable.ext.selector.cell.push( function ( settings, opts, cells ) {
 	var selected = opts.selected;
 	var rowData;
 	var out = [];
@@ -754,12 +754,12 @@ DataTable.ext.selector.cell.push( function ( settings, opts, cells ) {
  */
 
 // Local variables to improve compression
-var apiRegister = DataTable.Api.register;
-var apiRegisterPlural = DataTable.Api.registerPlural;
+var apiRegister = dataTable.Api.register;
+var apiRegisterPlural = dataTable.Api.registerPlural;
 
 apiRegister( 'select()', function () {
 	return this.iterator( 'table', function ( ctx ) {
-		DataTable.select.init( new DataTable.Api( ctx ) );
+		dataTable.select.init( new dataTable.Api( ctx ) );
 	} );
 } );
 
@@ -791,7 +791,7 @@ apiRegister( 'select.items()', function ( items ) {
 	return this.iterator( 'table', function ( ctx ) {
 		ctx._select.items = items;
 
-		eventTrigger( new DataTable.Api( ctx ), 'selectItems', [ items ] );
+		eventTrigger( new dataTable.Api( ctx ), 'selectItems', [ items ] );
 	} );
 } );
 
@@ -811,14 +811,14 @@ apiRegister( 'select.style()', function ( style ) {
 
 		// Add / remove mouse event handlers. They aren't required when only
 		// API selection is available
-		var dt = new DataTable.Api( ctx );
+		var dt = new dataTable.Api( ctx );
 		disableMouseSelection( dt );
 		
 		if ( style !== 'api' ) {
 			enableMouseSelection( dt );
 		}
 
-		eventTrigger( new DataTable.Api( ctx ), 'selectStyle', [ style ] );
+		eventTrigger( new dataTable.Api( ctx ), 'selectStyle', [ style ] );
 	} );
 } );
 
@@ -828,12 +828,12 @@ apiRegister( 'select.selector()', function ( selector ) {
 	}
 
 	return this.iterator( 'table', function ( ctx ) {
-		disableMouseSelection( new DataTable.Api( ctx ) );
+		disableMouseSelection( new dataTable.Api( ctx ) );
 
 		ctx._select.selector = selector;
 
 		if ( ctx._select.style !== 'api' ) {
-			enableMouseSelection( new DataTable.Api( ctx ) );
+			enableMouseSelection( new dataTable.Api( ctx ) );
 		}
 	} );
 } );
@@ -873,7 +873,7 @@ apiRegisterPlural( 'columns().select()', 'column().select()', function ( select 
 
 		ctx.aoColumns[ idx ]._select_selected = true;
 
-		var column = new DataTable.Api( ctx ).column( idx );
+		var column = new dataTable.Api( ctx ).column( idx );
 
 		$( column.header() ).addClass( ctx._select.className );
 		$( column.footer() ).addClass( ctx._select.className );
@@ -940,7 +940,7 @@ apiRegisterPlural( 'columns().deselect()', 'column().deselect()', function () {
 	this.iterator( 'column', function ( ctx, idx ) {
 		ctx.aoColumns[ idx ]._select_selected = false;
 
-		var api = new DataTable.Api( ctx );
+		var api = new dataTable.Api( ctx );
 		var column = api.column( idx );
 
 		$( column.header() ).removeClass( ctx._select.className );
@@ -994,15 +994,15 @@ apiRegisterPlural( 'cells().deselect()', 'cell().deselect()', function () {
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Buttons
  */
-function i18n( label, def ) {
+function i18N( label, def ) {
 	return function (dt) {
 		return dt.i18n( 'buttons.'+label, def );
 	};
 }
 
-$.extend( DataTable.ext.buttons, {
+$.extend( dataTable.ext.buttons, {
 	selected: {
-		text: i18n( 'selected', 'Selected' ),
+		text: i18N( 'selected', 'Selected' ),
 		className: 'buttons-selected',
 		init: function ( dt ) {
 			var that = this;
@@ -1021,7 +1021,7 @@ $.extend( DataTable.ext.buttons, {
 		}
 	},
 	selectedSingle: {
-		text: i18n( 'selectedSingle', 'Selected single' ),
+		text: i18N( 'selectedSingle', 'Selected single' ),
 		className: 'buttons-selected-single',
 		init: function ( dt ) {
 			var that = this;
@@ -1038,7 +1038,7 @@ $.extend( DataTable.ext.buttons, {
 		}
 	},
 	selectAll: {
-		text: i18n( 'selectAll', 'Select all' ),
+		text: i18N( 'selectAll', 'Select all' ),
 		className: 'buttons-select-all',
 		action: function () {
 			var items = this.select.items();
@@ -1046,7 +1046,7 @@ $.extend( DataTable.ext.buttons, {
 		}
 	},
 	selectNone: {
-		text: i18n( 'selectNone', 'Deselect all' ),
+		text: i18N( 'selectNone', 'Deselect all' ),
 		className: 'buttons-select-none',
 		action: function () {
 			clear( this.settings()[0], true );
@@ -1070,8 +1070,8 @@ $.extend( DataTable.ext.buttons, {
 $.each( [ 'Row', 'Column', 'Cell' ], function ( i, item ) {
 	var lc = item.toLowerCase();
 
-	DataTable.ext.buttons[ 'select'+item+'s' ] = {
-		text: i18n( 'select'+item+'s', 'Select '+lc+'s' ),
+	dataTable.ext.buttons[ 'select'+item+'s' ] = {
+		text: i18N( 'select'+item+'s', 'Select '+lc+'s' ),
 		className: 'buttons-select-'+lc+'s',
 		action: function () {
 			this.select.items( lc );
@@ -1101,9 +1101,9 @@ $(document).on( 'preInit.dt.dtSelect', function (e, ctx) {
 		return;
 	}
 
-	DataTable.select.init( new DataTable.Api( ctx ) );
+	dataTable.select.init( new dataTable.Api( ctx ) );
 } );
 
 
-return DataTable.select;
+return dataTable.select;
 }));

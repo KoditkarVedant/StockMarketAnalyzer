@@ -1,4 +1,4 @@
-/*! DataTables Foundation integration
+﻿/*! DataTables Foundation integration
  * ©2011-2015 SpryMedia Ltd - datatables.net/license
  */
 
@@ -37,22 +37,22 @@
 	}
 }(function( $, window, document, undefined ) {
 'use strict';
-var DataTable = $.fn.dataTable;
+var dataTable = $.fn.dataTable;
 
 // Detect Foundation 5 / 6 as they have different element and class requirements
 var meta = $('<meta class="foundation-mq"/>').appendTo('head');
-DataTable.ext.foundationVersion = meta.css('font-family').match(/small|medium|large/) ? 6 : 5;
+dataTable.ext.foundationVersion = meta.css('font-family').match(/small|medium|large/) ? 6 : 5;
 meta.remove();
 
 
-$.extend( DataTable.ext.classes, {
+$.extend( dataTable.ext.classes, {
 	sWrapper:    "dataTables_wrapper dt-foundation",
 	sProcessing: "dataTables_processing panel"
 } );
 
 
 /* Set the defaults for DataTables initialisation */
-$.extend( true, DataTable.defaults, {
+$.extend( true, dataTable.defaults, {
 	dom:
 		"<'row'<'small-6 columns'l><'small-6 columns'f>r>"+
 		"t"+
@@ -62,14 +62,14 @@ $.extend( true, DataTable.defaults, {
 
 
 /* Page button renderer */
-DataTable.ext.renderer.pageButton.foundation = function ( settings, host, idx, buttons, page, pages ) {
-	var api = new DataTable.Api( settings );
+dataTable.ext.renderer.pageButton.foundation = function ( settings, host, idx, buttons, page, pages ) {
+	var api = new dataTable.Api( settings );
 	var classes = settings.oClasses;
 	var lang = settings.oLanguage.oPaginate;
 	var aria = settings.oLanguage.oAria.paginate || {};
 	var btnDisplay, btnClass;
 	var tag;
-	var v5 = DataTable.ext.foundationVersion === 5;
+	var v5 = dataTable.ext.foundationVersion === 5;
 
 	var attach = function( container, buttons ) {
 		var i, ien, node, button;
@@ -170,5 +170,5 @@ DataTable.ext.renderer.pageButton.foundation = function ( settings, host, idx, b
 };
 
 
-return DataTable;
+return dataTable;
 }));

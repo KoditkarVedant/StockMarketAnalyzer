@@ -1,4 +1,4 @@
-/*! Scroller 1.4.2
+﻿/*! Scroller 1.4.2
  * ©2011-2016 SpryMedia Ltd - datatables.net/license
  */
 
@@ -48,7 +48,7 @@
 	}
 }(function( $, window, document, undefined ) {
 'use strict';
-var DataTable = $.fn.dataTable;
+var dataTable = $.fn.dataTable;
 
 
 /**
@@ -98,9 +98,9 @@ var DataTable = $.fn.dataTable;
  *        } );
  *    } );
  */
-var Scroller = function ( dt, opts ) {
+var scroller = function ( dt, opts ) {
 	/* Sanity check - you just know it will happen */
-	if ( ! (this instanceof Scroller) ) {
+	if ( ! (this instanceof scroller) ) {
 		alert( "Scroller warning: Scroller must be initialised with the 'new' keyword." );
 		return;
 	}
@@ -215,7 +215,7 @@ var Scroller = function ( dt, opts ) {
 
 	// @todo The defaults should extend a `c` property and the internal settings
 	// only held in the `s` property. At the moment they are mixed
-	this.s = $.extend( this.s, Scroller.oDefaults, opts );
+	this.s = $.extend( this.s, scroller.oDefaults, opts );
 
 	// Workaround for row height being read from height object (see above comment)
 	this.s.heights.row = this.s.rowHeight;
@@ -247,7 +247,7 @@ var Scroller = function ( dt, opts ) {
 
 
 
-$.extend( Scroller.prototype, {
+$.extend( scroller.prototype, {
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	 * Public methods
 	 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -1079,7 +1079,7 @@ $.extend( Scroller.prototype, {
  *  @name Scroller.defaults
  *  @static
  */
-Scroller.defaults = /** @lends Scroller.defaults */{
+scroller.defaults = /** @lends Scroller.defaults */{
 	/**
 	 * Indicate if Scroller show show trace information on the console or not. This can be
 	 * useful when debugging Scroller or if just curious as to what it is doing, but should
@@ -1202,7 +1202,7 @@ Scroller.defaults = /** @lends Scroller.defaults */{
 	"loadingIndicator": false
 };
 
-Scroller.oDefaults = Scroller.defaults;
+scroller.oDefaults = scroller.defaults;
 
 
 
@@ -1217,7 +1217,7 @@ Scroller.oDefaults = Scroller.defaults;
  *  @name      Scroller.version
  *  @static
  */
-Scroller.version = "1.4.2";
+scroller.version = "1.4.2";
 
 
 
@@ -1231,11 +1231,11 @@ if ( typeof $.fn.dataTable == "function" &&
      $.fn.dataTableExt.fnVersionCheck('1.10.0') )
 {
 	$.fn.dataTableExt.aoFeatures.push( {
-		"fnInit": function( oDTSettings ) {
-			var init = oDTSettings.oInit;
+		"fnInit": function( oDtSettings ) {
+			var init = oDtSettings.oInit;
 			var opts = init.scroller || init.oScroller || {};
 			
-			new Scroller( oDTSettings, opts );
+			new scroller( oDtSettings, opts );
 		},
 		"cFeature": "S",
 		"sFeature": "Scroller"
@@ -1254,32 +1254,32 @@ $(document).on( 'preInit.dt.dtscroller', function (e, settings) {
 	}
 
 	var init = settings.oInit.scroller;
-	var defaults = DataTable.defaults.scroller;
+	var defaults = dataTable.defaults.scroller;
 
 	if ( init || defaults ) {
 		var opts = $.extend( {}, init, defaults );
 
 		if ( init !== false ) {
-			new Scroller( settings, opts  );
+			new scroller( settings, opts  );
 		}
 	}
 } );
 
 
 // Attach Scroller to DataTables so it can be accessed as an 'extra'
-$.fn.dataTable.Scroller = Scroller;
-$.fn.DataTable.Scroller = Scroller;
+$.fn.dataTable.Scroller = scroller;
+$.fn.DataTable.Scroller = scroller;
 
 
 // DataTables 1.10 API method aliases
-var Api = $.fn.dataTable.Api;
+var api = $.fn.dataTable.Api;
 
-Api.register( 'scroller()', function () {
+api.register( 'scroller()', function () {
 	return this;
 } );
 
 // Undocumented and deprecated - is it actually useful at all?
-Api.register( 'scroller().rowToPixels()', function ( rowIdx, intParse, virtual ) {
+api.register( 'scroller().rowToPixels()', function ( rowIdx, intParse, virtual ) {
 	var ctx = this.context;
 
 	if ( ctx.length && ctx[0].oScroller ) {
@@ -1289,7 +1289,7 @@ Api.register( 'scroller().rowToPixels()', function ( rowIdx, intParse, virtual )
 } );
 
 // Undocumented and deprecated - is it actually useful at all?
-Api.register( 'scroller().pixelsToRow()', function ( pixels, intParse, virtual ) {
+api.register( 'scroller().pixelsToRow()', function ( pixels, intParse, virtual ) {
 	var ctx = this.context;
 
 	if ( ctx.length && ctx[0].oScroller ) {
@@ -1299,7 +1299,7 @@ Api.register( 'scroller().pixelsToRow()', function ( pixels, intParse, virtual )
 } );
 
 // Undocumented and deprecated - use `row().scrollTo()` instead
-Api.register( 'scroller().scrollToRow()', function ( row, ani ) {
+api.register( 'scroller().scrollToRow()', function ( row, ani ) {
 	this.iterator( 'table', function ( ctx ) {
 		if ( ctx.oScroller ) {
 			ctx.oScroller.fnScrollToRow( row, ani );
@@ -1309,7 +1309,7 @@ Api.register( 'scroller().scrollToRow()', function ( row, ani ) {
 	return this;
 } );
 
-Api.register( 'row().scrollTo()', function ( ani ) {
+api.register( 'row().scrollTo()', function ( ani ) {
 	var that = this;
 
 	this.iterator( 'row', function ( ctx, rowIdx ) {
@@ -1326,7 +1326,7 @@ Api.register( 'row().scrollTo()', function ( ani ) {
 	return this;
 } );
 
-Api.register( 'scroller.measure()', function ( redraw ) {
+api.register( 'scroller.measure()', function ( redraw ) {
 	this.iterator( 'table', function ( ctx ) {
 		if ( ctx.oScroller ) {
 			ctx.oScroller.fnMeasure( redraw );
@@ -1336,7 +1336,7 @@ Api.register( 'scroller.measure()', function ( redraw ) {
 	return this;
 } );
 
-Api.register( 'scroller.page()', function() {
+api.register( 'scroller.page()', function() {
 	var ctx = this.context;
 
 	if ( ctx.length && ctx[0].oScroller ) {
@@ -1345,5 +1345,5 @@ Api.register( 'scroller.page()', function() {
 	// undefined
 } );
 
-return Scroller;
+return scroller;
 }));

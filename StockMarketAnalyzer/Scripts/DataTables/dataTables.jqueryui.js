@@ -1,4 +1,4 @@
-/*! DataTables jQuery UI integration
+﻿/*! DataTables jQuery UI integration
  * ©2011-2014 SpryMedia Ltd - datatables.net/license
  */
 
@@ -37,23 +37,23 @@
 	}
 }(function( $, window, document, undefined ) {
 'use strict';
-var DataTable = $.fn.dataTable;
+var dataTable = $.fn.dataTable;
 
 
-var sort_prefix = 'css_right ui-icon ui-icon-';
-var toolbar_prefix = 'fg-toolbar ui-toolbar ui-widget-header ui-helper-clearfix ui-corner-';
+var sortPrefix = 'css_right ui-icon ui-icon-';
+var toolbarPrefix = 'fg-toolbar ui-toolbar ui-widget-header ui-helper-clearfix ui-corner-';
 
 /* Set the defaults for DataTables initialisation */
-$.extend( true, DataTable.defaults, {
+$.extend( true, dataTable.defaults, {
 	dom:
-		'<"'+toolbar_prefix+'tl ui-corner-tr"lfr>'+
+		'<"'+toolbarPrefix+'tl ui-corner-tr"lfr>'+
 		't'+
-		'<"'+toolbar_prefix+'bl ui-corner-br"ip>',
+		'<"'+toolbarPrefix+'bl ui-corner-br"ip>',
 	renderer: 'jqueryui'
 } );
 
 
-$.extend( DataTable.ext.classes, {
+$.extend( dataTable.ext.classes, {
 	"sWrapper":            "dataTables_wrapper dt-jqueryui",
 
 	/* Full numbers paging buttons */
@@ -84,9 +84,9 @@ $.extend( DataTable.ext.classes, {
 } );
 
 
-DataTable.ext.renderer.header.jqueryui = function ( settings, cell, column, classes ) {
+dataTable.ext.renderer.header.jqueryui = function ( settings, cell, column, classes ) {
 	// Calculate what the unsorted class should be
-	var noSortAppliedClass = sort_prefix+'carat-2-n-s';
+	var noSortAppliedClass = sortPrefix+'carat-2-n-s';
 	var asc = $.inArray('asc', column.asSorting) !== -1;
 	var desc = $.inArray('desc', column.asSorting) !== -1;
 
@@ -94,10 +94,10 @@ DataTable.ext.renderer.header.jqueryui = function ( settings, cell, column, clas
 		noSortAppliedClass = '';
 	}
 	else if ( asc && !desc ) {
-		noSortAppliedClass = sort_prefix+'carat-1-n';
+		noSortAppliedClass = sortPrefix+'carat-1-n';
 	}
 	else if ( !asc && desc ) {
-		noSortAppliedClass = sort_prefix+'carat-1-s';
+		noSortAppliedClass = sortPrefix+'carat-1-s';
 	}
 
 	// Setup the DOM structure
@@ -128,15 +128,15 @@ DataTable.ext.renderer.header.jqueryui = function ( settings, cell, column, clas
 		cell
 			.find( 'span.'+classes.sSortIcon )
 			.removeClass(
-				sort_prefix+'triangle-1-n' +" "+
-				sort_prefix+'triangle-1-s' +" "+
-				sort_prefix+'carat-2-n-s' +" "+
-				sort_prefix+'carat-1-n' +" "+
-				sort_prefix+'carat-1-s'
+				sortPrefix+'triangle-1-n' +" "+
+				sortPrefix+'triangle-1-s' +" "+
+				sortPrefix+'carat-2-n-s' +" "+
+				sortPrefix+'carat-1-n' +" "+
+				sortPrefix+'carat-1-s'
 			)
 			.addClass( columns[ colIdx ] == 'asc' ?
-				sort_prefix+'triangle-1-n' : columns[ colIdx ] == 'desc' ?
-					sort_prefix+'triangle-1-s' :
+				sortPrefix+'triangle-1-n' : columns[ colIdx ] == 'desc' ?
+					sortPrefix+'triangle-1-s' :
 					noSortAppliedClass
 			);
 	} );
@@ -147,8 +147,8 @@ DataTable.ext.renderer.header.jqueryui = function ( settings, cell, column, clas
  * TableTools jQuery UI compatibility
  * Required TableTools 2.1+
  */
-if ( DataTable.TableTools ) {
-	$.extend( true, DataTable.TableTools.classes, {
+if ( dataTable.TableTools ) {
+	$.extend( true, dataTable.TableTools.classes, {
 		"container": "DTTT_container ui-buttonset ui-buttonset-multi",
 		"buttons": {
 			"normal": "DTTT_button ui-button ui-state-default"
@@ -160,5 +160,5 @@ if ( DataTable.TableTools ) {
 }
 
 
-return DataTable;
+return dataTable;
 }));

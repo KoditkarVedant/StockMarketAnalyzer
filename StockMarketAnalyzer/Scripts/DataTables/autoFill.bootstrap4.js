@@ -1,4 +1,4 @@
-/*! Bootstrap integration for DataTables' AutoFill
+﻿/*! Bootstrap integration for DataTables' AutoFill
  * ©2015 SpryMedia Ltd - datatables.net/license
  */
 
@@ -33,11 +33,11 @@
 	}
 }(function( $, window, document, undefined ) {
 'use strict';
-var DataTable = $.fn.dataTable;
+var dataTable = $.fn.dataTable;
 
 
-DataTable.AutoFill.classes.btn = 'btn btn-primary';
+dataTable.AutoFill.classes.btn = 'btn btn-primary';
 
 
-return DataTable;
+return dataTable;
 }));

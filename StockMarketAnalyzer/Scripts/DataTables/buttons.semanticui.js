@@ -1,4 +1,4 @@
-/*! Bootstrap integration for DataTables' Buttons
+﻿/*! Bootstrap integration for DataTables' Buttons
  * ©2016 SpryMedia Ltd - datatables.net/license
  */
 
@@ -33,10 +33,10 @@
 	}
 }(function( $, window, document, undefined ) {
 'use strict';
-var DataTable = $.fn.dataTable;
+var dataTable = $.fn.dataTable;
 
 
-$.extend( true, DataTable.Buttons.defaults, {
+$.extend( true, dataTable.Buttons.defaults, {
 	dom: {
 		container: {
 			className: 'dt-buttons ui basic buttons'
@@ -53,5 +53,5 @@ $.extend( true, DataTable.Buttons.defaults, {
 } );
 
 
-return DataTable.Buttons;
+return dataTable.Buttons;
 }));

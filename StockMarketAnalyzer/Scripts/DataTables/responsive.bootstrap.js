@@ -1,4 +1,4 @@
-/*! Bootstrap integration for DataTables' Responsive
+﻿/*! Bootstrap integration for DataTables' Responsive
  * ©2015-2016 SpryMedia Ltd - datatables.net/license
  */
 
@@ -33,12 +33,12 @@
 	}
 }(function( $, window, document, undefined ) {
 'use strict';
-var DataTable = $.fn.dataTable;
+var dataTable = $.fn.dataTable;
 
 
-var _display = DataTable.Responsive.display;
-var _original = _display.modal;
-var _modal = $(
+var display = dataTable.Responsive.display;
+var original = display.modal;
+var modal = $(
 	'<div class="modal fade dtr-bs-modal" role="dialog">'+
 		'<div class="modal-dialog" role="document">'+
 			'<div class="modal-content">'+
@@ -51,24 +51,24 @@ var _modal = $(
 	'</div>'
 );
 
-_display.modal = function ( options ) {
+display.modal = function ( options ) {
 	return function ( row, update, render ) {
 		if ( ! $.fn.modal ) {
-			_original( row, update, render );
+			original( row, update, render );
 		}
 		else {
 			if ( ! update ) {
 				if ( options && options.header ) {
-					_modal.find('div.modal-header')
+					modal.find('div.modal-header')
 						.empty()
 						.append( '<h4 class="modal-title">'+options.header( row )+'</h4>' );
 				}
 
-				_modal.find( 'div.modal-body' )
+				modal.find( 'div.modal-body' )
 					.empty()
 					.append( render() );
 
-				_modal
+				modal
 					.appendTo( 'body' )
 					.modal();
 			}
@@ -77,5 +77,5 @@ _display.modal = function ( options ) {
 };
 
 
-return DataTable.Responsive;
+return dataTable.Responsive;
 }));

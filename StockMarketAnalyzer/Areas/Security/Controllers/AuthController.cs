@@ -1,14 +1,14 @@
-﻿using StockMarketAnalyzer.BLL.Interfaces;
-using StockMarketAnalyzer.BO;
-using StockMarketAnalyzer.Filters;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Web;
 using System.Web.Mvc;
+using StockMarketAnalyzer.BLL.Interfaces;
+using StockMarketAnalyzer.BO;
+using StockMarketAnalyzer.Filters;
 
-namespace StockMarketAnalyzer.Controllers
+namespace StockMarketAnalyzer.Areas.Security.Controllers
 {
     [AllowAnonymous]
     public class AuthController : Controller
@@ -23,7 +23,7 @@ namespace StockMarketAnalyzer.Controllers
         // GET: Auth
         public ActionResult Index()
         {
-            return View();
+            return Login();
         }
 
         [AutherizationFilter]
@@ -35,7 +35,7 @@ namespace StockMarketAnalyzer.Controllers
         [AutherizationFilter]
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public ActionResult Login(User user, string ReturnUrl)
+        public ActionResult Login(User user, string returnUrl)
         {
             if (!ModelState.IsValid) return View();
 
@@ -46,7 +46,7 @@ namespace StockMarketAnalyzer.Controllers
                     new[]{
                         new Claim(ClaimTypes.Email,user.EmailAddress),
                         new Claim(ClaimTypes.Name,_services.getUserID(user.EmailAddress).ToString())
-                }, "ApplicationCookie");
+                }, @"ApplicationCookie");
 
                 var ctx = Request.GetOwinContext();
                 var authManager = ctx.Authentication;
@@ -54,8 +54,8 @@ namespace StockMarketAnalyzer.Controllers
                 identity.AddClaim(new Claim(ClaimTypes.Role, _services.getUserRole(user.EmailAddress)));
 
                 authManager.SignIn(identity);
-                
-                return Redirect(GetRedirectUrl(ReturnUrl));
+
+                return Redirect(GetRedirectUrl(returnUrl));
             }
 
             ModelState.AddModelError("", "Invalid email or password");
@@ -67,7 +67,7 @@ namespace StockMarketAnalyzer.Controllers
         {
             if (string.IsNullOrEmpty(returnUrl) || !Url.IsLocalUrl(returnUrl))
             {
-                return Url.Action("index", "home");
+                return Url.Action("index", "home", new { area = "" });
             }
 
             return returnUrl;
@@ -80,7 +80,7 @@ namespace StockMarketAnalyzer.Controllers
 
             authManager.SignOut("ApplicationCookie");
 
-            return RedirectToAction("index", "home");
+            return RedirectToAction("index", "home", new { area = "" });
         }
 
         [AutherizationFilter]
@@ -96,17 +96,16 @@ namespace StockMarketAnalyzer.Controllers
         public ActionResult Register(Register user)
         {
             if (!ModelState.IsValid) return View(user);
-            
+
             user.UserType = UserType.User;
             if (_services.RegisterNewUser(user))
             {
-                return RedirectToAction("Login", "Auth");
+                ViewBag.Success = "Registered Successfully ! you may login now.";
+                return View();
             }
-            else
-            {
-                ModelState.AddModelError("", "Something went wrong please try again!");
-                return View(user);
-            }
+
+            ViewBag.Error= "Something went wrong please try again!";
+            return View(user);
         }
     }
 }

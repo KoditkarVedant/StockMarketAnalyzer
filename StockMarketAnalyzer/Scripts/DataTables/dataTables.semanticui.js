@@ -1,4 +1,4 @@
-/*! DataTables Bootstrap 3 integration
+﻿/*! DataTables Bootstrap 3 integration
  * ©2011-2015 SpryMedia Ltd - datatables.net/license
  */
 
@@ -40,11 +40,11 @@
 	}
 }(function( $, window, document, undefined ) {
 'use strict';
-var DataTable = $.fn.dataTable;
+var dataTable = $.fn.dataTable;
 
 
 /* Set the defaults for DataTables initialisation */
-$.extend( true, DataTable.defaults, {
+$.extend( true, dataTable.defaults, {
 	dom:
 		"<'ui grid'"+
 			"<'row'"+
@@ -64,7 +64,7 @@ $.extend( true, DataTable.defaults, {
 
 
 /* Default class modification */
-$.extend( DataTable.ext.classes, {
+$.extend( dataTable.ext.classes, {
 	sWrapper:      "dataTables_wrapper dt-semanticUI",
 	sFilter:       "dataTables_filter ui input",
 	sProcessing:   "dataTables_processing ui segment",
@@ -73,8 +73,8 @@ $.extend( DataTable.ext.classes, {
 
 
 /* Bootstrap paging button renderer */
-DataTable.ext.renderer.pageButton.semanticUI = function ( settings, host, idx, buttons, page, pages ) {
-	var api     = new DataTable.Api( settings );
+dataTable.ext.renderer.pageButton.semanticUI = function ( settings, host, idx, buttons, page, pages ) {
+	var api     = new dataTable.Api( settings );
 	var classes = settings.oClasses;
 	var lang    = settings.oLanguage.oPaginate;
 	var aria = settings.oLanguage.oAria.paginate || {};
@@ -204,5 +204,5 @@ $(document).on( 'init.dt', function (e, ctx) {
 } );
 
 
-return DataTable;
+return dataTable;
 }));

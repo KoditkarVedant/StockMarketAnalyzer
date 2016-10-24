@@ -1,4 +1,4 @@
-/*!
+﻿/*!
  * HTML5 export buttons for Buttons and DataTables.
  * 2016 SpryMedia Ltd - datatables.net/license
  *
@@ -37,7 +37,7 @@
 	}
 }(function( $, window, document, jsZip, pdfMake, undefined ) {
 'use strict';
-var DataTable = $.fn.dataTable;
+var dataTable = $.fn.dataTable;
 
 // Allow the constructor to pass in JSZip and PDFMake from external requires.
 // Otherwise, use globally defined variables, if they are available.
@@ -64,31 +64,31 @@ var _saveAs = (function(view) {
 	var
 		  doc = view.document
 		  // only get URL when necessary in case Blob.js hasn't overridden it yet
-		, get_URL = function() {
+		, getUrl = function() {
 			return view.URL || view.webkitURL || view;
 		}
-		, save_link = doc.createElementNS("http://www.w3.org/1999/xhtml", "a")
-		, can_use_save_link = "download" in save_link
+		, saveLink = doc.createElementNS("http://www.w3.org/1999/xhtml", "a")
+		, canUseSaveLink = "download" in saveLink
 		, click = function(node) {
 			var event = new MouseEvent("click");
 			node.dispatchEvent(event);
 		}
-		, is_safari = /Version\/[\d\.]+.*Safari/.test(navigator.userAgent)
-		, webkit_req_fs = view.webkitRequestFileSystem
-		, req_fs = view.requestFileSystem || webkit_req_fs || view.mozRequestFileSystem
-		, throw_outside = function(ex) {
+		, isSafari = /Version\/[\d\.]+.*Safari/.test(navigator.userAgent)
+		, webkitReqFs = view.webkitRequestFileSystem
+		, reqFs = view.requestFileSystem || webkitReqFs || view.mozRequestFileSystem
+		, throwOutside = function(ex) {
 			(view.setImmediate || view.setTimeout)(function() {
 				throw ex;
 			}, 0);
 		}
-		, force_saveable_type = "application/octet-stream"
-		, fs_min_size = 0
+		, forceSaveableType = "application/octet-stream"
+		, fsMinSize = 0
 		// the Blob API is fundamentally broken as there is no "downloadfinished" event to subscribe to
-		, arbitrary_revoke_timeout = 1000 * 40 // in ms
+		, arbitraryRevokeTimeout = 1000 * 40 // in ms
 		, revoke = function(file) {
 			var revoker = function() {
 				if (typeof file === "string") { // file is an object URL
-					get_URL().revokeObjectURL(file);
+					getUrl().revokeObjectURL(file);
 				} else { // file is a File
 					file.remove();
 				}
@@ -109,74 +109,74 @@ var _saveAs = (function(view) {
 			;
 			view.addEventListener("downloadfinished", revoker);
 			*/
-			setTimeout(revoker, arbitrary_revoke_timeout);
+			setTimeout(revoker, arbitraryRevokeTimeout);
 		}
-		, dispatch = function(filesaver, event_types, event) {
-			event_types = [].concat(event_types);
-			var i = event_types.length;
+		, dispatch = function(filesaver, eventTypes, event) {
+			eventTypes = [].concat(eventTypes);
+			var i = eventTypes.length;
 			while (i--) {
-				var listener = filesaver["on" + event_types[i]];
+				var listener = filesaver["on" + eventTypes[i]];
 				if (typeof listener === "function") {
 					try {
 						listener.call(filesaver, event || filesaver);
 					} catch (ex) {
-						throw_outside(ex);
+						throwOutside(ex);
 					}
 				}
 			}
 		}
-		, auto_bom = function(blob) {
+		, autoBom = function(blob) {
 			// prepend BOM for UTF-8 XML and text/* types (including HTML)
 			if (/^\s*(?:text\/\S*|application\/xml|\S*\/\S*\+xml)\s*;.*charset\s*=\s*utf-8/i.test(blob.type)) {
 				return new Blob(["\ufeff", blob], {type: blob.type});
 			}
 			return blob;
 		}
-		, FileSaver = function(blob, name, no_auto_bom) {
-			if (!no_auto_bom) {
-				blob = auto_bom(blob);
+		, fileSaver = function(blob, name, noAutoBom) {
+			if (!noAutoBom) {
+				blob = autoBom(blob);
 			}
 			// First try a.download, then web filesystem, then object URLs
 			var
 				  filesaver = this
 				, type = blob.type
-				, blob_changed = false
-				, object_url
-				, target_view
-				, dispatch_all = function() {
+				, blobChanged = false
+				, objectUrl
+				, targetView
+				, dispatchAll = function() {
 					dispatch(filesaver, "writestart progress write writeend".split(" "));
 				}
 				// on any filesys errors revert to saving with object URLs
-				, fs_error = function() {
-					if (target_view && is_safari && typeof FileReader !== "undefined") {
+				, fsError = function() {
+					if (targetView && isSafari && typeof FileReader !== "undefined") {
 						// Safari doesn't allow downloading of blob urls
 						var reader = new FileReader();
 						reader.onloadend = function() {
 							var base64Data = reader.result;
-							target_view.location.href = "data:attachment/file" + base64Data.slice(base64Data.search(/[,;]/));
+							targetView.location.href = "data:attachment/file" + base64Data.slice(base64Data.search(/[,;]/));
 							filesaver.readyState = filesaver.DONE;
-							dispatch_all();
+							dispatchAll();
 						};
 						reader.readAsDataURL(blob);
 						filesaver.readyState = filesaver.INIT;
 						return;
 					}
 					// don't create more object URLs than needed
-					if (blob_changed || !object_url) {
-						object_url = get_URL().createObjectURL(blob);
+					if (blobChanged || !objectUrl) {
+						objectUrl = getUrl().createObjectURL(blob);
 					}
-					if (target_view) {
-						target_view.location.href = object_url;
+					if (targetView) {
+						targetView.location.href = objectUrl;
 					} else {
-						var new_tab = view.open(object_url, "_blank");
-						if (new_tab === undefined && is_safari) {
+						var newTab = view.open(objectUrl, "_blank");
+						if (newTab === undefined && isSafari) {
 							//Apple do not allow window.open, see http://bit.ly/1kZffRI
-							view.location.href = object_url
+							view.location.href = objectUrl
 						}
 					}
 					filesaver.readyState = filesaver.DONE;
-					dispatch_all();
-					revoke(object_url);
+					dispatchAll();
+					revoke(objectUrl);
 				}
 				, abortable = function(func) {
 					return function() {
@@ -185,21 +185,21 @@ var _saveAs = (function(view) {
 						}
 					};
 				}
-				, create_if_not_found = {create: true, exclusive: false}
+				, createIfNotFound = {create: true, exclusive: false}
 				, slice
 			;
 			filesaver.readyState = filesaver.INIT;
 			if (!name) {
 				name = "download";
 			}
-			if (can_use_save_link) {
-				object_url = get_URL().createObjectURL(blob);
+			if (canUseSaveLink) {
+				objectUrl = getUrl().createObjectURL(blob);
 				setTimeout(function() {
-					save_link.href = object_url;
-					save_link.download = name;
-					click(save_link);
-					dispatch_all();
-					revoke(object_url);
+					saveLink.href = objectUrl;
+					saveLink.download = name;
+					click(saveLink);
+					dispatchAll();
+					revoke(objectUrl);
 					filesaver.readyState = filesaver.DONE;
 				});
 				return;
@@ -209,32 +209,32 @@ var _saveAs = (function(view) {
 			// http://code.google.com/p/chromium/issues/detail?id=91158
 			// Update: Google errantly closed 91158, I submitted it again:
 			// https://code.google.com/p/chromium/issues/detail?id=389642
-			if (view.chrome && type && type !== force_saveable_type) {
+			if (view.chrome && type && type !== forceSaveableType) {
 				slice = blob.slice || blob.webkitSlice;
-				blob = slice.call(blob, 0, blob.size, force_saveable_type);
-				blob_changed = true;
+				blob = slice.call(blob, 0, blob.size, forceSaveableType);
+				blobChanged = true;
 			}
 			// Since I can't be sure that the guessed media type will trigger a download
 			// in WebKit, I append .download to the filename.
 			// https://bugs.webkit.org/show_bug.cgi?id=65440
-			if (webkit_req_fs && name !== "download") {
+			if (webkitReqFs && name !== "download") {
 				name += ".download";
 			}
-			if (type === force_saveable_type || webkit_req_fs) {
-				target_view = view;
+			if (type === forceSaveableType || webkitReqFs) {
+				targetView = view;
 			}
-			if (!req_fs) {
-				fs_error();
+			if (!reqFs) {
+				fsError();
 				return;
 			}
-			fs_min_size += blob.size;
-			req_fs(view.TEMPORARY, fs_min_size, abortable(function(fs) {
-				fs.root.getDirectory("saved", create_if_not_found, abortable(function(dir) {
+			fsMinSize += blob.size;
+			reqFs(view.TEMPORARY, fsMinSize, abortable(function(fs) {
+				fs.root.getDirectory("saved", createIfNotFound, abortable(function(dir) {
 					var save = function() {
-						dir.getFile(name, create_if_not_found, abortable(function(file) {
+						dir.getFile(name, createIfNotFound, abortable(function(file) {
 							file.createWriter(abortable(function(writer) {
 								writer.onwriteend = function(event) {
-									target_view.location.href = file.toURL();
+									targetView.location.href = file.toURL();
 									filesaver.readyState = filesaver.DONE;
 									dispatch(filesaver, "writeend", event);
 									revoke(file);
@@ -242,7 +242,7 @@ var _saveAs = (function(view) {
 								writer.onerror = function() {
 									var error = writer.error;
 									if (error.code !== error.ABORT_ERR) {
-										fs_error();
+										fsError();
 									}
 								};
 								"writestart progress write abort".split(" ").forEach(function(event) {
@@ -254,8 +254,8 @@ var _saveAs = (function(view) {
 									filesaver.readyState = filesaver.DONE;
 								};
 								filesaver.readyState = filesaver.WRITING;
-							}), fs_error);
-						}), fs_error);
+							}), fsError);
+						}), fsError);
 					};
 					dir.getFile(name, {create: false}, abortable(function(file) {
 						// delete file if it already exists
@@ -265,43 +265,43 @@ var _saveAs = (function(view) {
 						if (ex.code === ex.NOT_FOUND_ERR) {
 							save();
 						} else {
-							fs_error();
+							fsError();
 						}
 					}));
-				}), fs_error);
-			}), fs_error);
+				}), fsError);
+			}), fsError);
 		}
-		, FS_proto = FileSaver.prototype
-		, saveAs = function(blob, name, no_auto_bom) {
-			return new FileSaver(blob, name, no_auto_bom);
+		, fsProto = fileSaver.prototype
+		, saveAs = function(blob, name, noAutoBom) {
+			return new fileSaver(blob, name, noAutoBom);
 		}
 	;
 	// IE 10+ (native saveAs)
 	if (typeof navigator !== "undefined" && navigator.msSaveOrOpenBlob) {
-		return function(blob, name, no_auto_bom) {
-			if (!no_auto_bom) {
-				blob = auto_bom(blob);
+		return function(blob, name, noAutoBom) {
+			if (!noAutoBom) {
+				blob = autoBom(blob);
 			}
 			return navigator.msSaveOrOpenBlob(blob, name || "download");
 		};
 	}
 
-	FS_proto.abort = function() {
+	fsProto.abort = function() {
 		var filesaver = this;
 		filesaver.readyState = filesaver.DONE;
 		dispatch(filesaver, "abort");
 	};
-	FS_proto.readyState = FS_proto.INIT = 0;
-	FS_proto.WRITING = 1;
-	FS_proto.DONE = 2;
+	fsProto.readyState = fsProto.INIT = 0;
+	fsProto.WRITING = 1;
+	fsProto.DONE = 2;
 
-	FS_proto.error =
-	FS_proto.onwritestart =
-	FS_proto.onprogress =
-	FS_proto.onwrite =
-	FS_proto.onabort =
-	FS_proto.onerror =
-	FS_proto.onwriteend =
+	fsProto.error =
+	fsProto.onwritestart =
+	fsProto.onprogress =
+	fsProto.onwrite =
+	fsProto.onabort =
+	fsProto.onerror =
+	fsProto.onwriteend =
 		null;
 
 	return saveAs;
@@ -314,7 +314,7 @@ var _saveAs = (function(view) {
 
 // Expose file saver on the DataTables API. Can't attach to `DataTables.Buttons`
 // since this file can be loaded before Button's core!
-DataTable.fileSave = _saveAs;
+dataTable.fileSave = _saveAs;
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -355,7 +355,7 @@ var _filename = function ( config, incExtension )
  *
  * @param {object}	config Button configuration
  */
-var _sheetname = function ( config )
+var sheetname = function ( config )
 {
 	var sheetName = 'Sheet1';
 
@@ -456,7 +456,7 @@ var _exportData = function ( dt, config )
  *
  * @return {Boolean} `true` if Safari
  */
-var _isSafari = function ()
+var isSafari = function ()
 {
 	return navigator.userAgent.indexOf('Safari') !== -1 &&
 		navigator.userAgent.indexOf('Chrome') === -1 &&
@@ -483,8 +483,8 @@ function createCellPos( n ){
 }
 
 try {
-	var _serialiser = new XMLSerializer();
-	var _ieExcel;
+	var serialiser = new XMLSerializer();
+	var ieExcel;
 }
 catch (t) {}
 
@@ -496,11 +496,11 @@ catch (t) {}
  * @param {JSZip} zip ZIP package
  * @param {object} obj Object to add (recursive)
  */
-function _addToZip( zip, obj ) {
-	if ( _ieExcel === undefined ) {
+function addToZip( zip, obj ) {
+	if ( ieExcel === undefined ) {
 		// Detect if we are dealing with IE's _awful_ serialiser by seeing if it
 		// drop attributes
-		_ieExcel = _serialiser
+		ieExcel = serialiser
 			.serializeToString(
 				$.parseXML( excelStrings['xl/worksheets/sheet1.xml'] )
 			)
@@ -510,10 +510,10 @@ function _addToZip( zip, obj ) {
 	$.each( obj, function ( name, val ) {
 		if ( $.isPlainObject( val ) ) {
 			var newDir = zip.folder( name );
-			_addToZip( newDir, val );
+			addToZip( newDir, val );
 		}
 		else {
-			if ( _ieExcel ) {
+			if ( ieExcel ) {
 				// IE's XML serialiser will drop some name space attributes from
 				// from the root node, so we need to save them. Do this by
 				// replacing the namespace nodes with a regular attribute that
@@ -541,10 +541,10 @@ function _addToZip( zip, obj ) {
 				}
 			}
 
-			var str = _serialiser.serializeToString(val);
+			var str = serialiser.serializeToString(val);
 
 			// Fix IE's XML
-			if ( _ieExcel ) {
+			if ( ieExcel ) {
 				// IE doesn't include the XML declaration
 				if ( str.indexOf( '<?xml' ) === -1 ) {
 					str = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'+str;
@@ -575,7 +575,7 @@ function _addToZip( zip, obj ) {
  *   (child nodes) and `text` (text content)
  * @return {node}            Created node
  */
-function _createNode( doc, nodeName, opts ) {
+function createNode( doc, nodeName, opts ) {
 	var tempNode = doc.createElement( nodeName );
 
 	if ( opts ) {
@@ -603,7 +603,7 @@ function _createNode( doc, nodeName, opts ) {
  * @param  {int}    col  Column index
  * @return {int}         Column width
  */
-function _excelColWidth( data, col ) {
+function excelColWidth( data, col ) {
 	var max = data.header[col].length;
 	var len;
 
@@ -830,7 +830,7 @@ var excelStrings = {
 //
 // Copy to clipboard
 //
-DataTable.ext.buttons.copyHtml5 = {
+dataTable.ext.buttons.copyHtml5 = {
 	className: 'buttons-copy buttons-html5',
 
 	text: function ( dt ) {
@@ -930,7 +930,7 @@ DataTable.ext.buttons.copyHtml5 = {
 //
 // CSV export
 //
-DataTable.ext.buttons.csvHtml5 = {
+dataTable.ext.buttons.csvHtml5 = {
 	className: 'buttons-csv buttons-html5',
 
 	available: function () {
@@ -991,11 +991,11 @@ DataTable.ext.buttons.csvHtml5 = {
 //
 // Excel (xlsx) export
 //
-DataTable.ext.buttons.excelHtml5 = {
+dataTable.ext.buttons.excelHtml5 = {
 	className: 'buttons-excel buttons-html5',
 
 	available: function () {
-		return window.FileReader !== undefined && jsZip !== undefined && ! _isSafari() && _serialiser;
+		return window.FileReader !== undefined && jsZip !== undefined && ! isSafari() && serialiser;
 	},
 
 	text: function ( dt ) {
@@ -1036,7 +1036,7 @@ DataTable.ext.buttons.excelHtml5 = {
 		var currentRow, rowNode;
 		var addRow = function ( row ) {
 			currentRow = rowPos+1;
-			rowNode = _createNode( rels, "row", { attr: {r:currentRow} } );
+			rowNode = createNode( rels, "row", { attr: {r:currentRow} } );
 
 			for ( var i=0, ien=row.length ; i<ien ; i++ ) {
 				// Concat both the Cell Columns as a letter and the Row of the cell.
@@ -1054,13 +1054,13 @@ DataTable.ext.buttons.excelHtml5 = {
 						$.trim(row[i]).match(/^-?\d+(\.\d+)?$/) &&
 						! $.trim(row[i]).match(/^0\d+/) )
 				) {
-					cell = _createNode( rels, 'c', {
+					cell = createNode( rels, 'c', {
 						attr: {
 							t: 'n',
 							r: cellId
 						},
 						children: [
-							_createNode( rels, 'v', { text: row[i] } )
+							createNode( rels, 'v', { text: row[i] } )
 						]
 					} );
 				}
@@ -1074,15 +1074,15 @@ DataTable.ext.buttons.excelHtml5 = {
 							.replace(/>/g, '&gt;')
 							.replace(/[\x00-\x09\x0B\x0C\x0E-\x1F\x7F-\x9F]/g, '');
 
-					cell = _createNode( rels, 'c', {
+					cell = createNode( rels, 'c', {
 						attr: {
 							t: 'inlineStr',
 							r: cellId
 						},
 						children:{
-							row: _createNode( rels, 'is', {
+							row: createNode( rels, 'is', {
 								children: {
-									row: _createNode( rels, 't', {
+									row: createNode( rels, 't', {
 										text: text
 									} )
 								}
@@ -1097,7 +1097,7 @@ DataTable.ext.buttons.excelHtml5 = {
 			rowPos++;
 		};
 
-		$( 'sheets sheet', xlsx.xl['workbook.xml'] ).attr( 'name', _sheetname( config ) );
+		$( 'sheets sheet', xlsx.xl['workbook.xml'] ).attr( 'name', sheetname( config ) );
 
 		if ( config.customizeData ) {
 			config.customizeData( data );
@@ -1118,15 +1118,15 @@ DataTable.ext.buttons.excelHtml5 = {
 		}
 
 		// Set column widths
-		var cols = _createNode( rels, 'cols' );
+		var cols = createNode( rels, 'cols' );
 		$('worksheet', rels).prepend( cols );
 
 		for ( var i=0, ien=data.header.length ; i<ien ; i++ ) {
-			cols.appendChild( _createNode( rels, 'col', {
+			cols.appendChild( createNode( rels, 'col', {
 				attr: {
 					min: i+1,
 					max: i+1,
-					width: _excelColWidth( data, i ),
+					width: excelColWidth( data, i ),
 					customWidth: 1
 				}
 			} ) );
@@ -1143,7 +1143,7 @@ DataTable.ext.buttons.excelHtml5 = {
 			mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
 		};
 
-		_addToZip( zip, xlsx );
+		addToZip( zip, xlsx );
 
 		if ( zip.generateAsync ) {
 			// JSZip 3+
@@ -1176,7 +1176,7 @@ DataTable.ext.buttons.excelHtml5 = {
 //
 // PDF export - using pdfMake - http://pdfmake.org
 //
-DataTable.ext.buttons.pdfHtml5 = {
+dataTable.ext.buttons.pdfHtml5 = {
 	className: 'buttons-pdf buttons-html5',
 
 	available: function () {
@@ -1282,7 +1282,7 @@ DataTable.ext.buttons.pdfHtml5 = {
 
 		var pdf = pdfMake.createPdf( doc );
 
-		if ( config.download === 'open' && ! _isSafari() ) {
+		if ( config.download === 'open' && ! isSafari() ) {
 			pdf.open();
 		}
 		else {
@@ -1318,5 +1318,5 @@ DataTable.ext.buttons.pdfHtml5 = {
 };
 
 
-return DataTable.Buttons;
+return dataTable.Buttons;
 }));

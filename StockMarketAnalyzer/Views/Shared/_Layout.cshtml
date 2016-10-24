@@ -20,22 +20,22 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                    <li>@Html.ActionLink("Lookup", "LookupCompany", "Home")</li>
+                    <li>@Html.ActionLink(@"Home", @"Index", @"Home", routeValues: new { area = "" }, htmlAttributes: null)</li>
+                    <li>@Html.ActionLink(@"About", @"About", @"Home", routeValues: new { area = "" }, htmlAttributes: null)</li>
+                    <li>@Html.ActionLink(@"Contact", @"Contact", @"Home", routeValues: new { area = "" }, htmlAttributes: null)</li>
+                    <li>@Html.ActionLink(@"Lookup", @"LookupCompany", @"Home", routeValues: new { area = "" }, htmlAttributes: null)</li>
 
                     @if (User.Identity.IsAuthenticated)
                     {
-                        if (User.IsInRole("User"))
-                        {
-                            <li>@Html.ActionLink("Profile", "Profile", "Home", null, new { @class = "pull-right" })</li>
-                            <li>@Html.ActionLink("Portfolio", "Portfolio", "Home", null, new { @class = "pull-right" })</li>
-                        }
-                        if (User.IsInRole("Admin"))
-                        {
-                            <li>@Html.ActionLink("Update Handle", "", "", null, new { @class = "pull-right" })</li>
-                        }
+                    if (User.IsInRole("User"))
+                    {
+                    <li>@Html.ActionLink(@"Profile", @"Profile", @"Users", routeValues: new { area = "Users" }, htmlAttributes: new { @class = "pull-right" })</li>
+                    <li>@Html.ActionLink(@"Portfolio", @"Portfolio", @"Users", routeValues: new { area = "Users" }, htmlAttributes: new { @class = "pull-right" })</li>
+                    }
+                    if (User.IsInRole("Admin"))
+                    {
+                    <li>@Html.ActionLink(@"Update Handle", @"", @"", routeValues: new { area = "Admin" }, htmlAttributes: new { @class = "pull-right" })</li>
+                    }
                     }
 
 
@@ -43,21 +43,21 @@
                 <ul class="nav navbar-nav navbar-right">
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <li class="dropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                <span class="glyphicon glyphicon-user"></span>
-                                <span class="caret"></span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li>@Html.ActionLink("Logout", "Logout", "Auth",null,null)</li>
-                            </ul>
-                        </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <span class="glyphicon glyphicon-user"></span>
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("Sign Out", "Logout", "Auth",new { area = "Security"},null)</li>
+                        </ul>
+                    </li>
 
                     }
                     else
                     {
-                        <li>@Html.ActionLink("SignIn", "Login", "Auth", null, new { @class = "pull-right" })</li>
-                        <li>@Html.ActionLink("SignUp", "Register", "Auth", null, new { @class = "pull-right" })</li>
+                    <li>@Html.ActionLink("Sign In", "Login", "Auth", new{area="Security"}, null)</li>
+                    <li>@Html.ActionLink("Sign Up", "Register", "Auth", new{area="Security"}, null)</li>
                     }
                 </ul>
             </div>

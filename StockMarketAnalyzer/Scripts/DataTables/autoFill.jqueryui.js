@@ -1,4 +1,4 @@
-/*! jQuery UI integration for DataTables' AutoFill
+﻿/*! jQuery UI integration for DataTables' AutoFill
  * ©2015 SpryMedia Ltd - datatables.net/license
  */
 
@@ -33,11 +33,11 @@
 	}
 }(function( $, window, document, undefined ) {
 'use strict';
-var DataTable = $.fn.dataTable;
+var dataTable = $.fn.dataTable;
 
 
-DataTable.AutoFill.classes.btn = 'ui-button ui-state-default ui-corner-all';
+dataTable.AutoFill.classes.btn = 'ui-button ui-state-default ui-corner-all';
 
 
-return DataTable;
+return dataTable;
 }));

@@ -1,4 +1,4 @@
-/*! ColReorder 1.3.2
+﻿/*! ColReorder 1.3.2
  * ©2010-2015 SpryMedia Ltd - datatables.net/license
  */
 
@@ -47,7 +47,7 @@
 	}
 }(function( $, window, document, undefined ) {
 'use strict';
-var DataTable = $.fn.dataTable;
+var dataTable = $.fn.dataTable;
 
 
 /**
@@ -367,7 +367,7 @@ $.fn.dataTableExt.oApi.fnColReorder = function ( oSettings, iFrom, iTo, drop, in
  * @param {object} dt DataTables settings object
  * @param {object} opts ColReorder options
  */
-var ColReorder = function( dt, opts )
+var colReorder = function( dt, opts )
 {
 	var settings = new $.fn.dataTable.Api( dt ).settings()[0];
 
@@ -384,8 +384,8 @@ var ColReorder = function( dt, opts )
 	// Convert from camelCase to Hungarian, just as DataTables does
 	var camelToHungarian = $.fn.dataTable.camelToHungarian;
 	if ( camelToHungarian ) {
-		camelToHungarian( ColReorder.defaults, ColReorder.defaults, true );
-		camelToHungarian( ColReorder.defaults, opts || {} );
+		camelToHungarian( colReorder.defaults, colReorder.defaults, true );
+		camelToHungarian( colReorder.defaults, opts || {} );
 	}
 
 
@@ -411,7 +411,7 @@ var ColReorder = function( dt, opts )
 		 *  @type     object
 		 *  @default  {}
 		 */
-		"init": $.extend( true, {}, ColReorder.defaults, opts ),
+		"init": $.extend( true, {}, colReorder.defaults, opts ),
 
 		/**
 		 * Number of columns to fix (not allow to be reordered)
@@ -495,7 +495,7 @@ var ColReorder = function( dt, opts )
 
 
 
-$.extend( ColReorder.prototype, {
+$.extend( colReorder.prototype, {
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	 * Public methods
 	 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -1180,7 +1180,7 @@ $.extend( ColReorder.prototype, {
  *  @namespace
  *  @static
  */
-ColReorder.defaults = {
+colReorder.defaults = {
 	/**
 	 * Predefined ordering for the columns that will be applied automatically
 	 * on initialisation. If not specified then the order that the columns are
@@ -1242,7 +1242,7 @@ ColReorder.defaults = {
  *  @type      String
  *  @default   As code
  */
-ColReorder.version = "1.3.2";
+colReorder.version = "1.3.2";
 
 
 
@@ -1251,8 +1251,8 @@ ColReorder.version = "1.3.2";
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 // Expose
-$.fn.dataTable.ColReorder = ColReorder;
-$.fn.DataTable.ColReorder = ColReorder;
+$.fn.dataTable.ColReorder = colReorder;
+$.fn.DataTable.ColReorder = colReorder;
 
 
 // Register a new feature with DataTables
@@ -1268,7 +1268,7 @@ if ( typeof $.fn.dataTable == "function" &&
 				var dtInit = settings.oInit;
 				var opts = dtInit.colReorder || dtInit.oColReorder || {};
 
-				new ColReorder( settings, opts );
+				new colReorder( settings, opts );
 			}
 			else {
 				table.oApi._fnLog( settings, 1, "ColReorder attempted to initialise twice. Ignoring second" );
@@ -1293,13 +1293,13 @@ $(document).on( 'preInit.dt.colReorder', function (e, settings) {
 	}
 
 	var init = settings.oInit.colReorder;
-	var defaults = DataTable.defaults.colReorder;
+	var defaults = dataTable.defaults.colReorder;
 
 	if ( init || defaults ) {
 		var opts = $.extend( {}, init, defaults );
 
 		if ( init !== false ) {
-			new ColReorder( settings, opts  );
+			new colReorder( settings, opts  );
 		}
 	}
 } );
@@ -1331,5 +1331,5 @@ $.fn.dataTable.Api.register( 'colReorder.transpose()', function ( idx, dir ) {
 } );
 
 
-return ColReorder;
+return colReorder;
 }));

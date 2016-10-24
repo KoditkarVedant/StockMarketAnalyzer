@@ -1,4 +1,4 @@
-/*! FixedHeader 3.1.2
+﻿/*! FixedHeader 3.1.2
  * ©2009-2016 SpryMedia Ltd - datatables.net/license
  */
 
@@ -49,14 +49,14 @@
 	}
 }(function( $, window, document, undefined ) {
 'use strict';
-var DataTable = $.fn.dataTable;
+var dataTable = $.fn.dataTable;
 
 
-var _instCounter = 0;
+var instCounter = 0;
 
-var FixedHeader = function ( dt, config ) {
+var fixedHeader = function ( dt, config ) {
 	// Sanity check - you just know it will happen
-	if ( ! (this instanceof FixedHeader) ) {
+	if ( ! (this instanceof fixedHeader) ) {
 		throw "FixedHeader must be initialised with the 'new' keyword.";
 	}
 
@@ -65,9 +65,9 @@ var FixedHeader = function ( dt, config ) {
 		config = {};
 	}
 
-	dt = new DataTable.Api( dt );
+	dt = new dataTable.Api( dt );
 
-	this.c = $.extend( true, {}, FixedHeader.defaults, config );
+	this.c = $.extend( true, {}, fixedHeader.defaults, config );
 
 	this.s = {
 		dt: dt,
@@ -86,7 +86,7 @@ var FixedHeader = function ( dt, config ) {
 		headerMode: null,
 		footerMode: null,
 		autoWidth: dt.settings()[0].oFeatures.bAutoWidth,
-		namespace: '.dtfc'+(_instCounter++),
+		namespace: '.dtfc'+(instCounter++),
 		scrollLeft: {
 			header: -1,
 			footer: -1
@@ -130,7 +130,7 @@ var FixedHeader = function ( dt, config ) {
  * Purpose:  Prototype for FixedHeader
  * Scope:    global
  */
-$.extend( FixedHeader.prototype, {
+$.extend( fixedHeader.prototype, {
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	 * API methods
 	 */
@@ -571,14 +571,14 @@ $.extend( FixedHeader.prototype, {
  * @type {String}
  * @static
  */
-FixedHeader.version = "3.1.2";
+fixedHeader.version = "3.1.2";
 
 /**
  * Defaults
  * @type {Object}
  * @static
  */
-FixedHeader.defaults = {
+fixedHeader.defaults = {
 	header: true,
 	footer: false,
 	headerOffset: 0,
@@ -591,8 +591,8 @@ FixedHeader.defaults = {
  */
 
 // Attach for constructor access
-$.fn.dataTable.FixedHeader = FixedHeader;
-$.fn.DataTable.FixedHeader = FixedHeader;
+$.fn.dataTable.FixedHeader = fixedHeader;
+$.fn.DataTable.FixedHeader = fixedHeader;
 
 
 // DataTables creation - check if the FixedHeader option has been defined on the
@@ -603,21 +603,21 @@ $(document).on( 'init.dt.dtfh', function (e, settings, json) {
 	}
 
 	var init = settings.oInit.fixedHeader;
-	var defaults = DataTable.defaults.fixedHeader;
+	var defaults = dataTable.defaults.fixedHeader;
 
 	if ( (init || defaults) && ! settings._fixedHeader ) {
 		var opts = $.extend( {}, defaults, init );
 
 		if ( init !== false ) {
-			new FixedHeader( settings, opts );
+			new fixedHeader( settings, opts );
 		}
 	}
 } );
 
 // DataTables API methods
-DataTable.Api.register( 'fixedHeader()', function () {} );
+dataTable.Api.register( 'fixedHeader()', function () {} );
 
-DataTable.Api.register( 'fixedHeader.adjust()', function () {
+dataTable.Api.register( 'fixedHeader.adjust()', function () {
 	return this.iterator( 'table', function ( ctx ) {
 		var fh = ctx._fixedHeader;
 
@@ -627,7 +627,7 @@ DataTable.Api.register( 'fixedHeader.adjust()', function () {
 	} );
 } );
 
-DataTable.Api.register( 'fixedHeader.enable()', function ( flag ) {
+dataTable.Api.register( 'fixedHeader.enable()', function ( flag ) {
 	return this.iterator( 'table', function ( ctx ) {
 		var fh = ctx._fixedHeader;
 
@@ -637,7 +637,7 @@ DataTable.Api.register( 'fixedHeader.enable()', function ( flag ) {
 	} );
 } );
 
-DataTable.Api.register( 'fixedHeader.disable()', function ( ) {
+dataTable.Api.register( 'fixedHeader.disable()', function ( ) {
 	return this.iterator( 'table', function ( ctx ) {
 		var fh = ctx._fixedHeader;
 
@@ -648,7 +648,7 @@ DataTable.Api.register( 'fixedHeader.disable()', function ( ) {
 } );
 
 $.each( ['header', 'footer'], function ( i, el ) {
-	DataTable.Api.register( 'fixedHeader.'+el+'Offset()', function ( offset ) {
+	dataTable.Api.register( 'fixedHeader.'+el+'Offset()', function ( offset ) {
 		var ctx = this.context;
 
 		if ( offset === undefined ) {
@@ -668,5 +668,5 @@ $.each( ['header', 'footer'], function ( i, el ) {
 } );
 
 
-return FixedHeader;
+return fixedHeader;
 }));

@@ -1,4 +1,4 @@
-/*! jQuery UI integration for DataTables' Responsive
+﻿/*! jQuery UI integration for DataTables' Responsive
  * ©2015 SpryMedia Ltd - datatables.net/license
  */
 
@@ -33,16 +33,16 @@
 	}
 }(function( $, window, document, undefined ) {
 'use strict';
-var DataTable = $.fn.dataTable;
+var dataTable = $.fn.dataTable;
 
 
-var _display = DataTable.Responsive.display;
-var _original = _display.modal;
+var display = dataTable.Responsive.display;
+var original = display.modal;
 
-_display.modal = function ( options ) {
+display.modal = function ( options ) {
 	return function ( row, update, render ) {
 		if ( ! $.fn.dialog ) {
-			_original( row, update, render );
+			original( row, update, render );
 		}
 		else {
 			if ( ! update ) {
@@ -59,5 +59,5 @@ _display.modal = function ( options ) {
 };
 
 
-return DataTable.Responsive;
+return dataTable.Responsive;
 }));

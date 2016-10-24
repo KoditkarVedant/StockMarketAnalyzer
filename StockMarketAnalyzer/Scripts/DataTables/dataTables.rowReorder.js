@@ -48,7 +48,7 @@
 	}
 }(function( $, window, document, undefined ) {
 'use strict';
-var DataTable = $.fn.dataTable;
+var dataTable = $.fn.dataTable;
 
 
 /**
@@ -72,16 +72,16 @@ var DataTable = $.fn.dataTable;
  *  @requires jQuery 1.7+
  *  @requires DataTables 1.10.7+
  */
-var RowReorder = function ( dt, opts ) {
+var rowReorder = function ( dt, opts ) {
 	// Sanity check that we are using DataTables 1.10 or newer
-	if ( ! DataTable.versionCheck || ! DataTable.versionCheck( '1.10.8' ) ) {
+	if ( ! dataTable.versionCheck || ! dataTable.versionCheck( '1.10.8' ) ) {
 		throw 'DataTables RowReorder requires DataTables 1.10.8 or newer';
 	}
 
 	// User and defaults configuration object
 	this.c = $.extend( true, {},
-		DataTable.defaults.rowReorder,
-		RowReorder.defaults,
+		dataTable.defaults.rowReorder,
+		rowReorder.defaults,
 		opts
 	);
 
@@ -91,10 +91,10 @@ var RowReorder = function ( dt, opts ) {
 		bodyTop: null,
 
 		/** @type {DataTable.Api} DataTables' API instance */
-		dt: new DataTable.Api( dt ),
+		dt: new dataTable.Api( dt ),
 
 		/** @type {function} Data fetch function */
-		getDataFn: DataTable.ext.oApi._fnGetObjectDataFn( this.c.dataSrc ),
+		getDataFn: dataTable.ext.oApi._fnGetObjectDataFn( this.c.dataSrc ),
 
 		/** @type {array} Pixel positions for row insertion calculation */
 		middles: null,
@@ -106,7 +106,7 @@ var RowReorder = function ( dt, opts ) {
 		scrollInterval: null,
 
 		/** @type {function} Data set function */
-		setDataFn: DataTable.ext.oApi._fnSetObjectDataFn( this.c.dataSrc ),
+		setDataFn: dataTable.ext.oApi._fnSetObjectDataFn( this.c.dataSrc ),
 
 		/** @type {Object} Mouse down information */
 		start: {
@@ -142,7 +142,7 @@ var RowReorder = function ( dt, opts ) {
 };
 
 
-$.extend( RowReorder.prototype, {
+$.extend( rowReorder.prototype, {
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	 * Constructor
 	 */
@@ -631,7 +631,7 @@ $.extend( RowReorder.prototype, {
  * @name RowReorder.defaults
  * @static
  */
-RowReorder.defaults = {
+rowReorder.defaults = {
 	/**
 	 * Data point in the host row's data source object for where to get and set
 	 * the data to reorder. This will normally also be the sorting column.
@@ -679,11 +679,11 @@ RowReorder.defaults = {
  * @name RowReorder.version
  * @static
  */
-RowReorder.version = '1.1.2';
+rowReorder.version = '1.1.2';
 
 
-$.fn.dataTable.RowReorder = RowReorder;
-$.fn.DataTable.RowReorder = RowReorder;
+$.fn.dataTable.RowReorder = rowReorder;
+$.fn.DataTable.RowReorder = rowReorder;
 
 // Attach a listener to the document which listens for DataTables initialisation
 // events so we can automatically initialise
@@ -693,17 +693,17 @@ $(document).on( 'init.dt.dtr', function (e, settings, json) {
 	}
 
 	var init = settings.oInit.rowReorder;
-	var defaults = DataTable.defaults.rowReorder;
+	var defaults = dataTable.defaults.rowReorder;
 
 	if ( init || defaults ) {
 		var opts = $.extend( {}, init, defaults );
 
 		if ( init !== false ) {
-			new RowReorder( settings, opts  );
+			new rowReorder( settings, opts  );
 		}
 	}
 } );
 
 
-return RowReorder;
+return rowReorder;
 }));

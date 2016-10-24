@@ -1,4 +1,4 @@
-/*! AutoFill 2.1.2
+﻿/*! AutoFill 2.1.2
  * ©2008-2015 SpryMedia Ltd - datatables.net/license
  */
 
@@ -47,10 +47,10 @@
 	}
 }(function( $, window, document, undefined ) {
 'use strict';
-var DataTable = $.fn.dataTable;
+var dataTable = $.fn.dataTable;
 
 
-var _instance = 0;
+var instance = 0;
 
 /** 
  * AutoFill provides Excel like auto-fill features for a DataTable
@@ -60,16 +60,16 @@ var _instance = 0;
  * @param {object} oTD DataTables settings object
  * @param {object} oConfig Configuration object for AutoFill
  */
-var AutoFill = function( dt, opts )
+var autoFill = function( dt, opts )
 {
-	if ( ! DataTable.versionCheck || ! DataTable.versionCheck( '1.10.8' ) ) {
+	if ( ! dataTable.versionCheck || ! dataTable.versionCheck( '1.10.8' ) ) {
 		throw( "Warning: AutoFill requires DataTables 1.10.8 or greater");
 	}
 
 	// User and defaults configuration object
 	this.c = $.extend( true, {},
-		DataTable.defaults.autoFill,
-		AutoFill.defaults,
+		dataTable.defaults.autoFill,
+		autoFill.defaults,
 		opts
 	);
 
@@ -78,10 +78,10 @@ var AutoFill = function( dt, opts )
 	 */
 	this.s = {
 		/** @type {DataTable.Api} DataTables' API instance */
-		dt: new DataTable.Api( dt ),
+		dt: new dataTable.Api( dt ),
 
 		/** @type {String} Unique namespace for events attached to the document */
-		namespace: '.autoFill'+(_instance++),
+		namespace: '.autoFill'+(instance++),
 
 		/** @type {Object} Cached dimension information for use in the mouse move event handler */
 		scroll: {},
@@ -135,7 +135,7 @@ var AutoFill = function( dt, opts )
 
 
 
-$.extend( AutoFill.prototype, {
+$.extend( autoFill.prototype, {
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	 * Constructor
 	 */
@@ -243,7 +243,7 @@ $.extend( AutoFill.prototype, {
 	{
 		var that = this;
 		var dt = this.s.dt;
-		var actions = AutoFill.actions;
+		var actions = autoFill.actions;
 		var available = [];
 
 		// "Ask" each plug-in if it wants to handle this data
@@ -273,7 +273,7 @@ $.extend( AutoFill.prototype, {
 						'<div>'
 					)
 					.append( $('<div class="dt-autofill-button">' )
-						.append( $('<button class="'+AutoFill.classes.btn+'">'+dt.i18n('autoFill.button', '&gt;')+'</button>')
+						.append( $('<button class="'+autoFill.classes.btn+'">'+dt.i18n('autoFill.button', '&gt;')+'</button>')
 							.on( 'click', function () {
 								var result = actions[ name ].execute(
 									dt, cells, $(this).closest('li')
@@ -862,7 +862,7 @@ $.extend( AutoFill.prototype, {
  *
  * @type {Object}
  */
-AutoFill.actions = {
+autoFill.actions = {
 	increment: {
 		available: function ( dt, cells ) {
 			return $.isNumeric( cells[0][0].label );
@@ -970,7 +970,7 @@ AutoFill.actions = {
  * @static
  * @type      String
  */
-AutoFill.version = '2.1.2';
+autoFill.version = '2.1.2';
 
 
 /**
@@ -978,7 +978,7 @@ AutoFill.version = '2.1.2';
  * 
  * @namespace
  */
-AutoFill.defaults = {
+autoFill.defaults = {
 	/** @type {Boolean} Ask user what they want to do, even for a single option */
 	alwaysAsk: false,
 
@@ -1001,7 +1001,7 @@ AutoFill.defaults = {
  * 
  * @namespace
  */
-AutoFill.classes = {
+autoFill.classes = {
 	/** @type {String} Class used by the selection button */
 	btn: 'btn'
 };
@@ -1015,22 +1015,22 @@ $(document).on( 'preInit.dt.autofill', function (e, settings, json) {
 	}
 
 	var init = settings.oInit.autoFill;
-	var defaults = DataTable.defaults.autoFill;
+	var defaults = dataTable.defaults.autoFill;
 
 	if ( init || defaults ) {
 		var opts = $.extend( {}, init, defaults );
 
 		if ( init !== false ) {
-			new AutoFill( settings, opts  );
+			new autoFill( settings, opts  );
 		}
 	}
 } );
 
 
 // Alias for access
-DataTable.AutoFill = AutoFill;
-DataTable.AutoFill = AutoFill;
+dataTable.AutoFill = autoFill;
+dataTable.AutoFill = autoFill;
 
 
-return AutoFill;
+return autoFill;
 }));

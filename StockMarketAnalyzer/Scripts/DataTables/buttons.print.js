@@ -34,10 +34,10 @@
 	}
 }(function( $, window, document, undefined ) {
 'use strict';
-var DataTable = $.fn.dataTable;
+var dataTable = $.fn.dataTable;
 
 
-var _link = document.createElement( 'a' );
+var link = document.createElement( 'a' );
 
 /**
  * Convert a `link` tag's URL from a relative to an absolute address so it will
@@ -45,29 +45,29 @@ var _link = document.createElement( 'a' );
  *
  * @param  {node}     el Element to convert
  */
-var _relToAbs = function( el ) {
+var relToAbs = function( el ) {
 	var url;
 	var clone = $(el).clone()[0];
 	var linkHost;
 
 	if ( clone.nodeName.toLowerCase() === 'link' ) {
-		_link.href = clone.href;
-		linkHost = _link.host;
+		link.href = clone.href;
+		linkHost = link.host;
 
 		// IE doesn't have a trailing slash on the host
 		// Chrome has it on the pathname
-		if ( linkHost.indexOf('/') === -1 && _link.pathname.indexOf('/') !== 0) {
+		if ( linkHost.indexOf('/') === -1 && link.pathname.indexOf('/') !== 0) {
 			linkHost += '/';
 		}
 
-		clone.href = _link.protocol+"//"+linkHost+_link.pathname+_link.search;
+		clone.href = link.protocol+"//"+linkHost+link.pathname+link.search;
 	}
 
 	return clone.outerHTML;
 };
 
 
-DataTable.ext.buttons.print = {
+dataTable.ext.buttons.print = {
 	className: 'buttons-print',
 
 	text: function ( dt ) {
@@ -123,7 +123,7 @@ DataTable.ext.buttons.print = {
 		// in the host document and then appended to the new window.
 		var head = '<title>'+title+'</title>';
 		$('style, link').each( function () {
-			head += _relToAbs( this );
+			head += relToAbs( this );
 		} );
 
 		//$(win.document.head).html( head );
@@ -168,5 +168,5 @@ DataTable.ext.buttons.print = {
 };
 
 
-return DataTable.Buttons;
+return dataTable.Buttons;
 }));

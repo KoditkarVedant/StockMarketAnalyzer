@@ -1,4 +1,4 @@
-/*! DataTables Bootstrap 3 integration
+﻿/*! DataTables Bootstrap 3 integration
  * ©2011-2015 SpryMedia Ltd - datatables.net/license
  */
 
@@ -40,11 +40,11 @@
 	}
 }(function( $, window, document, undefined ) {
 'use strict';
-var DataTable = $.fn.dataTable;
+var dataTable = $.fn.dataTable;
 
 
 /* Set the defaults for DataTables initialisation */
-$.extend( true, DataTable.defaults, {
+$.extend( true, dataTable.defaults, {
 	dom:
 		"<'mdl-grid'"+
 			"<'mdl-cell mdl-cell--6-col'l>"+
@@ -62,7 +62,7 @@ $.extend( true, DataTable.defaults, {
 
 
 /* Default class modification */
-$.extend( DataTable.ext.classes, {
+$.extend( dataTable.ext.classes, {
 	sWrapper:      "dataTables_wrapper form-inline dt-material",
 	sFilterInput:  "form-control input-sm",
 	sLengthSelect: "form-control input-sm",
@@ -71,8 +71,8 @@ $.extend( DataTable.ext.classes, {
 
 
 /* Bootstrap paging button renderer */
-DataTable.ext.renderer.pageButton.material = function ( settings, host, idx, buttons, page, pages ) {
-	var api     = new DataTable.Api( settings );
+dataTable.ext.renderer.pageButton.material = function ( settings, host, idx, buttons, page, pages ) {
+	var api     = new dataTable.Api( settings );
 	var classes = settings.oClasses;
 	var lang    = settings.oLanguage.oPaginate;
 	var aria = settings.oLanguage.oAria.paginate || {};
@@ -187,5 +187,5 @@ DataTable.ext.renderer.pageButton.material = function ( settings, host, idx, but
 };
 
 
-return DataTable;
+return dataTable;
 }));

@@ -1,4 +1,4 @@
-/*! Buttons for DataTables 1.2.0
+﻿/*! Buttons for DataTables 1.2.0
  * ©2016 SpryMedia Ltd - datatables.net/license
  */
 
@@ -29,17 +29,17 @@
 	}
 }(function( $, window, document, undefined ) {
 'use strict';
-var DataTable = $.fn.dataTable;
+var dataTable = $.fn.dataTable;
 
 
 // Used for namespacing events added to the document by each instance, so they
 // can be removed on destroy
-var _instCounter = 0;
+var instCounter = 0;
 
 // Button namespacing counter for namespacing events on individual buttons
 var _buttonCounter = 0;
 
-var _dtButtons = DataTable.ext.buttons;
+var dtButtons = dataTable.ext.buttons;
 
 /**
  * [Buttons description]
@@ -66,10 +66,10 @@ var Buttons = function( dt, config )
 	}
 
 	this.s = {
-		dt: new DataTable.Api( dt ),
+		dt: new dataTable.Api( dt ),
 		buttons: [],
 		listenKeys: '',
-		namespace: 'dtb'+(_instCounter++)
+		namespace: 'dtb'+(instCounter++)
 	};
 
 	this.dom = {
@@ -762,11 +762,11 @@ $.extend( Buttons.prototype, {
 					}
 				}
 				else if ( typeof base === 'string' ) {
-					if ( ! _dtButtons[ base ] ) {
+					if ( ! dtButtons[ base ] ) {
 						throw 'Unknown button type: '+base;
 					}
 
-					base = _dtButtons[ base ];
+					base = dtButtons[ base ];
 				}
 
 				loop++;
@@ -786,11 +786,11 @@ $.extend( Buttons.prototype, {
 		while ( conf && conf.extend ) {
 			// Use `toConfObject` in case the button definition being extended
 			// is itself a string or a function
-			if ( ! _dtButtons[ conf.extend ] ) {
+			if ( ! dtButtons[ conf.extend ] ) {
 				throw 'Cannot extend unknown button type: '+conf.extend;
 			}
 
-			var objArray = toConfObject( _dtButtons[ conf.extend ] );
+			var objArray = toConfObject( dtButtons[ conf.extend ] );
 			if ( $.isArray( objArray ) ) {
 				return objArray;
 			}
@@ -1119,7 +1119,7 @@ Buttons.defaults = {
 Buttons.version = '1.2.0';
 
 
-$.extend( _dtButtons, {
+$.extend( dtButtons, {
 	collection: {
 		text: function ( dt ) {
 			return dt.i18n( 'buttons.collection', 'Collection' );
@@ -1215,37 +1215,37 @@ $.extend( _dtButtons, {
 		fade: 400
 	},
 	copy: function ( dt, conf ) {
-		if ( _dtButtons.copyHtml5 ) {
+		if ( dtButtons.copyHtml5 ) {
 			return 'copyHtml5';
 		}
-		if ( _dtButtons.copyFlash && _dtButtons.copyFlash.available( dt, conf ) ) {
+		if ( dtButtons.copyFlash && dtButtons.copyFlash.available( dt, conf ) ) {
 			return 'copyFlash';
 		}
 	},
 	csv: function ( dt, conf ) {
 		// Common option that will use the HTML5 or Flash export buttons
-		if ( _dtButtons.csvHtml5 && _dtButtons.csvHtml5.available( dt, conf ) ) {
+		if ( dtButtons.csvHtml5 && dtButtons.csvHtml5.available( dt, conf ) ) {
 			return 'csvHtml5';
 		}
-		if ( _dtButtons.csvFlash && _dtButtons.csvFlash.available( dt, conf ) ) {
+		if ( dtButtons.csvFlash && dtButtons.csvFlash.available( dt, conf ) ) {
 			return 'csvFlash';
 		}
 	},
 	excel: function ( dt, conf ) {
 		// Common option that will use the HTML5 or Flash export buttons
-		if ( _dtButtons.excelHtml5 && _dtButtons.excelHtml5.available( dt, conf ) ) {
+		if ( dtButtons.excelHtml5 && dtButtons.excelHtml5.available( dt, conf ) ) {
 			return 'excelHtml5';
 		}
-		if ( _dtButtons.excelFlash && _dtButtons.excelFlash.available( dt, conf ) ) {
+		if ( dtButtons.excelFlash && dtButtons.excelFlash.available( dt, conf ) ) {
 			return 'excelFlash';
 		}
 	},
 	pdf: function ( dt, conf ) {
 		// Common option that will use the HTML5 or Flash export buttons
-		if ( _dtButtons.pdfHtml5 && _dtButtons.pdfHtml5.available( dt, conf ) ) {
+		if ( dtButtons.pdfHtml5 && dtButtons.pdfHtml5.available( dt, conf ) ) {
 			return 'pdfHtml5';
 		}
-		if ( _dtButtons.pdfFlash && _dtButtons.pdfFlash.available( dt, conf ) ) {
+		if ( dtButtons.pdfFlash && dtButtons.pdfFlash.available( dt, conf ) ) {
 			return 'pdfFlash';
 		}
 	},
@@ -1307,7 +1307,7 @@ $.extend( _dtButtons, {
  */
 
 // Buttons group and individual button selector
-DataTable.Api.register( 'buttons()', function ( group, selector ) {
+dataTable.Api.register( 'buttons()', function ( group, selector ) {
 	// Argument shifting
 	if ( selector === undefined ) {
 		selector = group;
@@ -1325,7 +1325,7 @@ DataTable.Api.register( 'buttons()', function ( group, selector ) {
 } );
 
 // Individual button selector
-DataTable.Api.register( 'button()', function ( group, selector ) {
+dataTable.Api.register( 'button()', function ( group, selector ) {
 	// just run buttons() and truncate
 	var buttons = this.buttons( group, selector );
 
@@ -1337,7 +1337,7 @@ DataTable.Api.register( 'button()', function ( group, selector ) {
 } );
 
 // Active buttons
-DataTable.Api.registerPlural( 'buttons().active()', 'button().active()', function ( flag ) {
+dataTable.Api.registerPlural( 'buttons().active()', 'button().active()', function ( flag ) {
 	if ( flag === undefined ) {
 		return this.map( function ( set ) {
 			return set.inst.active( set.node );
@@ -1350,7 +1350,7 @@ DataTable.Api.registerPlural( 'buttons().active()', 'button().active()', functio
 } );
 
 // Get / set button action
-DataTable.Api.registerPlural( 'buttons().action()', 'button().action()', function ( action ) {
+dataTable.Api.registerPlural( 'buttons().action()', 'button().action()', function ( action ) {
 	if ( action === undefined ) {
 		return this.map( function ( set ) {
 			return set.inst.action( set.node );
@@ -1363,21 +1363,21 @@ DataTable.Api.registerPlural( 'buttons().action()', 'button().action()', functio
 } );
 
 // Enable / disable buttons
-DataTable.Api.register( ['buttons().enable()', 'button().enable()'], function ( flag ) {
+dataTable.Api.register( ['buttons().enable()', 'button().enable()'], function ( flag ) {
 	return this.each( function ( set ) {
 		set.inst.enable( set.node, flag );
 	} );
 } );
 
 // Disable buttons
-DataTable.Api.register( ['buttons().disable()', 'button().disable()'], function () {
+dataTable.Api.register( ['buttons().disable()', 'button().disable()'], function () {
 	return this.each( function ( set ) {
 		set.inst.disable( set.node );
 	} );
 } );
 
 // Get button nodes
-DataTable.Api.registerPlural( 'buttons().nodes()', 'button().node()', function () {
+dataTable.Api.registerPlural( 'buttons().nodes()', 'button().node()', function () {
 	var jq = $();
 
 	// jQuery will automatically reduce duplicates to a single entry
@@ -1389,7 +1389,7 @@ DataTable.Api.registerPlural( 'buttons().nodes()', 'button().node()', function (
 } );
 
 // Get / set button text (i.e. the button labels)
-DataTable.Api.registerPlural( 'buttons().text()', 'button().text()', function ( label ) {
+dataTable.Api.registerPlural( 'buttons().text()', 'button().text()', function ( label ) {
 	if ( label === undefined ) {
 		return this.map( function ( set ) {
 			return set.inst.text( set.node );
@@ -1402,14 +1402,14 @@ DataTable.Api.registerPlural( 'buttons().text()', 'button().text()', function ( 
 } );
 
 // Trigger a button's action
-DataTable.Api.registerPlural( 'buttons().trigger()', 'button().trigger()', function () {
+dataTable.Api.registerPlural( 'buttons().trigger()', 'button().trigger()', function () {
 	return this.each( function ( set ) {
 		set.inst.node( set.node ).trigger( 'click' );
 	} );
 } );
 
 // Get the container elements for the button sets selected
-DataTable.Api.registerPlural( 'buttons().containers()', 'buttons().container()', function () {
+dataTable.Api.registerPlural( 'buttons().containers()', 'buttons().container()', function () {
 	var jq = $();
 
 	// jQuery will automatically reduce duplicates to a single entry
@@ -1421,7 +1421,7 @@ DataTable.Api.registerPlural( 'buttons().containers()', 'buttons().container()',
 } );
 
 // Add a new button
-DataTable.Api.register( 'button().add()', function ( idx, conf ) {
+dataTable.Api.register( 'button().add()', function ( idx, conf ) {
 	if ( this.length === 1 ) {
 		this[0].inst.add( conf, idx );
 	}
@@ -1430,7 +1430,7 @@ DataTable.Api.register( 'button().add()', function ( idx, conf ) {
 } );
 
 // Destroy the button sets selected
-DataTable.Api.register( 'buttons().destroy()', function () {
+dataTable.Api.register( 'buttons().destroy()', function () {
 	this.pluck( 'inst' ).unique().each( function ( inst ) {
 		inst.destroy();
 	} );
@@ -1439,7 +1439,7 @@ DataTable.Api.register( 'buttons().destroy()', function () {
 } );
 
 // Remove a button
-DataTable.Api.registerPlural( 'buttons().remove()', 'buttons().remove()', function () {
+dataTable.Api.registerPlural( 'buttons().remove()', 'buttons().remove()', function () {
 	this.each( function ( set ) {
 		set.inst.remove( set.node );
 	} );
@@ -1448,22 +1448,22 @@ DataTable.Api.registerPlural( 'buttons().remove()', 'buttons().remove()', functi
 } );
 
 // Information box that can be used by buttons
-var _infoTimer;
-DataTable.Api.register( 'buttons.info()', function ( title, message, time ) {
+var infoTimer;
+dataTable.Api.register( 'buttons.info()', function ( title, message, time ) {
 	var that = this;
 
 	if ( title === false ) {
 		$('#datatables_buttons_info').fadeOut( function () {
 			$(this).remove();
 		} );
-		clearTimeout( _infoTimer );
-		_infoTimer = null;
+		clearTimeout( infoTimer );
+		infoTimer = null;
 
 		return this;
 	}
 
-	if ( _infoTimer ) {
-		clearTimeout( _infoTimer );
+	if ( infoTimer ) {
+		clearTimeout( infoTimer );
 	}
 
 	if ( $('#datatables_buttons_info').length ) {
@@ -1480,7 +1480,7 @@ DataTable.Api.register( 'buttons.info()', function ( title, message, time ) {
 		.fadeIn();
 
 	if ( time !== undefined && time !== 0 ) {
-		_infoTimer = setTimeout( function () {
+		infoTimer = setTimeout( function () {
 			that.buttons.info( false );
 		}, time );
 	}
@@ -1490,15 +1490,15 @@ DataTable.Api.register( 'buttons.info()', function ( title, message, time ) {
 
 // Get data from the table for export - this is common to a number of plug-in
 // buttons so it is included in the Buttons core library
-DataTable.Api.register( 'buttons.exportData()', function ( options ) {
+dataTable.Api.register( 'buttons.exportData()', function ( options ) {
 	if ( this.context.length ) {
-		return _exportData( new DataTable.Api( this.context[0] ), options );
+		return exportData( new dataTable.Api( this.context[0] ), options );
 	}
 } );
 
 
-var _exportTextarea = $('<textarea/>')[0];
-var _exportData = function ( dt, inOpts )
+var exportTextarea = $('<textarea/>')[0];
+var exportData = function ( dt, inOpts )
 {
 	var config = $.extend( true, {}, {
 		rows:           null,
@@ -1543,8 +1543,8 @@ var _exportData = function ( dt, inOpts )
 		}
 
 		if ( config.decodeEntities ) {
-			_exportTextarea.innerHTML = str;
-			str = _exportTextarea.value;
+			exportTextarea.innerHTML = str;
+			str = exportTextarea.value;
 		}
 
 		return str;
@@ -1611,7 +1611,7 @@ $(document).on( 'init.dt plugin-init.dt', function (e, settings) {
 		return;
 	}
 
-	var opts = settings.oInit.buttons || DataTable.defaults.buttons;
+	var opts = settings.oInit.buttons || dataTable.defaults.buttons;
 
 	if ( opts && ! settings._buttons ) {
 		new Buttons( settings, opts ).container();
@@ -1619,10 +1619,10 @@ $(document).on( 'init.dt plugin-init.dt', function (e, settings) {
 } );
 
 // DataTables `dom` feature option
-DataTable.ext.feature.push( {
+dataTable.ext.feature.push( {
 	fnInit: function( settings ) {
-		var api = new DataTable.Api( settings );
-		var opts = api.init().buttons || DataTable.defaults.buttons;
+		var api = new dataTable.Api( settings );
+		var opts = api.init().buttons || dataTable.defaults.buttons;
 
 		return new Buttons( api, opts ).container();
 	},

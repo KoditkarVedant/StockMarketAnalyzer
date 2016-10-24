@@ -15,7 +15,7 @@ namespace StockMarketAnalyzer
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
                 AuthenticationType = "ApplicationCookie",
-                LoginPath = new PathString("/auth/login")
+                LoginPath = new PathString("/Security/Auth/Login")
             });
         }
     }

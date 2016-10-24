@@ -34,10 +34,10 @@
 	}
 }(function( $, window, document, undefined ) {
 'use strict';
-var DataTable = $.fn.dataTable;
+var dataTable = $.fn.dataTable;
 
 
-$.extend( DataTable.ext.buttons, {
+$.extend( dataTable.ext.buttons, {
 	// A collection of column visibility buttons
 	colvis: function ( dt, conf ) {
 		return {
@@ -195,5 +195,5 @@ $.extend( DataTable.ext.buttons, {
 } );
 
 
-return DataTable.Buttons;
+return dataTable.Buttons;
 }));

@@ -1,4 +1,4 @@
-/*! Foundation integration for DataTables' Buttons
+﻿/*! Foundation integration for DataTables' Buttons
  * ©2016 SpryMedia Ltd - datatables.net/license
  */
 
@@ -33,13 +33,13 @@
 	}
 }(function( $, window, document, undefined ) {
 'use strict';
-var DataTable = $.fn.dataTable;
+var dataTable = $.fn.dataTable;
 
 
 // F6 has different requirements for the dropdown button set. We can use the
 // Foundation version found by DataTables in order to support both F5 and F6 in
 // the same file, but not that this requires DataTables 1.10.11+ for F6 support.
-var collection = DataTable.ext.foundationVersion === 6 ?
+var collection = dataTable.ext.foundationVersion === 6 ?
 	{
 		tag: 'div',
 		className: 'dt-button-collection dropdown-pane is-open button-group stacked'
@@ -56,7 +56,7 @@ var collection = DataTable.ext.foundationVersion === 6 ?
 		}
 	};
 
-$.extend( true, DataTable.Buttons.defaults, {
+$.extend( true, dataTable.Buttons.defaults, {
 	dom: {
 		container: {
 			tag: 'div',
@@ -78,8 +78,8 @@ $.extend( true, DataTable.Buttons.defaults, {
 } );
 
 
-DataTable.ext.buttons.collection.className = 'buttons-collection dropdown';
+dataTable.ext.buttons.collection.className = 'buttons-collection dropdown';
 
 
-return DataTable.Buttons;
+return dataTable.Buttons;
 }));

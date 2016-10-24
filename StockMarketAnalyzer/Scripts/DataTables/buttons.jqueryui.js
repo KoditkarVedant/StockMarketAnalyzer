@@ -1,4 +1,4 @@
-/*! jQuery UI integration for DataTables' Buttons
+﻿/*! jQuery UI integration for DataTables' Buttons
  * ©2016 SpryMedia Ltd - datatables.net/license
  */
 
@@ -33,10 +33,10 @@
 	}
 }(function( $, window, document, undefined ) {
 'use strict';
-var DataTable = $.fn.dataTable;
+var dataTable = $.fn.dataTable;
 
 
-$.extend( true, DataTable.Buttons.defaults, {
+$.extend( true, dataTable.Buttons.defaults, {
 	dom: {
 		container: {
 			className: 'dt-buttons ui-buttonset'
@@ -53,10 +53,10 @@ $.extend( true, DataTable.Buttons.defaults, {
 	}
 } );
 
-DataTable.ext.buttons.collection.text = function ( dt ) {
+dataTable.ext.buttons.collection.text = function ( dt ) {
 	return dt.i18n('buttons.collection', 'Collection <span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-s"/>');
 };
 
 
-return DataTable.Buttons;
+return dataTable.Buttons;
 }));

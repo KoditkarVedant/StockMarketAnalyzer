@@ -449,7 +449,7 @@ angular.mock.$LogProvider = function() {
  */
 angular.mock.$IntervalProvider = function() {
   this.$get = ['$browser', '$rootScope', '$q', '$$q',
-       function($browser,   $rootScope,   $q,   $$q) {
+       function($browser,   $rootScope,   $q,   $$Q) {
     var repeatFns = [],
         nextRepeatId = 0,
         now = 0;
@@ -459,7 +459,7 @@ angular.mock.$IntervalProvider = function() {
           args = hasParams ? Array.prototype.slice.call(arguments, 4) : [],
           iteration = 0,
           skipApply = (angular.isDefined(invokeApply) && !invokeApply),
-          deferred = (skipApply ? $$q : $q).defer(),
+          deferred = (skipApply ? $$Q : $q).defer(),
           promise = deferred.promise;
 
       count = (angular.isDefined(count)) ? count : 0;
@@ -855,7 +855,7 @@ angular.mock.animate = angular.module('ngAnimateMock', ['ng'])
 
     $provide.decorator('$animate', ['$delegate', '$timeout', '$browser', '$$rAF', '$animateCss', '$$animateJs',
                                     '$$forceReflow', '$$animateAsyncRun', '$rootScope',
-                            function($delegate,   $timeout,   $browser,   $$RAf,   $animateCss,   $$AnimateJs,
+                            function($delegate,   $timeout,   $browser,   $$rAf,   $animateCss,   $$AnimateJs,
                                      $$ForceReflow,   $$AnimateAsyncRun,  $rootScope) {
       var animate = {
         queue: [],
@@ -902,8 +902,8 @@ angular.mock.animate = angular.module('ngAnimateMock', ['ng'])
           do {
             doNextRun = false;
 
-            if ($$RAf.queue.length) {
-              $$RAf.flush();
+            if ($$rAf.queue.length) {
+              $$rAf.flush();
               doNextRun = somethingFlushed = true;
             }
 

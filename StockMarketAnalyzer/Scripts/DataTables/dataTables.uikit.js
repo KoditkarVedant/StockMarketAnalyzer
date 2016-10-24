@@ -34,11 +34,11 @@
 	}
 }(function( $, window, document, undefined ) {
 'use strict';
-var DataTable = $.fn.dataTable;
+var dataTable = $.fn.dataTable;
 
 
 /* Set the defaults for DataTables initialisation */
-$.extend( true, DataTable.defaults, {
+$.extend( true, dataTable.defaults, {
 	dom:
 		"<'row uk-grid'<'uk-width-1-2'l><'uk-width-1-2'f>>" +
 		"<'row uk-grid dt-merge-grid'<'uk-width-1-1'tr>>" +
@@ -48,7 +48,7 @@ $.extend( true, DataTable.defaults, {
 
 
 /* Default class modification */
-$.extend( DataTable.ext.classes, {
+$.extend( dataTable.ext.classes, {
 	sWrapper:      "dataTables_wrapper uk-form dt-uikit",
 	sFilterInput:  "uk-form-small",
 	sLengthSelect: "uk-form-small",
@@ -57,8 +57,8 @@ $.extend( DataTable.ext.classes, {
 
 
 /* UIkit paging button renderer */
-DataTable.ext.renderer.pageButton.uikit = function ( settings, host, idx, buttons, page, pages ) {
-	var api     = new DataTable.Api( settings );
+dataTable.ext.renderer.pageButton.uikit = function ( settings, host, idx, buttons, page, pages ) {
+	var api     = new dataTable.Api( settings );
 	var classes = settings.oClasses;
 	var lang    = settings.oLanguage.oPaginate;
 	var aria = settings.oLanguage.oAria.paginate || {};
@@ -172,5 +172,5 @@ DataTable.ext.renderer.pageButton.uikit = function ( settings, host, idx, button
 };
 
 
-return DataTable;
+return dataTable;
 }));

@@ -1,4 +1,4 @@
-/*! KeyTable 2.1.2
+﻿/*! KeyTable 2.1.2
  * ©2009-2016 SpryMedia Ltd - datatables.net/license
  */
 
@@ -48,26 +48,26 @@
 	}
 }(function( $, window, document, undefined ) {
 'use strict';
-var DataTable = $.fn.dataTable;
+var dataTable = $.fn.dataTable;
 
 
-var KeyTable = function ( dt, opts ) {
+var keyTable = function ( dt, opts ) {
 	// Sanity check that we are using DataTables 1.10 or newer
-	if ( ! DataTable.versionCheck || ! DataTable.versionCheck( '1.10.8' ) ) {
+	if ( ! dataTable.versionCheck || ! dataTable.versionCheck( '1.10.8' ) ) {
 		throw 'KeyTable requires DataTables 1.10.8 or newer';
 	}
 
 	// User and defaults configuration object
 	this.c = $.extend( true, {},
-		DataTable.defaults.keyTable,
-		KeyTable.defaults,
+		dataTable.defaults.keyTable,
+		keyTable.defaults,
 		opts
 	);
 
 	// Internal settings
 	this.s = {
 		/** @type {DataTable.Api} DataTables' API instance */
-		dt: new DataTable.Api( dt ),
+		dt: new dataTable.Api( dt ),
 
 		enable: true,
 
@@ -92,7 +92,7 @@ var KeyTable = function ( dt, opts ) {
 };
 
 
-$.extend( KeyTable.prototype, {
+$.extend( keyTable.prototype, {
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	 * API methods for DataTables API interface
 	 */
@@ -750,7 +750,7 @@ $.extend( KeyTable.prototype, {
  * @name KeyTable.defaults
  * @static
  */
-KeyTable.defaults = {
+keyTable.defaults = {
 	/**
 	 * Can focus be removed from the table
 	 * @type {Boolean}
@@ -798,14 +798,14 @@ KeyTable.defaults = {
 
 
 
-KeyTable.version = "2.1.2";
+keyTable.version = "2.1.2";
 
 
-$.fn.dataTable.KeyTable = KeyTable;
-$.fn.DataTable.KeyTable = KeyTable;
+$.fn.dataTable.KeyTable = keyTable;
+$.fn.DataTable.KeyTable = keyTable;
 
 
-DataTable.Api.register( 'cell.blur()', function () {
+dataTable.Api.register( 'cell.blur()', function () {
 	return this.iterator( 'table', function (ctx) {
 		if ( ctx.keytable ) {
 			ctx.keytable.blur();
@@ -813,7 +813,7 @@ DataTable.Api.register( 'cell.blur()', function () {
 	} );
 } );
 
-DataTable.Api.register( 'cell().focus()', function () {
+dataTable.Api.register( 'cell().focus()', function () {
 	return this.iterator( 'cell', function (ctx, row, column) {
 		if ( ctx.keytable ) {
 			ctx.keytable.focus( row, column );
@@ -821,7 +821,7 @@ DataTable.Api.register( 'cell().focus()', function () {
 	} );
 } );
 
-DataTable.Api.register( 'keys.disable()', function () {
+dataTable.Api.register( 'keys.disable()', function () {
 	return this.iterator( 'table', function (ctx) {
 		if ( ctx.keytable ) {
 			ctx.keytable.enable( false );
@@ -829,7 +829,7 @@ DataTable.Api.register( 'keys.disable()', function () {
 	} );
 } );
 
-DataTable.Api.register( 'keys.enable()', function ( opts ) {
+dataTable.Api.register( 'keys.enable()', function ( opts ) {
 	return this.iterator( 'table', function (ctx) {
 		if ( ctx.keytable ) {
 			ctx.keytable.enable( opts === undefined ? true : opts );
@@ -838,7 +838,7 @@ DataTable.Api.register( 'keys.enable()', function ( opts ) {
 } );
 
 // Cell selector
-DataTable.ext.selector.cell.push( function ( settings, opts, cells ) {
+dataTable.ext.selector.cell.push( function ( settings, opts, cells ) {
 	var focused = opts.focused;
 	var kt = settings.keytable;
 	var out = [];
@@ -867,17 +867,17 @@ $(document).on( 'preInit.dt.dtk', function (e, settings, json) {
 	}
 
 	var init = settings.oInit.keys;
-	var defaults = DataTable.defaults.keys;
+	var defaults = dataTable.defaults.keys;
 
 	if ( init || defaults ) {
 		var opts = $.extend( {}, init, defaults );
 
 		if ( init !== false ) {
-			new KeyTable( settings, opts  );
+			new keyTable( settings, opts  );
 		}
 	}
 } );
 
 
-return KeyTable;
+return keyTable;
 }));

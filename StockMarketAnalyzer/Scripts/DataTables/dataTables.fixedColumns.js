@@ -1,4 +1,4 @@
-/*! FixedColumns 3.2.2
+﻿/*! FixedColumns 3.2.2
  * ©2010-2016 SpryMedia Ltd - datatables.net/license
  */
 
@@ -47,8 +47,8 @@
 	}
 }(function( $, window, document, undefined ) {
 'use strict';
-var DataTable = $.fn.dataTable;
-var _firefoxScroll;
+var dataTable = $.fn.dataTable;
+var firefoxScroll;
 
 /**
  * When making use of DataTables' x-axis scrolling feature, you may wish to
@@ -80,11 +80,11 @@ var _firefoxScroll;
  *      } );
  *      new $.fn.dataTable.fixedColumns( table );
  */
-var FixedColumns = function ( dt, init ) {
+var fixedColumns = function ( dt, init ) {
 	var that = this;
 
 	/* Sanity check - you just know it will happen */
-	if ( ! ( this instanceof FixedColumns ) ) {
+	if ( ! ( this instanceof fixedColumns ) ) {
 		alert( "FixedColumns warning: FixedColumns must be initialised with the 'new' keyword." );
 		return;
 	}
@@ -97,8 +97,8 @@ var FixedColumns = function ( dt, init ) {
 	// provide forwards compatibility for camel case variables
 	var camelToHungarian = $.fn.dataTable.camelToHungarian;
 	if ( camelToHungarian ) {
-		camelToHungarian( FixedColumns.defaults, FixedColumns.defaults, true );
-		camelToHungarian( FixedColumns.defaults, init );
+		camelToHungarian( fixedColumns.defaults, fixedColumns.defaults, true );
+		camelToHungarian( fixedColumns.defaults, init );
 	}
 
 	// v1.10 allows the settings object to be got form a number of sources
@@ -312,7 +312,7 @@ var FixedColumns = function ( dt, init ) {
 
 
 
-$.extend( FixedColumns.prototype , {
+$.extend( fixedColumns.prototype , {
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	 * Public methods
 	 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -470,7 +470,7 @@ $.extend( FixedColumns.prototype , {
 		if ( typeof this.s.dt.oInstance.fnVersionCheck != 'function' ||
 		     this.s.dt.oInstance.fnVersionCheck( '1.8.0' ) !== true )
 		{
-			alert( "FixedColumns "+FixedColumns.VERSION+" required DataTables 1.8.0 or later. "+
+			alert( "FixedColumns "+fixedColumns.VERSION+" required DataTables 1.8.0 or later. "+
 				"Please upgrade your DataTables installation" );
 			return;
 		}
@@ -484,7 +484,7 @@ $.extend( FixedColumns.prototype , {
 		}
 
 		/* Apply the settings from the user / defaults */
-		this.s = $.extend( true, this.s, FixedColumns.defaults, oInit );
+		this.s = $.extend( true, this.s, fixedColumns.defaults, oInit );
 
 		/* Set up the DOM as we need it and cache nodes */
 		var classes = this.s.dt.oClasses;
@@ -1398,7 +1398,7 @@ $.extend( FixedColumns.prototype , {
 	 * @return {boolean} True if Firefox error is present, false otherwise
 	 */
 	_firefoxScrollError: function () {
-		if ( _firefoxScroll === undefined ) {
+		if ( firefoxScroll === undefined ) {
 			var test = $('<div/>')
 				.css( {
 					position: 'absolute',
@@ -1411,14 +1411,14 @@ $.extend( FixedColumns.prototype , {
 				.appendTo( 'body' );
 
 			// Make sure this doesn't apply on Macs with 0 width scrollbars
-			_firefoxScroll = (
+			firefoxScroll = (
 				test[0].clientWidth === test[0].offsetWidth && this._fnDTOverflow().bar !== 0
 			);
 
 			test.remove();
 		}
 
-		return _firefoxScroll;
+		return firefoxScroll;
 	}
 } );
 
@@ -1434,7 +1434,7 @@ $.extend( FixedColumns.prototype , {
  *  @namespace
  *  @static
  */
-FixedColumns.defaults = /** @lends FixedColumns.defaults */{
+fixedColumns.defaults = /** @lends FixedColumns.defaults */{
 	/**
 	 * Number of left hand columns to fix in position
 	 *  @type     int
@@ -1516,7 +1516,7 @@ FixedColumns.defaults = /** @lends FixedColumns.defaults */{
  *  @default   See code
  *  @static
  */
-FixedColumns.version = "3.2.2";
+fixedColumns.version = "3.2.2";
 
 
 
@@ -1524,11 +1524,11 @@ FixedColumns.version = "3.2.2";
  * DataTables API integration
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-DataTable.Api.register( 'fixedColumns()', function () {
+dataTable.Api.register( 'fixedColumns()', function () {
 	return this;
 } );
 
-DataTable.Api.register( 'fixedColumns().update()', function () {
+dataTable.Api.register( 'fixedColumns().update()', function () {
 	return this.iterator( 'table', function ( ctx ) {
 		if ( ctx._oFixedColumns ) {
 			ctx._oFixedColumns.fnUpdate();
@@ -1536,7 +1536,7 @@ DataTable.Api.register( 'fixedColumns().update()', function () {
 	} );
 } );
 
-DataTable.Api.register( 'fixedColumns().relayout()', function () {
+dataTable.Api.register( 'fixedColumns().relayout()', function () {
 	return this.iterator( 'table', function ( ctx ) {
 		if ( ctx._oFixedColumns ) {
 			ctx._oFixedColumns.fnRedrawLayout();
@@ -1544,7 +1544,7 @@ DataTable.Api.register( 'fixedColumns().relayout()', function () {
 	} );
 } );
 
-DataTable.Api.register( 'rows().recalcHeight()', function () {
+dataTable.Api.register( 'rows().recalcHeight()', function () {
 	return this.iterator( 'row', function ( ctx, idx ) {
 		if ( ctx._oFixedColumns ) {
 			ctx._oFixedColumns.fnRecalculateHeight( this.row(idx).node() );
@@ -1552,7 +1552,7 @@ DataTable.Api.register( 'rows().recalcHeight()', function () {
 	} );
 } );
 
-DataTable.Api.register( 'fixedColumns().rowIndex()', function ( row ) {
+dataTable.Api.register( 'fixedColumns().rowIndex()', function ( row ) {
 	row = $(row);
 
 	return row.parents('.DTFC_Cloned').length ?
@@ -1560,7 +1560,7 @@ DataTable.Api.register( 'fixedColumns().rowIndex()', function ( row ) {
 		this.row( row ).index();
 } );
 
-DataTable.Api.register( 'fixedColumns().cellIndex()', function ( cell ) {
+dataTable.Api.register( 'fixedColumns().cellIndex()', function ( cell ) {
 	cell = $(cell);
 
 	if ( cell.parents('.DTFC_Cloned').length ) {
@@ -1602,13 +1602,13 @@ $(document).on( 'init.dt.fixedColumns', function (e, settings) {
 	}
 
 	var init = settings.oInit.fixedColumns;
-	var defaults = DataTable.defaults.fixedColumns;
+	var defaults = dataTable.defaults.fixedColumns;
 
 	if ( init || defaults ) {
 		var opts = $.extend( {}, init, defaults );
 
 		if ( init !== false ) {
-			new FixedColumns( settings, opts );
+			new fixedColumns( settings, opts );
 		}
 	}
 } );
@@ -1616,8 +1616,8 @@ $(document).on( 'init.dt.fixedColumns', function (e, settings) {
 
 
 // Make FixedColumns accessible from the DataTables instance
-$.fn.dataTable.FixedColumns = FixedColumns;
-$.fn.DataTable.FixedColumns = FixedColumns;
+$.fn.dataTable.FixedColumns = fixedColumns;
+$.fn.DataTable.FixedColumns = fixedColumns;
 
-return FixedColumns;
+return fixedColumns;
 }));
