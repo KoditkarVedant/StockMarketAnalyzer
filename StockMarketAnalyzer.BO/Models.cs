@@ -189,11 +189,11 @@ namespace StockMarketAnalyzer.BO
 
     public partial class CompanyFeeds
     {
-        public string guid { get; set; }
-        public string title { get; set; }
-        public string link { get; set; }
-        public string description { get; set; }
-        public DateTime pubDate { get; set; }
+        public string Guid { get; set; }
+        public string Title { get; set; }
+        public string Link { get; set; }
+        public string Description { get; set; }
+        public DateTime PubDate { get; set; }
     }
 
     public class Gender
@@ -203,7 +203,7 @@ namespace StockMarketAnalyzer.BO
 
     public enum UploadFileEnum
     {
-        OK,
+        Ok,
         FileExtensionNotSupported,
         FileNotSelected,
         FileSizeExceeded

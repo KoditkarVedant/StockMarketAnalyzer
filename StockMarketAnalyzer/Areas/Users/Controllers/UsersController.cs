@@ -31,12 +31,12 @@ namespace StockMarketAnalyzer.Areas.Users.Controllers
             var userDetails = _services.GetUserProfile(Convert.ToInt32(User.Identity.Name));
 
 
-            var Genders = new SelectList(new List<Gender>(){
+            var genders = new SelectList(new List<Gender>(){
                 new Gender(){ Name="Male"},
                 new Gender(){Name="Female"}
             }, "Name", "Name", new { SelectedValue = userDetails.Gender });
 
-            TempData["Gender"] = Genders;
+            TempData["Gender"] = genders;
             return View(userDetails);
         }
 
@@ -45,25 +45,25 @@ namespace StockMarketAnalyzer.Areas.Users.Controllers
         {
             if (!ModelState.IsValid) return View(userProfile);
 
-            var Genders = new SelectList(new List<Gender>(){
+            var genders = new SelectList(new List<Gender>(){
                 new Gender(){ Name="Male"},
                 new Gender(){Name="Female"}
             }, "Name", "Name", new { SelectedValue = userProfile.Gender });
 
-            TempData["Gender"] = Genders;
+            TempData["Gender"] = genders;
 
             if (file != null)
             {
                 Random r = new Random();
-                long Number = r.Next(int.MaxValue);
+                long number = r.Next(int.MaxValue);
 
-                UploadFileEnum result = UploadFile(file, Number);
+                UploadFileEnum result = UploadFile(file, number);
 
-                if (result == UploadFileEnum.OK)
+                if (result == UploadFileEnum.Ok)
                 {
                     string oldFileName = userProfile.ProfileUrl;
 
-                    userProfile.ProfileUrl = "~/Uploads/ProfilePic/" + Number.ToString() + file.FileName;
+                    userProfile.ProfileUrl = "~/Uploads/ProfilePic/" + number.ToString() + file.FileName;
                     if (_services.UpdateUserProfile(userProfile))
                     {
                         if (System.IO.File.Exists(Server.MapPath(oldFileName)))
@@ -127,7 +127,7 @@ namespace StockMarketAnalyzer.Areas.Users.Controllers
 
                         file.SaveAs(path);
 
-                        return UploadFileEnum.OK;
+                        return UploadFileEnum.Ok;
                     }
                     else
                     {
@@ -161,7 +161,7 @@ namespace StockMarketAnalyzer.Areas.Users.Controllers
 
         public ActionResult Portfolio()
         {
-            var list = _services.getPortfolio(Convert.ToInt32(User.Identity.Name));
+            var list = _services.GetPortfolio(Convert.ToInt32(User.Identity.Name));
             return View(list);
         }
 

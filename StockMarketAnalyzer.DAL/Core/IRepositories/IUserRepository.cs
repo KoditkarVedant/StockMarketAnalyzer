@@ -14,8 +14,8 @@ namespace StockMarketAnalyzer.DAL.Core.IRepositories
         bool Authenticate(User user);
         bool Register(Register user);
 
-        int getUserId(string p);
+        int GetUserId(string p);
 
-        UserType getUserRole(string p);
+        UserType GetUserRole(string p);
     }
 }

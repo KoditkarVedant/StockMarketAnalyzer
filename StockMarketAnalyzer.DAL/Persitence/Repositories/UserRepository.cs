@@ -83,13 +83,13 @@ namespace StockMarketAnalyzer.DAL.Persitence.Repositories
         }
 
 
-        public int getUserId(string p)
+        public int GetUserId(string p)
         {
             return StockMarketDbContext.Users.Where(x => x.EmailAddress.Equals(p)).Select(x => x.UserId).FirstOrDefault();
         }
 
 
-        public UserType getUserRole(string p)
+        public UserType GetUserRole(string p)
         {
             return StockMarketDbContext.Users.Where(x => x.EmailAddress.Equals(p)).FirstOrDefault().UserType;
         }

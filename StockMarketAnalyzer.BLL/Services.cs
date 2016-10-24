@@ -175,49 +175,33 @@ namespace StockMarketAnalyzer.BLL
                 NoChangeNextDayDecreasePercentages = noChangeNextDayDecreasePercentage,
                 NoChangeNextDayNoChangePercentages = noChangeNextDayNoChangePercentage
             };
-
-
-
-            //            StringBuilder json = new StringBuilder("{");
-            //            json.AppendFormat(@"IncreaseNextDayIncreasePercentages = {0}, 
-            //                                            IncreaseNextDayDecreasePercentages = {1},
-            //                                            IncreaseNextDayNoChangePercentages = {2},
-            //                                            DecreaseNextDayIncreasePercentages = {3},
-            //                                            DecreaseNextDayDecreasePercentages = {4},
-            //                                            DecreaseNextDayNoChangePercentages = {5},
-            //                                            NoChangeNextDayIncreasePercentages = {6},
-            //                                            NoChangeNextDayDecreasePercentages = {7},
-            //                                            NoChangeNextDayNoChangePercentages = {8}",
-            //                                            increaseNextDayIncreasePercentage,
-            //                                            increaseNextDayDecreasePercentage,
-            //                                            increaseNextDayNoChangePercentage,
-            //                                            decreaseNextDayIncreasePercentage,
-            //                                            decreaseNextDayDecreasePercentage,
-            //                                            decreaseNextDayNoChangePercentage,
-            //                                            noChangeNextDayIncreasePercentage,
-            //                                            noChangeNextDayDecreasePercentage,
-            //                                            noChangeNextDayNoChangePercentage);
-            //            json.Append("}");
-
+            
             return companyAnalysis;
         }
 
         public List<CompanyFeeds> GetCompanyFeeds(string ticker)
         {
-            XmlDocument doc = new XmlDocument();
-            doc.LoadXml(_unitOfWork.Companies.GetCompanyFeeds(ticker));
-            // doc.LoadXml(doc.InnerXml);
+            var doc = new XmlDocument();
+            var result = _unitOfWork.Companies.GetCompanyFeeds(ticker);
+            if (result == null) return null;
+
+            doc.LoadXml(result);
+
             var d = doc.SelectNodes("//item");
-            List<CompanyFeeds> companyFeeds = new List<CompanyFeeds>(d.Count);
+            if (d == null) return null;
+
+            var companyFeeds = new List<CompanyFeeds>(d.Count);
             foreach (XmlNode item in d)
             {
+                var selectSingleNode = item.SelectSingleNode("title");
+                if (selectSingleNode == null) continue;
                 companyFeeds.Add(new CompanyFeeds()
                 {
-                    title = item.SelectSingleNode("title").InnerText,
-                    link = item.SelectSingleNode("link").InnerText,
-                    description = item.SelectSingleNode("description").InnerText,
-                    guid = item.SelectSingleNode("guid").InnerText,
-                    pubDate = DateTime.Parse(item.SelectSingleNode("pubDate").InnerText)
+                    Title = selectSingleNode.InnerText,
+                    Link = item.SelectSingleNode("link").InnerText,
+                    Description = item.SelectSingleNode("description").InnerText,
+                    Guid = item.SelectSingleNode("guid").InnerText,
+                    PubDate = DateTime.Parse(item.SelectSingleNode("pubDate").InnerText)
                 });
             }
 
@@ -258,33 +242,17 @@ namespace StockMarketAnalyzer.BLL
 
         public bool UpdateUserProfile(UserProfile profile)
         {
-            var profileDM = profile;
+            var profileDm = profile;
 
-            _unitOfWork.Users.UpdateProfile(profileDM);
+            _unitOfWork.Users.UpdateProfile(profileDm);
 
             return true;
         }
 
 
-        public UserProfile GetUserProfile(int UserId)
+        public UserProfile GetUserProfile(int userId)
         {
-            //var user = new User()
-            //{
-            //    Username = "Vedant",
-            //    EmailAddress = "vedkoditkar@gmail.com",
-            //    PhoneNumber = "8412013051",
-            //    UserProfile = new UserProfile()
-            //    {
-            //        FirstName = "Vedant",
-            //        LastName = "Koditkar",
-            //        Address = "Pune"
-            //    }
-            //};
-
-            //_unitOfWork.Users.Add(user);
-            //_unitOfWork.Complete();
-
-            var profile = _unitOfWork.Users.Get(UserId).UserProfile;
+            var profile = _unitOfWork.Users.Get(userId).UserProfile;
 
             return profile;
         }
@@ -305,21 +273,21 @@ namespace StockMarketAnalyzer.BLL
         }
 
 
-        public int getUserID(string p)
+        public int GetUserId(string p)
         {
-            return _unitOfWork.Users.getUserId(p);
+            return _unitOfWork.Users.GetUserId(p);
         }
 
 
         public void AddToProfile(UserPortfolio userPortfolio)
         {
-             var user = _unitOfWork.Users.Get(userPortfolio.UserId);
-             user.UserPortfolios.Add(userPortfolio);
+            var user = _unitOfWork.Users.Get(userPortfolio.UserId);
+            user.UserPortfolios.Add(userPortfolio);
             _unitOfWork.Complete();
         }
 
 
-        public List<UserPortfolio> getPortfolio(int id)
+        public List<UserPortfolio> GetPortfolio(int id)
         {
             return _unitOfWork.UserPortfolios.GetAll(id);
         }
@@ -327,14 +295,14 @@ namespace StockMarketAnalyzer.BLL
 
         public void RemoveFromPortfolio(int id)
         {
-            _unitOfWork.UserPortfolios.Remove(_unitOfWork.UserPortfolios.GetAll().Where(x=>x.UserPortfolioId==id).FirstOrDefault());
+            _unitOfWork.UserPortfolios.Remove(_unitOfWork.UserPortfolios.GetAll().FirstOrDefault(x => x.UserPortfolioId == id));
             _unitOfWork.Complete();
         }
 
 
-        public string getUserRole(string p)
+        public string GetUserRole(string p)
         {
-            return _unitOfWork.Users.getUserRole(p).ToString();
+            return _unitOfWork.Users.GetUserRole(p).ToString();
         }
     }
 }

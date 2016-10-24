@@ -45,13 +45,13 @@ namespace StockMarketAnalyzer.Areas.Security.Controllers
                 var identity = new ClaimsIdentity(
                     new[]{
                         new Claim(ClaimTypes.Email,user.EmailAddress),
-                        new Claim(ClaimTypes.Name,_services.getUserID(user.EmailAddress).ToString())
+                        new Claim(ClaimTypes.Name,_services.GetUserId(user.EmailAddress).ToString())
                 }, @"ApplicationCookie");
 
                 var ctx = Request.GetOwinContext();
                 var authManager = ctx.Authentication;
 
-                identity.AddClaim(new Claim(ClaimTypes.Role, _services.getUserRole(user.EmailAddress)));
+                identity.AddClaim(new Claim(ClaimTypes.Role, _services.GetUserRole(user.EmailAddress)));
 
                 authManager.SignIn(identity);
 
