@@ -247,7 +247,7 @@
     <script>
         $("#AddToPortfolio").click(function(){
             $.ajax({
-                url:"/Home/_AddToPortfolio",
+                url:"/Users/Users/_AddToPortfolio",
                 method:"POST",
                 data:{Quantity:$("#Quantity").val(),BuyRate:$("#BuyRate").val(),Symbol:"@Model.Symbol"}
             }).success(function(response){

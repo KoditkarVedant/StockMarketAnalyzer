@@ -26,7 +26,7 @@ namespace StockMarketAnalyzer
                       "~/Scripts/respond.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.bootswatch.css",
+                      "~/Content/bootstrap.spacelab.css",
                       "~/Content/site.css",
                       "~/Content/DataTables/css/dataTables.bootstrap.css",
                       "~/Content/Styles.css"));

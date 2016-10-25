@@ -155,10 +155,12 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\AdminController.cs" />
     <Compile Include="Areas\Security\Controllers\AuthController.cs" />
     <Compile Include="Areas\Security\SecurityAreaRegistration.cs" />
     <Compile Include="Areas\Users\Controllers\UsersController.cs" />
     <Compile Include="Areas\Users\UsersAreaRegistration.cs" />
+    <Compile Include="Controllers\FacebookController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Filters\AutherizationFilter.cs" />
     <Compile Include="Global.asax.cs">
@@ -343,6 +345,14 @@
     <Content Include="Areas\Security\Views\Auth\Register.cshtml" />
     <Content Include="Areas\Admin\Views\web.config" />
     <Content Include="Areas\Users\Views\web.config" />
+    <Content Include="Areas\Users\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Users\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Users\Views\Users\Profile.cshtml" />
+    <Content Include="Areas\Users\Views\Users\Portfolio.cshtml" />
+    <Content Include="Content\bootstrap.spacelab.css" />
+    <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Admin\Views\Admin\Notifications.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\canvasJs\canvasjs.min.js" />
     <Content Include="Scripts\canvasJs\jquery.canvasjs.min.js" />
@@ -433,6 +443,8 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="Uploads\Images\stock-bull.png" />
+    <Content Include="Uploads\ProfilePic\Default\default_profile.png" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -458,21 +470,16 @@
     <Content Include="Views\Home\_CompanyFeeds.cshtml" />
     <Content Include="Views\Home\_CompanyProfile.cshtml" />
     <Content Include="Views\Home\_Charts.cshtml" />
-    <Content Include="Views\Home\Portfolio.cshtml" />
     <Content Include="Views\Home\_AddToPortfolio.cshtml" />
-    <Content Include="Views\Home\Profile.cshtml" />
+    <Content Include="Views\Shared\_FacebookWidget.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Admin\Controllers\" />
     <Folder Include="Areas\Admin\Models\" />
-    <Folder Include="Areas\Admin\Views\Shared\" />
     <Folder Include="Areas\Security\Models\" />
     <Folder Include="Areas\Users\Models\" />
-    <Folder Include="Areas\Users\Views\Shared\" />
-    <Folder Include="Areas\Users\Views\Users\" />
-    <Folder Include="Uploads\ProfilePic\" />
     <Folder Include="ViewModels\" />
+    <Folder Include="Views\Facebook\" />
     <Folder Include="Views\Login\" />
     <Folder Include="Views\User\" />
   </ItemGroup>
@@ -491,6 +498,10 @@
     <ProjectReference Include="..\StockMarketAnalyzer.BO\StockMarketAnalyzer.BO.csproj">
       <Project>{651e255b-b5d1-4018-84f2-07407a843ff2}</Project>
       <Name>StockMarketAnalyzer.BO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\StockMarketAnalyzer.Utilities\StockMarketAnalyzer.Utilities.csproj">
+      <Project>{36b64746-c6c0-4be0-92a0-77da5550b79c}</Project>
+      <Name>StockMarketAnalyzer.Utilities</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

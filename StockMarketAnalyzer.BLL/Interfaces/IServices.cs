@@ -30,5 +30,7 @@ namespace StockMarketAnalyzer.BLL.Interfaces
         void RemoveFromPortfolio(int id);
 
         string GetUserRole(string p);
+
+        bool UpdateFBHandle(string ticker, string fbHandle);
     }
 }

@@ -77,10 +77,10 @@ else
         $(".remove").click(function () {
             var x = this;
             $.ajax({
-                url: "/Home/RemoveFromPortfolio",
+                url: "/Users/Users/RemoveFromPortfolio",
                 data: { id: $(this).attr("data-value") }
             }).success(function () {
-                $("#portfolioTable").DataTable().row($(x).parent().parent()).remove().draw();   
+                $("#portfolioTable").DataTable().row($(x).parent().parent()).remove().draw();
             });
 
         });

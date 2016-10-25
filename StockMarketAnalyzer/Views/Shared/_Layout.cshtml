@@ -4,8 +4,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Stock Market Analyzer</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" />
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
 </head>
 <body>
     <div class="navbar navbar-default navbar-fixed-top">
@@ -16,7 +19,10 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Stock Market Analyzer", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                <a class="navbar-brand" href="/Home/Index">
+                    <img src="~/Uploads/Images/stock-bull.png" class="img img-responsive" alt="Brand" style="height:30px" />
+                </a>
+                @Html.ActionLink("Stock Market Analyzer", "Index", "Home", new { area = "" }, new { @class = "navbar-brand", id="brandName" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
@@ -27,15 +33,15 @@
 
                     @if (User.Identity.IsAuthenticated)
                     {
-                    if (User.IsInRole("User"))
-                    {
-                    <li>@Html.ActionLink(@"Profile", @"Profile", @"Users", routeValues: new { area = "Users" }, htmlAttributes: new { @class = "pull-right" })</li>
-                    <li>@Html.ActionLink(@"Portfolio", @"Portfolio", @"Users", routeValues: new { area = "Users" }, htmlAttributes: new { @class = "pull-right" })</li>
-                    }
-                    if (User.IsInRole("Admin"))
-                    {
-                    <li>@Html.ActionLink(@"Update Handle", @"", @"", routeValues: new { area = "Admin" }, htmlAttributes: new { @class = "pull-right" })</li>
-                    }
+                        if (User.IsInRole("User"))
+                        {
+                            <li>@Html.ActionLink(@"Profile", @"Profile", @"Users", routeValues: new { area = "Users" }, htmlAttributes: new { @class = "pull-right" })</li>
+                            <li>@Html.ActionLink(@"Portfolio", @"Portfolio", @"Users", routeValues: new { area = "Users" }, htmlAttributes: new { @class = "pull-right" })</li>
+                        }
+                        if (User.IsInRole("Admin"))
+                        {
+                            <li>@Html.ActionLink(@"Notifications", @"Notifications", @"Admin", routeValues: new { area = "Admin" }, htmlAttributes: new { @class = "pull-right" })</li>
+                        }
                     }
 
 
@@ -43,21 +49,21 @@
                 <ul class="nav navbar-nav navbar-right">
                     @if (User.Identity.IsAuthenticated)
                     {
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                            <span class="glyphicon glyphicon-user"></span>
-                            <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li>@Html.ActionLink("Sign Out", "Logout", "Auth",new { area = "Security"},null)</li>
-                        </ul>
-                    </li>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                <span class="glyphicon glyphicon-user"></span>
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>@Html.ActionLink("Sign Out", "Logout", "Auth", new { area = "Security" }, null)</li>
+                            </ul>
+                        </li>
 
                     }
                     else
                     {
-                    <li>@Html.ActionLink("Sign In", "Login", "Auth", new{area="Security"}, null)</li>
-                    <li>@Html.ActionLink("Sign Up", "Register", "Auth", new{area="Security"}, null)</li>
+                        <li>@Html.ActionLink("Sign In", "Login", "Auth", new { area = "Security" }, null)</li>
+                        <li>@Html.ActionLink("Sign Up", "Register", "Auth", new { area = "Security" }, null)</li>
                     }
                 </ul>
             </div>
@@ -75,8 +81,7 @@
         </div>
     </div>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
+    
     @RenderSection("scripts", required: false)
 </body>
 </html>

@@ -1,0 +1,206 @@
+﻿@model StockMarketAnalyzer.BO.FacebookWidgetViewModel
+
+<style>
+    .panel-heading h4 {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        line-height: normal;
+        width: 35%;
+        padding-top: 8px;
+    }
+
+    .facebook-scroll {
+        overflow: scroll;
+        height: 300px;
+    }
+
+    .media {
+        width: 85%;
+        margin: 0 auto 0 auto;
+    }
+</style>
+
+<script>
+    $(document).ready(function () {
+        $.ajaxSetup({ cache: true });
+        $.getScript('//connect.facebook.net/en_US/sdk.js', function () {
+            FB.init({
+                version: 'v2.6'
+            });
+        });
+    });
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var fbHandle = '@Model.FacebookURL';
+
+        if (!fbHandle) {
+            fbHandle = '@Model.Name';
+        }
+
+        function loadPosts(url, fbHandle) {
+            $.ajax({
+                type: 'get',
+                url: url,
+                data: { 'handle': fbHandle },
+                dataType: 'json'
+            }).done(function (response) {
+
+                var Posts = $.parseJSON(response);
+
+                if (Posts.data.length > 0) {
+                    for (i = 0; i < Posts.data.length; i++) {
+
+                        var PostLink = Posts.data[i].permalink_url;
+
+                        if (PostLink.toLowerCase().indexOf("/videos/") >= 0) {
+                            $("#posts").append('<div id="' + PostLink + '"><div class="fb-video" data-href="' + PostLink + '" data-width="470" data-show-text="false"><blockquote cite="' + PostLink + '" class="fb-xfbml-parse-ignore"> </blockquote></div></div><hr>');
+                        } else {
+                            $("#posts").append('<div id="' + PostLink + '"><div class="fb-post" data-href="' + PostLink + '" data-width="470" data-show-text="true"><blockquote cite="' + PostLink + '" class="fb-xfbml-parse-ignore"></blockquote></div></div><hr>');
+                        }
+                        FB.XFBML.parse(document.getElementById(PostLink));
+                    }
+
+                    if (Posts.paging.hasOwnProperty('next')) {
+                        $('#posts').append('<div id="showMoreButton"><br><button class="showMoreData btn btn-ms btn-block ladda-button" data-nextData="' + Posts.paging.next + '" onclick="loadMorePosts(' + Posts.paging.next + ')">Show More</button></div>');
+                    }
+
+                } else {
+                    $("#posts").append('<div class="alert">  <button type="button" class="close" data-dismiss="alert">&times;</button>  No Record Found!.</div>');
+                }
+            }).fail(function (response) {
+                $("#posts").append('<div class="alert">  <button type="button" class="close" data-dismiss="alert">&times;</button>  Can not connect to facebook server!.</div>');
+            });
+        }
+
+        function loadMorePosts(nextPostsUrl) {
+            alert(10);
+            alert(nextPostsUrl);
+            $.ajax({
+                type: 'get',
+                url: "@Url.Action("GetMorePosts", "Facebook", new { area = "" })",
+                data: { 'query': nextPostsUrl },
+                dataType: 'json'
+            }).done(function (response) {
+                var Posts = $.parseJSON(response);
+
+                $("#posts > #ShowMoreButton").remove();
+
+                if (Posts.data.length > 0) {
+                    for (i = 0; i < Posts.data.length; i++) {
+
+                        var PostLink = Posts.data[i].permalink_url;
+
+                        if (PostLink.toLowerCase().indexOf("/videos/") >= 0) {
+                            $("#posts").append('<div id="' + PostLink + '"><div class="fb-video" data-href="' + PostLink + '" data-width="470" data-show-text="false"><blockquote cite="' + PostLink + '" class="fb-xfbml-parse-ignore"> </blockquote></div></div><hr>');
+                        } else {
+                            $("#posts").append('<div id="' + PostLink + '"><div class="fb-post" data-href="' + PostLink + '" data-width="470" data-show-text="true"><blockquote cite="' + PostLink + '" class="fb-xfbml-parse-ignore"></blockquote></div></div><hr>');
+                        }
+                        FB.XFBML.parse(document.getElementById(PostLink));
+                    }
+
+                    if (Posts.paging.hasOwnProperty('next')) {
+                        $('#posts').append('<div id="showMoreButton"><br><button class="btn btn-ms btn-block ladda-button showMoreData" data-nextData="' + Posts.paging.next + '" onclick="loadMorePosts(' + Posts.paging.next + ')">Show More</button></div>');
+                    }
+
+                } else {
+                    $("#posts").append('<div class="alert">  <button type="button" class="close" data-dismiss="alert">&times;</button>  No Record Found!.</div>');
+                }
+            }).fail(function (respose) {
+                $("#posts").append('<div class="alert">  <button type="button" class="close" data-dismiss="alert">&times;</button>  Can not connect to facebook server!.</div>');
+            });
+        };
+
+
+        $("#typeOfPosts").on('change', getPosts);
+
+        function getPosts() {
+            var val = $("#typeOfPosts").val();
+            $("#posts").html('');
+
+            var url = "";
+            if (val === "Timeline") {
+                url = "@Url.Action("GetPosts", "Facebook", new { area = "" })";
+            } else if (val === "Tagged") {
+                url = "@Url.Action("GetTaggedPosts", "Facebook", new { area = "" })";
+            }
+
+            loadPosts(url, fbHandle);
+        };
+    });
+</script>
+
+<div class="panel panel-default">
+    @if (Model.IsAdminUser)
+    {
+        if (!string.IsNullOrWhiteSpace(Model.FacebookURL))
+        {
+            <div class="panel-heading">
+                <h4 class="panel-title pull-left"><i class="fa fa-facebook"></i>Facebook</h4>
+                <select id="typeOfPosts" class="btn btn-sm btn-default pull-right" style="height:30px">
+                    <option>Timeline</option>
+                    <option>Tagged</option>
+                </select>
+                <button class="btn btn-sm btn-default pull-right">Incorrect Feed ?</button>
+                <div class="clearfix"></div>
+            </div>
+            <div class="panel-body facebook-scroll">
+                <ul class="media-list" id="posts"></ul>
+            </div>
+            <div class="panel-body facebook-scroll" style="display:none">
+                <ul class="media-list" id="handles">
+                    <li class="media">
+                        <div class="media-body">
+                            <iframe src="https://www.facebook.com/plugins/video.php?href=https://www.facebook.com/tesla/videos/10154629281392801/&width=500" width="500" height="315" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowtransparency="true" allowfullscreen="true"></iframe>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        }
+        else
+        {
+            <div class="panel-heading">
+                <h4 class="panel-title pull-left"><i class="fa fa-facebook"></i>Facebook</h4>
+                <div class="clearfix"></div>
+            </div>
+            <div class="panel-body facebook-scroll">
+                <ul class="media-list" id="handles">
+                    <li class="media">
+                        <div class="media-body">
+                            <iframe src="https://www.facebook.com/plugins/video.php?href=https://www.facebook.com/tesla/videos/10154629281392801/&width=500" width="500" height="315" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowtransparency="true" allowfullscreen="true"></iframe>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        }
+    }
+    else
+    {
+        if (!string.IsNullOrWhiteSpace(Model.FacebookURL))
+        {
+            <div class="panel-heading">
+                <h4 class="panel-title pull-left"><i class="fa fa-facebook"></i>Facebook</h4>
+                <select class="btn btn-sm btn-default pull-right" style="height:30px">
+                    <option>Timeline</option>
+                    <option>Tagged</option>
+                </select>
+                <button class="btn btn-sm btn-default pull-right">Incorrect Feed ?</button>
+                <div class="clearfix"></div>
+            </div>
+            <div class="panel-body facebook-scroll">
+                <ul class="media-list" id="posts">
+                    <li class="media">
+                        <div class="media-body">
+                            <iframe src="https://www.facebook.com/plugins/video.php?href=https://www.facebook.com/tesla/videos/10154629281392801/&width=500" width="500" height="315" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowtransparency="true" allowfullscreen="true"></iframe>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        }
+    }
+</div>
+<div class="spinner-wrap" id="fb-spinner">
+    <div class="ibox-title"><i class="fa fa-spinner fa-spin fa-pulse fa-fw" style="width:auto"></i> Loading Facebook</div>
+</div>

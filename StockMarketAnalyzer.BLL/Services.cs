@@ -175,7 +175,7 @@ namespace StockMarketAnalyzer.BLL
                 NoChangeNextDayDecreasePercentages = noChangeNextDayDecreasePercentage,
                 NoChangeNextDayNoChangePercentages = noChangeNextDayNoChangePercentage
             };
-            
+
             return companyAnalysis;
         }
 
@@ -303,6 +303,16 @@ namespace StockMarketAnalyzer.BLL
         public string GetUserRole(string p)
         {
             return _unitOfWork.Users.GetUserRole(p).ToString();
+        }
+
+
+        public bool UpdateFBHandle(string ticker, string fbHandle)
+        {
+            var company = _unitOfWork.Companies.GetCompanyWithTicker(ticker);
+            company.CompanyProfile.FBHandle = fbHandle;
+
+            _unitOfWork.Complete();
+            return true;
         }
     }
 }

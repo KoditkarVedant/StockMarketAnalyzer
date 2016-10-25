@@ -1,7 +1,7 @@
 ﻿@model StockMarketAnalyzer.BO.Company
 
 <div class="col-md-12" id="companySummaryDiv">
-    
+
     <div class="col-md-6">
         <table class="table table-condensed table-striped">
             <tbody>
@@ -84,5 +84,8 @@
         <br />
         <br />
         <div id="chartContainer" style="height:300px"></div>
+    </div>
+    <div class="col-md-6" id="FacebookWidgetDiv">
+        @Html.Partial("_FacebookWidget", new StockMarketAnalyzer.BO.FacebookWidgetViewModel() { IsAdminUser = true, Ticker = @Model.Symbol, FacebookURL = "https://www.facebook.com/tesla/", Name = Model.Name })
     </div>
 </div>

@@ -98,6 +98,8 @@ namespace StockMarketAnalyzer.Areas.Security.Controllers
             if (!ModelState.IsValid) return View(user);
 
             user.UserType = UserType.User;
+            user.ProfilePic = "~/Uploads/ProfilePic/Default/default_profile.png";
+
             if (_services.RegisterNewUser(user))
             {
                 ViewBag.Success = "Registered Successfully ! you may login now.";

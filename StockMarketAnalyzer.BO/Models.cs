@@ -35,6 +35,7 @@ namespace StockMarketAnalyzer.BO
         public string PhoneNumber { get; set; }
 
         public UserType UserType { get; set; }
+        public string ProfilePic { get; set; }
     }
 
     public enum UserType
@@ -166,6 +167,8 @@ namespace StockMarketAnalyzer.BO
         public string Sector { get; set; }
         public string LongBusinessSummary { get; set; }
         public long? FullTimeEmployees { get; set; }
+        public string FBHandle { get; set; }
+        public string TWHandle { get; set; }
 
         public virtual Company Company { get; set; }
     }

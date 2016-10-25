@@ -56,7 +56,8 @@ namespace StockMarketAnalyzer.DAL.Persitence.Repositories
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 PhoneNumber = user.PhoneNumber,
-                EmailAddress = user.EmailAddress
+                EmailAddress = user.EmailAddress,
+                ProfileUrl = user.ProfilePic
             };
 
             var newUser = new User()

@@ -29,7 +29,7 @@
                 <h5>@Model.EmailAddress</h5>
             </div>
             <div class="panel-body">
-                @using (Html.BeginForm("profile", "home", FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data" }))
+                @using (Html.BeginForm("profile", "users", new { area = "users" }, FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data" }))
                 {
                     //@Html.AntiForgeryToken()
 
@@ -75,7 +75,7 @@
                     <div class="form-group">
                         @Html.LabelFor(model => model.Gender, htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
-                            @Html.EditorFor(model => model.Gender, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.DropDownListFor(model => model.Gender, (IEnumerable<SelectListItem>)TempData["Gender"], "Select Gender", new { @class = "form-control" })
                             @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
                         </div>
                     </div>

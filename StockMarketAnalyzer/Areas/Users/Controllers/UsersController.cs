@@ -12,7 +12,7 @@ namespace StockMarketAnalyzer.Areas.Users.Controllers
     public class UsersController : Controller
     {
         private readonly IServices _services;
-        private static readonly string[] Extensions = new string[] {".png", ".jpeg", ".jpg"};
+        private static readonly string[] Extensions = new string[] { ".png", ".jpeg", ".jpg" };
 
         public UsersController(IServices services)
         {
@@ -30,11 +30,10 @@ namespace StockMarketAnalyzer.Areas.Users.Controllers
         {
             var userDetails = _services.GetUserProfile(Convert.ToInt32(User.Identity.Name));
 
-
             var genders = new SelectList(new List<Gender>(){
                 new Gender(){ Name="Male"},
                 new Gender(){Name="Female"}
-            }, "Name", "Name", new { SelectedValue = userDetails.Gender });
+            }, "Name", "Name", new { SelectedValue = userDetails.Gender != null ? userDetails.Gender : "" });
 
             TempData["Gender"] = genders;
             return View(userDetails);
