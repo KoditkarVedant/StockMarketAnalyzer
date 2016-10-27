@@ -353,6 +353,7 @@
     <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Admin\Views\Admin\Notifications.cshtml" />
+    <Content Include="Areas\Admin\Views\Admin\UpdateHandle.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\canvasJs\canvasjs.min.js" />
     <Content Include="Scripts\canvasJs\jquery.canvasjs.min.js" />

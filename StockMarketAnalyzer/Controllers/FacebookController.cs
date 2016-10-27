@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace StockMarketAnalyzer.Controllers
 {
+    [AllowAnonymous]
     public class FacebookController : Controller
     {
         private readonly IFacebook _Facebook;
@@ -29,6 +30,7 @@ namespace StockMarketAnalyzer.Controllers
             {
                 IsAdminUser = true,
                 Name = name,
+                Ticker = ticker,
                 FacebookURL = facebookUrl
             };
             return PartialView("~/Views/Shared/_FacebookWidget.cshtml", FBModel);

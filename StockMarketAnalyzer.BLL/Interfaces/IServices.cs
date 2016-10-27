@@ -32,5 +32,7 @@ namespace StockMarketAnalyzer.BLL.Interfaces
         string GetUserRole(string p);
 
         bool UpdateFBHandle(string ticker, string fbHandle);
+
+        IEnumerable<Company> GetCompaniesWithoutHandle();
     }
 }

@@ -17,7 +17,7 @@ namespace StockMarketAnalyzer.DAL.Persitence.Repositories
     public class CompanyRepository : Repository<Company>, ICompanyRepository
     {
         public CompanyRepository(StockMarketDbContext context)
-            :base(context)
+            : base(context)
         {
         }
 
@@ -35,7 +35,7 @@ namespace StockMarketAnalyzer.DAL.Persitence.Repositories
         {
             return StockMarketDbContext.Companies.OrderByDescending(x => x.UserPortfolios.Count).Take(count).ToList();
         }
-        
+
         public Company GetCompanyFromYahoo(string ticker)
         {
             var company = new Company();
@@ -52,7 +52,6 @@ namespace StockMarketAnalyzer.DAL.Persitence.Repositories
             return company;
         }
 
-
         public string SearchCompany(string query)
         {
             const string config = "%7B%22url%22%3A%7B%22host%22%3A%22s.yimg.com%22%2C%22path%22%3A%22%2Fxb%2Fv6%2Ffinance%2Fautocomplete%22%2C%22query%22%3A%7B%22appid%22%3A%22yahoo.com%22%2C%22nresults%22%3A10%2C%22output%22%3A%22yjsonp%22%2C%22region%22%3A%22US%22%2C%22lang%22%3A%22en-US%22%7D%2C%22protocol%22%3A%22https%22%7D%2C%22isJSONP%22%3Atrue%2C%22queryKey%22%3A%22query%22%2C%22resultAccessor%22%3A%22ResultSet.Result%22%2C%22suggestionTitleAccessor%22%3A%22symbol%22%2C%22suggestionMeta%22%3A%5B%22symbol%22%2C%22name%22%2C%22exch%22%2C%22type%22%2C%22exchDisp%22%2C%22typeDisp%22%5D%7D";
@@ -63,7 +62,6 @@ namespace StockMarketAnalyzer.DAL.Persitence.Repositories
             return data;
         }
 
-
         public string GetCompanyFeeds(string ticker)
         {
             string url = "http://finance.yahoo.com/rss/industry?s=" + ticker;
@@ -71,6 +69,11 @@ namespace StockMarketAnalyzer.DAL.Persitence.Repositories
             var data = ApiHelper.GetResponse(url);
 
             return data;
+        }
+
+        public IEnumerable<Company> GetCompaniesWithoutHandle()
+        {
+            return StockMarketDbContext.Companies.Where(x => (x.CompanyProfile != null && x.CompanyProfile.FBHandle == null)).ToList();
         }
     }
 }

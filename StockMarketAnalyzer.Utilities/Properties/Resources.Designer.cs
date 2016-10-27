@@ -61,7 +61,7 @@ namespace StockMarketAnalyzer.Utilities.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to 1866770746886075|kJzbxMP7gSRhY0i6UhBPRhx-uSM.
         /// </summary>
         internal static string FacebookAppAccessToken {
             get {

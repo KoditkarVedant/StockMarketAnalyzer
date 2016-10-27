@@ -314,5 +314,11 @@ namespace StockMarketAnalyzer.BLL
             _unitOfWork.Complete();
             return true;
         }
+
+
+        public IEnumerable<Company> GetCompaniesWithoutHandle()
+        {
+            return _unitOfWork.Companies.GetCompaniesWithoutHandle();
+        }
     }
 }

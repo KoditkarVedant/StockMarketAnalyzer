@@ -18,6 +18,7 @@ namespace StockMarketAnalyzer.Controllers
             _services = services;
         }
 
+        [AllowAnonymous]
         public ActionResult Index()
         {
             return View();

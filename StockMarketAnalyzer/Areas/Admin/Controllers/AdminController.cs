@@ -1,4 +1,6 @@
-﻿using System;
+﻿using StockMarketAnalyzer.BLL.Interfaces;
+using StockMarketAnalyzer.BO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,6 +10,13 @@ namespace StockMarketAnalyzer.Areas.Admin.Controllers
 {
     public class AdminController : Controller
     {
+        private readonly IServices _services;
+
+        public AdminController(IServices services)
+        {
+            _services = services;
+        }
+
         // GET: Admin/Admin
         public ActionResult Index()
         {
@@ -16,17 +25,20 @@ namespace StockMarketAnalyzer.Areas.Admin.Controllers
 
         public ActionResult Notifications()
         {
-            return View();
+            var companies = _services.GetCompaniesWithoutHandle();
+            return View(companies);
         }
 
-        public JsonResult UpdateFacebookHandle(string ticker, string handle)
+        public ActionResult UpdateHandle(string ticker, string name, string FBhandle, string TWhandle)
         {
-            return Json("");
-        }
-
-        public JsonResult UpdateTwitterHandle(string ticker, string handle)
-        {
-            return Json("");
+            var updateHandle = new UpdateHandle()
+            {
+                Ticker = ticker,
+                FBHandle = FBhandle,
+                TwitterHandle = TWhandle,
+                Name = name
+            };
+            return View(updateHandle);
         }
     }
 }

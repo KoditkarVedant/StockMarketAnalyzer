@@ -1,0 +1,12 @@
+﻿@model StockMarketAnalyzer.BO.UpdateHandle
+
+
+
+<div class="row">
+    <br />
+    <br />
+    <br />
+    <div class="col-md-6" id="FacebookWidgetDiv">
+        @Html.Partial("_FacebookWidget", new StockMarketAnalyzer.BO.FacebookWidgetViewModel() { IsAdminUser = true, Ticker = Model.Ticker, FacebookURL = Model.FBHandle, Name = Model.Name })
+    </div>
+</div>

@@ -8,6 +8,14 @@ using System.Threading.Tasks;
 
 namespace StockMarketAnalyzer.BO
 {
+    public class UpdateHandle
+    {
+        public string Ticker {get;set;}
+        public string FBHandle { get; set; }
+        public string TwitterHandle { get; set; }
+        public string Name { get; set; }
+    }
+
     public class Register
     {
         [Required(ErrorMessage = "Email is required")]
